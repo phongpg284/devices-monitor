@@ -18,7 +18,6 @@ const app = express();
 const bootstrap = async (mongoClient: MongoClient) => {
 	try {
 		Container.set(DATABASE_INSTANCE_KEY, mongoClient.db("admin"));
-		console.log(mongoClient, "eheh")
 	} catch (error) {
 		logger.error(error);
 		throw new Error(error);
