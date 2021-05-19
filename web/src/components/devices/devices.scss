@@ -1,14 +1,17 @@
 .device-item {
     padding: 5px;
-    margin: 2px;
     background-color: rgba(82, 82, 82, 0.067);
 }
 
-.device-list {
+.device-toogle {
     margin: 5px;
     width: 400px;
     :hover {
-        background-color:rgb(180, 170, 170)
+        background-color:rgb(207, 205, 205)
     }
     // width: 14cm;
+}
+
+li {
+    text-align: start;
 }

@@ -18,13 +18,8 @@ function App() {
             <Statistic></Statistic>
             <Map />
           </div>
-          <div className="w-3px">
             <DeviceList/>
-
-          </div>
         </div>
-        {/* <div className="device-list">
-        </div> */}
       </div>
     </div>
   );
