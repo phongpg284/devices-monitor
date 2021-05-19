@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 import 'reflect-metadata';
-import { Db, MongoClient } from 'mongodb';
+import { MongoClient } from 'mongodb';
 import {
 	DATABASE_INSTANCE_KEY,
 	DB_URL_STRING,
@@ -11,10 +11,18 @@ import {
 import express from 'express';
 import { getApolloServer, getGraphqlSchema } from './apolloServer';
 import { createServer } from 'http';
+import Container from 'typedi';
 
 const app = express();
 
-const bootstrap = async () => {
+const bootstrap = async (mongoClient: MongoClient) => {
+	try {
+		Container.set(DATABASE_INSTANCE_KEY, mongoClient.db("admin"));
+		console.log(mongoClient, "eheh")
+	} catch (error) {
+		logger.error(error);
+		throw new Error(error);
+	}
 	const schema = await getGraphqlSchema();
 
 	const apolloServer = getApolloServer(schema);
@@ -38,12 +46,12 @@ MongoClient.connect(
 	{
 		useUnifiedTopology: true,
 	},
-	(error) => {
+	(error, mongoClient) => {
 		if (error) {
 			logger.error(error.message);
 			process.exit(1);
 		}
 		logger.info('Connected successfully to database');
-		bootstrap();
+		bootstrap(mongoClient);
 	}
 );
