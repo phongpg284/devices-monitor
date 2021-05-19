@@ -1,36 +1,42 @@
-import { Collection, Db } from "mongodb";
+import { Collection, Db, ObjectId } from "mongodb";
 import { DATABASE_INSTANCE_KEY } from "../config/index";
-import { Arg, Field, InputType, Mutation, ObjectType, Query, Resolver } from "type-graphql";
+import { Arg, Field, ID, InputType, Mutation, ObjectType, Query, Resolver } from "type-graphql";
 import Container, { Service } from "typedi";
 
 @ObjectType()
 export class Device {
+    @Field(() => ID)
+    _id: string;
+
     @Field()
     name: string;
 
-	@Field({ nullable: true })
+	@Field()
     lat: number;
 
 	@Field()
     lng: number;
     
     @Field()
-    temperature: string;
+    temperature: number;
     
     @Field()
-    humidity!: string;
+    humidity!: number;
     
     @Field()
-    rain!: boolean;
+    rain: boolean;
 
     @Field()
-    dust!: string;
+    dust: number;
     
     @Field()
-    coGas: string;
+    coGas: number;
     
     @Field()
-    soilHumid: string;
+    soilHumid: number;
+
+    @Field()
+    lastUpdated: Date;
 } 
 
 
@@ -46,26 +52,29 @@ class DeviceCreateInput {
     lng: number;
     
     @Field({ nullable: true })
-    temperature: string;
+    temperature: number;
     
     @Field({ nullable: true })
-    humidity: string;
+    humidity: number;
     
     @Field({ nullable: true })
     rain: boolean;
 
     @Field({ nullable: true })
-    dust: string;
+    dust: number;
     
     @Field({ nullable: true })
-    coGas: string;
+    coGas: number;
     
     @Field({ nullable: true })
-    soilHumid: string;
+    soilHumid: number;
 }
 
 @InputType()
 class DeviceUpdateInput {
+    @Field(() => ID)
+    _id: string;
+
     @Field({ nullable: true })
     name: string;
 
@@ -76,22 +85,22 @@ class DeviceUpdateInput {
     lng: number;
     
     @Field({ nullable: true })
-    temperature: string;
+    temperature: number;
     
     @Field({ nullable: true })
-    humidity: string;
+    humidity: number;
     
     @Field({ nullable: true })
     rain: boolean;
 
     @Field({ nullable: true })
-    dust: string;
+    dust: number;
     
     @Field({ nullable: true })
-    coGas: string;
+    coGas: number;
     
     @Field({ nullable: true })
-    soilHumid: string;
+    soilHumid: number;
 }
 
 @Resolver()
@@ -103,7 +112,10 @@ export class Devices {
     }
     @Mutation(() => Device)
     async createDevice(@Arg("input") inputs: DeviceCreateInput) {
+        const id = new ObjectId();
         const result = await this.db.collection("devices").insertOne({
+            _id: id.toHexString(),
+            lastUpdated: id.getTimestamp(),
             ...inputs
         })
         return result.ops[0];
