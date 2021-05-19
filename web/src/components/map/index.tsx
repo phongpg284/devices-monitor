@@ -1,7 +1,9 @@
+import "./map.scss";
 import GoogleMap from "google-map-react";
 import { useState } from "react";
 import DeviceMarker from "./deviceMarker";
-
+import { fakeData } from "../devices/index";
+export {fakeData} from "../devices/index";
 interface props {
   center: {
     lat: number;
@@ -10,7 +12,7 @@ interface props {
   zoom: number;
 }
 
-const Map = () => {
+const Map = (props: any) => {
   const [defaultStats, setDefaultStats] = useState({
     center: {
       lat: 21.04,
@@ -19,13 +21,15 @@ const Map = () => {
     zoom: 15,
   });
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
+    <div className="google-map">
       <GoogleMap
         bootstrapURLKeys={{ key: "AIzaSyDumeWrTMi-7xbY7uRRupj3zMsTCaro8WQ" }}
         defaultCenter = {defaultStats.center}
         defaultZoom={defaultStats.zoom}
       >
-        <DeviceMarker lat={21.043851} lng={105.838026} text="OOOOOOOOOOOO" />
+        {fakeData.map(device => (
+          <DeviceMarker lat={device.lat} lng={device.lng} data={device} />
+        ))}
       </GoogleMap>
     </div>
   );

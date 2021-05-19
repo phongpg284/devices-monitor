@@ -3,6 +3,7 @@ import Chart from './components/charts';
 import DeviceList from './components/devices';
 import Header from './components/header';
 import Map from './components/map';
+import Statistic from './components/statistic';
 
 function App() {
   return (
@@ -11,11 +12,12 @@ function App() {
         <main className="flex-grow">
           <Header/>
         </main>
-        <div className="d-flex justify-content-between">
+        <div className="main-contain d-flex justify-content-between">
           <Chart/>
-          {/* <div className="lol"> */}
+          <div>
+            <Statistic></Statistic>
             <Map />
-          {/* </div> */}
+          </div>
           <div className="w-3px">
             <DeviceList/>
 

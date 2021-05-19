@@ -1,8 +1,14 @@
 .device-item {
-    padding: 10px;
+    padding: 5px;
     margin: 2px;
+    background-color: rgba(82, 82, 82, 0.067);
 }
 
 .device-list {
-    width: 14cm;
+    margin: 5px;
+    width: 400px;
+    :hover {
+        background-color:rgb(180, 170, 170)
+    }
+    // width: 14cm;
 }

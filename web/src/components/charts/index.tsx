@@ -1,7 +1,17 @@
-import { useEffect } from "react";
+import "./charts.scss";
+import { Card } from "react-bootstrap";
 const Chart = () => {
     return (
-        <div>ChartsZone</div>
+        <>
+            <Card className="update-timer m-2">
+                <Card.Title className="update-timer-title px-2 mx-5">
+                    Last Updated at (M/D/YYYY)
+                </Card.Title>
+                <Card.Text className="update-timer-text">
+                    5/19/2021, 12:20pm
+                </Card.Text>
+            </Card>
+        </>
     )
 }
 
