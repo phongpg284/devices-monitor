@@ -1,15 +1,14 @@
 .device-item {
-    padding: 5px;
     background-color: rgba(82, 82, 82, 0.067);
 }
 
 .device-toogle {
     margin: 5px;
-    width: 400px;
+    max-width: 550px;
+    min-width: 300px;
     :hover {
         background-color:rgb(207, 205, 205)
     }
-    // width: 14cm;
 }
 
 li {

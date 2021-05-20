@@ -1,3 +1,4 @@
+import "./map.scss";
 import { OverlayTrigger, Popover} from "react-bootstrap"
 
 interface deviceProps {
@@ -36,9 +37,7 @@ const DeviceMarker = ({data}: any) => {
                 overlay={DevicePopover(data)}
                 trigger="hover"
             >
-                <i className="bi-speedometer" 
-                    style={{fontSize: "0.8cm", color: "red"}}>
-                </i>
+                <i className="bi-speedometer marker" />
             </OverlayTrigger>       
         </>
     )

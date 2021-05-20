@@ -1,5 +1,14 @@
 .google-map {
     width: 100%;
-    height: 100vh;
+    height: 80.7vh;
     padding: 5px;
+}
+
+.marker {
+    font-size: 2em;
+}
+
+.marker:hover {
+    font-size: 2.5em;
+    color:red;
 }
