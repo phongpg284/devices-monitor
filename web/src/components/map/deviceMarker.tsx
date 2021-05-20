@@ -1,8 +1,10 @@
 import "./map.scss";
 import { OverlayTrigger, Popover} from "react-bootstrap"
+import { useContext, useEffect, useState } from "react";
+import { DeviceContext } from "../../App";
 
-interface deviceProps {
-    id: string;
+export interface deviceProps {
+    _id: string;
     name: string;
     lat: number;
     lng: number;
@@ -12,7 +14,6 @@ interface deviceProps {
     dust?: number;
     coGas?: number;
     soilHumid?: number;
-
 }
 const DevicePopover = (device: Partial<deviceProps>) => {
     return (
@@ -29,15 +30,41 @@ const DevicePopover = (device: Partial<deviceProps>) => {
     )
 }
 
-const DeviceMarker = ({data}: any) => {
+const DeviceMarker = (props: any) => {   
+    const { deviceState, setDeviceState } = useContext(DeviceContext)
+    const [ isHoverEffect, setIsHoverEffect ] = useState(props.$hover); 
+    const { hover, $hover, highlight, data } = props;
+
+    useEffect(() => {
+        setIsHoverEffect($hover);
+        setDeviceState({
+            ...deviceState,
+            hoveredId: $hover ? data._id : "",
+        })
+    },[$hover])
+
+    useEffect(() => {
+        setIsHoverEffect(hover);
+    },[hover])
+
+    useEffect(() => {
+        if(highlight)
+        setIsHoverEffect(highlight);
+    },[highlight])
+
     return (
         <>
             <OverlayTrigger 
                 placement="top"
                 overlay={DevicePopover(data)}
-                trigger="hover"
+                trigger={["hover","focus"]}
             >
-                <i className="bi-speedometer marker" />
+                <i className="bi-speedometer marker" 
+                    style={{ 
+                        fontSize: isHoverEffect ? "2.5em" : "2em",
+                        color: isHoverEffect ? "red" : ""
+                    }}
+                />
             </OverlayTrigger>       
         </>
     )

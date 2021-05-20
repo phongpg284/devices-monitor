@@ -1,8 +1,8 @@
-import { useQuery } from "@apollo/client";
 import { Accordion, Button, Card, Form, FormControl } from "react-bootstrap";
-import { GET_DEVICES } from "./schema";
 import './devices.scss'
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { DeviceContext } from "../../App";
+import { dataProps } from "../map";
 export const fakeData = [
     {
         _id: 1,
@@ -67,23 +67,73 @@ interface deviceProps {
     soilHumid?: number,
 }
 
-const DeviceItem = ({props}: any) => {
-    const handleClickUp = () => {
+const DeviceItem = (props: any) => {
+    const { deviceState, setDeviceState } = useContext(DeviceContext);
+    const { data, hover } = props;
+    const [ isCollapse, setIsCollapse ] = useState(false);
+    const handleToggle = () => {
+        setIsCollapse(!isCollapse);
+    }
+    useEffect(() => {
+        const updateState = {
+            hovereId: deviceState.hoveredId,
+            data: deviceState.data.map((device: dataProps) => {
+                if (device._id === data._id) 
+                    return ({
+                        ...device,
+                        highlight: isCollapse
+                    })
+                return device 
+            }),
+        }
+        setDeviceState(updateState)
+    }, [isCollapse]);
+
+    const handleClickUp = (e: any) => {
         //TODO: do sth
+        e.stopPropagation();
     }
 
-    const handleClickDown = () => {
-        
+    const handleClickDown = (e: any) => {
+        e.stopPropagation();
     }
 
-    const handleAlert = (event: any) => {
-        
+    const handleAlert = (e: any) => {
+        e.stopPropagation();
     }
+
+    const handleHover = (e: any) => { 
+        if(!isCollapse)
+        setDeviceState({
+            ...deviceState,
+            hoveredId: data._id,
+        });
+        console.log("hover")
+    }
+    const handleQuitHover= (e: any) => {
+        if(!isCollapse) {
+        setDeviceState({
+            ...deviceState,
+            hoveredId: "",
+        })
+    console.log("ehe")
+    }
+        console.log("unhover")
+    }
+
     return (
         <Accordion>
-            <Accordion.Toggle as={Card} eventKey={props._id} className="device-toogle">
-                <Card className="device-item px-2">
-                    <Card.Text className="d-flex justify-content-space-between align-items-center">
+            <Accordion.Toggle 
+                as={Card} 
+                eventKey={data._id} 
+                className="device-toogle" 
+                onPointerEnter={handleHover}
+                onPointerLeave={handleQuitHover}
+                onClick={handleToggle}
+                id={data._id}
+            >
+                <Card className="device-item px-2" id={data._id} style={{backgroundColor: hover? "rgb(207, 205, 205)": ""}}>
+                    <Card.Text as="div" className="d-flex justify-content-space-between align-items-center" id={props._id}>
                         <i 
                             className="bi-wifi px-3"
                             style={{fontSize: "2rem"}}
@@ -93,12 +143,12 @@ const DeviceItem = ({props}: any) => {
                                 style={{fontSize: "1.8rem"}}
                                 className="mx-3 d-flex align-self-left"
                             >
-                                {props.name}
+                                {data.name}
                             </h1>
                             <h4 
                                 style={{fontSize: "1rem", paddingTop:"4px"}}
                             >
-                                Vị trí: {props.lat}, {props.lng}
+                                Vị trí: {data.lat}, {data.lng}
                             </h4>
                         </div>  
                         <div className="d-flex flex-column justify-content-center ml-auto mx-2">
@@ -123,17 +173,17 @@ const DeviceItem = ({props}: any) => {
                     </Card.Text>                
                 </Card>
             </Accordion.Toggle>
-            <Accordion.Collapse eventKey={props._id}>
+            <Accordion.Collapse eventKey={data._id}>
                 <Card.Body className="d-flex flex-row px-1">
                     <ul>
-                        <li>Nhiệt độ: {props.temperature} C</li>
-                        <li>Độ ẩm: {props.humidity} %</li>
-                        <li>Mưa: {props.rain ? `Có`: `Không`}</li>
+                        <li>Nhiệt độ: {data.temperature} C</li>
+                        <li>Độ ẩm: {data.humidity} %</li>
+                        <li>Mưa: {data.rain ? `Có`: `Không`}</li>
                     </ul>    
                     <ul className="pr-4">
-                        <li>Độ bụi:: {props.dust} mg/m3</li>
-                        <li>Nồng đọ CO: {props.coGas} ppm</li>
-                        <li>Độ ẩm đất: {props.soilHumid} %</li>
+                        <li>Độ bụi:: {data.dust} mg/m3</li>
+                        <li>Nồng đọ CO: {data.coGas} ppm</li>
+                        <li>Độ ẩm đất: {data.soilHumid} %</li>
                     </ul>
                 </Card.Body>
             </Accordion.Collapse>
@@ -142,15 +192,16 @@ const DeviceItem = ({props}: any) => {
 }
 
 const DeviceList = () => {
-    const { data } = useQuery(GET_DEVICES,{
-        fetchPolicy:"network-only"
-    }) ;
-    const [devicesData, setDevicesData] = useState([]);
+    const { deviceState, setDeviceState } = useContext(DeviceContext);
+    const [devicesData, setDevicesData] = useState({
+        data: [],
+        hoveredId: "",
+    });
+
     useEffect(() => {
-        if(data) {
-        setDevicesData(data.getDevices);
-        console.log(data.getDevices);
-    }},[data])
+        setDevicesData(deviceState);
+    },[deviceState])
+    
     return (
         <div className="device-list">
             <Form className="mt-2 m-1">
@@ -160,8 +211,8 @@ const DeviceList = () => {
                     className="mr-5"
                 />
             </Form>
-            {devicesData && devicesData.map((device: deviceProps) => (
-                <DeviceItem key={device._id} props={device}/>                
+            {devicesData.data && devicesData.data.map((device: dataProps) => (
+                <DeviceItem key={device._id} data={device} hover={device._id === deviceState.hoveredId} />                
             ))}
         </div>
     )
