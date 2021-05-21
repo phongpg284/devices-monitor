@@ -128,7 +128,7 @@ const DeviceItem = (props: any) => {
                 onClick={handleToggle}
                 id={data._id}
             >
-                <Card className="device-item px-2" id={data._id} style={{backgroundColor: hover? "rgb(207, 205, 205)": ""}}>
+                <Card className="device-item" id={data._id} style={{backgroundColor: hover? "#979ea3": ""}}>
                     <Card.Text as="div" className="d-flex justify-content-space-between align-items-center" id={props._id}>
                         <i 
                             className="bi-wifi px-2"
@@ -169,19 +169,22 @@ const DeviceItem = (props: any) => {
                     </Card.Text>                
                 </Card>
             </Accordion.Toggle>
-            <Accordion.Collapse eventKey={data._id}>
-                <Card.Body className="d-flex flex-row px-1">
-                    <ul>
-                        <li>Nhiệt độ: {data.temperature} C</li>
-                        <li>Độ ẩm: {data.humidity} %</li>
-                        <li>Mưa: {data.rain ? `Có`: `Không`}</li>
-                    </ul>    
-                    <ul className="pr-4">
-                        <li>Độ bụi:: {data.dust} mg/m3</li>
-                        <li>Nồng đọ CO: {data.coGas} ppm</li>
-                        <li>Độ ẩm đất: {data.soilHumid} %</li>
-                    </ul>
-                </Card.Body>
+            <Accordion.Collapse className="device-toogle" eventKey={data._id}>
+                <Card className="device-collapse-content">
+                    <Card.Body className="d-flex flex-row px-1">
+                        <ul>
+                            <li>Nhiệt độ: {data.temperature} C</li>
+                            <li>Độ ẩm: {data.humidity} %</li>
+                            <li>Mưa: {data.rain ? `Có`: `Không`}</li>
+                        </ul>    
+                        <ul className="pr-4">
+                            <li>Độ bụi:: {data.dust} mg/m3</li>
+                            <li>Nồng đọ CO: {data.coGas} ppm</li>
+                            <li>Độ ẩm đất: {data.soilHumid} %</li>
+                        </ul>
+                    </Card.Body>
+
+                </Card>
             </Accordion.Collapse>
         </Accordion>
     )

@@ -7,8 +7,9 @@ import {
   Image,
   Nav,
   Navbar,
-  NavLink,
 } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+
 
 const Header: React.FC = () => {
   return (
@@ -20,10 +21,10 @@ const Header: React.FC = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto d-flex align-items-center">
-            <NavLink className="px-3">Home</NavLink>
-            <NavLink className="px-3">Thiết bị</NavLink>
-            <NavLink className="px-3">Dữ liệu</NavLink>
-            <NavLink className="px-3 mr-3">About</NavLink>
+            <NavLink to="/" className="px-3">Home</NavLink>
+            <NavLink to="/devices" className="px-3">Thiết bị</NavLink>
+            <NavLink to="/" className="px-3">Dữ liệu</NavLink>
+            <NavLink to="/" className="px-3 mr-3">About</NavLink>
           </Nav>
           <Form inline className="mr-5">
             <FormControl

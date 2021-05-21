@@ -72,7 +72,8 @@ const DeviceMarker = (props: any) => {
                 <i 
                     className="bi-broadcast-pin marker" 
                     style={{ 
-                        fontSize: (isHoverEffect||show) ? "3em" : "2.2em",
+                        fontSize: "2.5em",
+                        transform: (isHoverEffect||show)? "scale(1.5,1.5) translate(0,-7px)" : "none"
                     }}
                     ref={ref}
                     onClick={handleClick}

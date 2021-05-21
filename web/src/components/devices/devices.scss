@@ -1,9 +1,9 @@
 .device-item {
     min-width: 320px;
     max-width: 700px;
-    background-color: rgba(82, 82, 82, 0.067);
+    background-color: #d8e1e8;
     :hover {
-        background-color:rgb(207, 205, 205)
+        background-color: #979ea3
     }
 }
 
@@ -11,6 +11,10 @@
     margin: 5px;
     max-width: 550px;
     min-width: 300px;
+}
+
+.device-collapse-content {
+    background-color: #e5f1fa;
 }
 
 ul {
