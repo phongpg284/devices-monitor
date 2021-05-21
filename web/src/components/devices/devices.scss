@@ -1,4 +1,6 @@
 .device-item {
+    min-width: 320px;
+    max-width: 700px;
     background-color: rgba(82, 82, 82, 0.067);
     :hover {
         background-color:rgb(207, 205, 205)
@@ -9,9 +11,13 @@
     margin: 5px;
     max-width: 550px;
     min-width: 300px;
-    
+}
+
+ul {
+    flex: auto;
 }
 
 li {
     text-align: start;
+    font-size: 1vw;
 }

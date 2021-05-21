@@ -1,6 +1,6 @@
 import "./map.scss";
-import { OverlayTrigger, Popover} from "react-bootstrap"
-import { useContext, useEffect, useState } from "react";
+import { Overlay, OverlayTrigger, Popover} from "react-bootstrap"
+import { useContext, useEffect, useRef, useState } from "react";
 import { DeviceContext } from "../../App";
 
 export interface deviceProps {
@@ -32,8 +32,17 @@ const DevicePopover = (device: Partial<deviceProps>) => {
 
 const DeviceMarker = (props: any) => {   
     const { deviceState, setDeviceState } = useContext(DeviceContext)
-    const [ isHoverEffect, setIsHoverEffect ] = useState(props.$hover); 
+    const [ isHoverEffect, setIsHoverEffect ] = useState(false); 
     const { hover, $hover, highlight, data } = props;
+    const [ show, setShow] = useState(false);
+    // const [ target, setTarget] = useState(null);
+    
+    const ref = useRef(null);
+
+    const handleClick = (event: any) => {
+        setShow(!show);
+        // setTarget(event.target);
+    }
 
     useEffect(() => {
         setIsHoverEffect($hover);
@@ -45,7 +54,7 @@ const DeviceMarker = (props: any) => {
 
     useEffect(() => {
         setIsHoverEffect(hover);
-    },[hover])
+    },[hover,highlight])
 
     useEffect(() => {
         if(highlight)
@@ -53,20 +62,39 @@ const DeviceMarker = (props: any) => {
     },[highlight])
 
     return (
-        <>
-            <OverlayTrigger 
+        <div >
+            {/* <OverlayTrigger 
                 placement="top"
                 overlay={DevicePopover(data)}
                 trigger={["hover","focus"]}
-            >
-                <i className="bi-speedometer marker" 
+                
+            > */}
+                <i 
+                    className="bi-broadcast-pin marker" 
                     style={{ 
-                        fontSize: isHoverEffect ? "2.5em" : "2em",
-                        color: isHoverEffect ? "red" : ""
+                        fontSize: (isHoverEffect||show) ? "3em" : "2.2em",
                     }}
+                    ref={ref}
+                    onClick={handleClick}
                 />
-            </OverlayTrigger>       
-        </>
+            {/* </OverlayTrigger>   */}
+            <Overlay
+                show={show||isHoverEffect}
+                target={ref.current}
+                placement="top"
+                container={ref.current}
+                containerPadding={20}
+            >
+                <Popover id="popover-device">
+                    <Popover.Title>
+                        {data.name}
+                    </Popover.Title>
+                    <Popover.Content>
+                        {data.lat},{data.lng}
+                    </Popover.Content>
+                </Popover>
+            </Overlay>     
+        </div>
     )
 }
 

@@ -52,7 +52,7 @@ function App() {
             <div className="flex-grow-1">
               <Chart />
             </div>
-            <div className="flex-grow-2 pt-1">
+            <div className="flex-grow-1 pt-1 middle-content d-flex flex-column justify-content-flex-start">
               <Statistic />
               <Map
                 defaultCenter={{ lat: 21.04, lng: 105.83 }}

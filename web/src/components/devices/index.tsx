@@ -74,7 +74,7 @@ const DeviceItem = (props: any) => {
     const handleToggle = () => {
         setIsCollapse(!isCollapse);
     }
-    useEffect(() => {
+    useEffect(() => {        
         const updateState = {
             hovereId: deviceState.hoveredId,
             data: deviceState.data.map((device: dataProps) => {
@@ -108,17 +108,13 @@ const DeviceItem = (props: any) => {
             ...deviceState,
             hoveredId: data._id,
         });
-        console.log("hover")
     }
     const handleQuitHover= (e: any) => {
-        if(!isCollapse) {
+        if(!isCollapse)
         setDeviceState({
             ...deviceState,
             hoveredId: "",
         })
-    console.log("ehe")
-    }
-        console.log("unhover")
     }
 
     return (
@@ -135,18 +131,18 @@ const DeviceItem = (props: any) => {
                 <Card className="device-item px-2" id={data._id} style={{backgroundColor: hover? "rgb(207, 205, 205)": ""}}>
                     <Card.Text as="div" className="d-flex justify-content-space-between align-items-center" id={props._id}>
                         <i 
-                            className="bi-wifi px-3"
-                            style={{fontSize: "2rem"}}
+                            className="bi-wifi px-2"
+                            style={{fontSize: "2vw"}}
                         />
                         <div>
                             <h1 
-                                style={{fontSize: "1.8rem"}}
+                                style={{fontSize: "2vw"}}
                                 className="mx-3 d-flex align-self-left"
                             >
                                 {data.name}
                             </h1>
                             <h4 
-                                style={{fontSize: "1rem", paddingTop:"4px"}}
+                                style={{fontSize: "0.8vw", paddingTop:"4px"}}
                             >
                                 Vị trí: {data.lat}, {data.lng}
                             </h4>
