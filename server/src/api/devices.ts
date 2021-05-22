@@ -2,6 +2,8 @@ import { Collection, Db, ObjectId } from "mongodb";
 import { DATABASE_INSTANCE_KEY } from "../config/index";
 import { Arg, Field, ID, InputType, Mutation, ObjectType, Query, Resolver } from "type-graphql";
 import Container, { Service } from "typedi";
+import { callbackify } from "util";
+import {mqttClient} from "../mqtt"
 
 @ObjectType()
 export class Device {
@@ -11,32 +13,41 @@ export class Device {
     @Field()
     name: string;
 
-	@Field()
-    lat: number;
+	@Field(()=>[Number])
+    lat: number[];
 
-	@Field()
-    lng: number;
+	@Field(()=>[Number])
+    long: number[];
     
-    @Field()
-    temperature: number;
+	@Field(()=>[Number])
+    temperature: number[];
     
-    @Field()
-    humidity!: number;
+	@Field(()=>[Number])
+    humidity!: number[];
     
-    @Field()
-    rain: boolean;
+	@Field(()=>[Number])
+    rain: number[];
+
+	@Field(()=>[Number])
+    dust: number[];
+    
+	@Field(()=>[Number])
+    coGas: number[];
+    
+	@Field(()=>[Number])
+    soilHumid: number[];
 
     @Field()
-    dust: number;
-    
+    upButton: boolean;
+
     @Field()
-    coGas: number;
-    
-    @Field()
-    soilHumid: number;
+    downButton: boolean;
 
     @Field()
     lastUpdated: Date;
+
+    @Field()
+    alertButton: boolean
 } 
 
 
@@ -45,29 +56,38 @@ class DeviceCreateInput {
     @Field()
     name: string;
 
-	@Field()
-    lat: number;
+	@Field(()=>[Number],{ nullable: true })
+    lat: number[];
 
-	@Field()
-    lng: number;
+	@Field(()=>[Number],{ nullable: true })
+    long: number[];
     
-    @Field({ nullable: true })
-    temperature: number;
+	@Field(()=>[Number],{ nullable: true })
+    temperature: number[];
     
-    @Field({ nullable: true })
-    humidity: number;
+	@Field(()=>[Number],{ nullable: true })
+    humidity: number[];
     
-    @Field({ nullable: true })
-    rain: boolean;
+	@Field(()=>[Number],{ nullable: true })
+    rain: number[];
+
+	@Field(()=>[Number],{ nullable: true })
+    dust: number[];
+    
+	@Field(()=>[Number],{ nullable: true })
+    coGas: number[];
+    
+	@Field(()=>[Number],{ nullable: true })
+    soilHumid: number[];
 
     @Field({ nullable: true })
-    dust: number;
-    
+    upButton: boolean;
+
     @Field({ nullable: true })
-    coGas: number;
-    
-    @Field({ nullable: true })
-    soilHumid: number;
+    downButton: boolean;
+
+    @Field()
+    alertButton: boolean
 }
 
 @InputType()
@@ -78,31 +98,45 @@ class DeviceUpdateInput {
     @Field({ nullable: true })
     name: string;
 
-	@Field({ nullable: true })
-    lat: number;
+	@Field(()=>[Number], { nullable: true })
+    lat: number[];
 
-	@Field({ nullable: true })
-    lng: number;
+	@Field(()=>[Number], { nullable: true })
+    long: number[];
     
-    @Field({ nullable: true })
-    temperature: number;
+	@Field(()=>[Number], { nullable: true })
+    temperature: number[];
     
-    @Field({ nullable: true })
-    humidity: number;
+	@Field(()=>[Number], { nullable: true })
+    humidity: number[];
     
-    @Field({ nullable: true })
-    rain: boolean;
+	@Field(()=>[Number], { nullable: true })
+    rain: number[];
+
+	@Field(()=>[Number], { nullable: true })
+    dust: number[];
+    
+	@Field(()=>[Number], { nullable: true })
+    coGas: number[];
+    
+	@Field(()=>[Number], { nullable: true })
+    soilHumid: number[];
 
     @Field({ nullable: true })
-    dust: number;
-    
+    upButton: boolean;
+
     @Field({ nullable: true })
-    coGas: number;
-    
-    @Field({ nullable: true })
-    soilHumid: number;
+    downButton: boolean;
+
+    @Field()
+    alertButton: boolean
 }
 
+interface LocationDataType{
+    long: number,
+    lat: number,
+    time: Date,
+}
 @Resolver()
 @Service()
 export class Devices {
@@ -111,7 +145,7 @@ export class Devices {
         this.db = (Container.get(DATABASE_INSTANCE_KEY) as any);
     }
     @Mutation(() => Device)
-    async createDevice(@Arg("input") inputs: DeviceCreateInput) {
+    async createDevice(@Arg("input", {nullable: true}) inputs: DeviceCreateInput) {
         const id = new ObjectId();
         const result = await this.db.collection("devices").insertOne({
             _id: id.toHexString(),
@@ -124,6 +158,220 @@ export class Devices {
     @Query(() => Device)
     async getDevice(@Arg("id") id: number) {
         const result = await this.db.collection("device").findOne({ _id: id});
+        console.log(result);
         return result;
+    }
+    @Mutation(()=>Device)
+    async mqttMessageHandler(
+        @Arg("name") deviceName: string,
+        @Arg("data") payload: string,
+        @Arg("topic") topic: string
+    ){
+        let existDevice = await this.db.collection("device").findOne({name: deviceName});
+        if (!existDevice)
+            existDevice = this.createDevice(
+                {
+                    name: deviceName, 
+                    lat: [], 
+                    long: [], 
+                    temperature: [], 
+                    humidity: [], 
+                    rain: [], 
+                    dust: [], 
+                    coGas: [], 
+                    soilHumid: [],
+                    upButton: true,
+                    downButton: false,
+                    alertButton: false
+                });
+        console.log("Current status:")
+        console.log(existDevice);
+        const device = this.db.collection("device");
+        switch (topic){
+            case 'temperature':
+                device.updateOne({name: deviceName}, {$push: {temperature: parseFloat(payload)}}, (err, result)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        return err;
+                    }
+                    console.log("temp updated!");
+                })
+                break;
+            case 'humidity':
+                device.updateOne({name: deviceName}, {$push: {humidity: parseFloat(payload)}}, (err, result)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        return err;
+                    }
+                    console.log("humid updated!");
+                })
+                break;
+            case 'dust':
+                device.updateOne({name: deviceName}, {$push: {dust: parseFloat(payload)}}, (err, result)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        return err;
+                    }
+                    console.log("dust updated!");
+                })
+                break;
+            case 'rain':
+                device.updateOne({name: deviceName}, {$push: {rain: parseFloat(payload)}}, (err, result)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        return err;
+                    }
+                    console.log("rain updated!");
+                })
+                break;
+            case 'co_gas':
+                device.updateOne({name: deviceName}, {$push: {coGas: parseFloat(payload)}}, (err, result)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        return err;
+                    }
+                    console.log("CO gas updated!");
+                })
+                break;
+            case 'soil_humid':
+                device.updateOne({name: deviceName}, {$push: {soilHumid: parseFloat(payload)}}, (err, result)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        return err;
+                    }
+                    console.log("Soil Humid updated!");
+                })
+                break;
+            case 'location':
+                let locationData: LocationDataType;
+                if (typeof payload == 'string'){
+                    locationData = JSON.parse(payload);
+                    device.updateOne({name: deviceName}, {$push: {long: locationData.long}}, (err, result)=>{
+                        if (err)
+                        {
+                            console.log(err);
+                            return err;
+                        }
+                        console.log("long location updated!");
+                    })
+                    device.updateOne({name: deviceName}, {$push: {lat: locationData.lat}}, (err, result)=>{
+                        if (err)
+                        {
+                            console.log(err);
+                            return err;
+                        }
+                        console.log("lat location updated!");
+                    })
+                }
+                else 
+                    console.error("Du lieu location khong hop le!");
+                break;
+            case 'up_button':
+                let upButtonStatus = (payload=='true')?true:false;
+                device.updateOne({name: deviceName}, {$set: {upButton: upButtonStatus, downButton: !upButtonStatus}}, (err, result)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        return err;
+                    }
+                    console.log("Up Button updated!");
+                })
+                break;
+            case 'down_button':
+                let downButtonStatus = (payload=='true')?true:false;
+                device.updateOne({name: deviceName}, {$set: {downButton: downButtonStatus, upButton: !downButtonStatus}}, (err, result)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        return err;
+                    }
+                    console.log("DownButton updated!");
+                })
+                break;
+            case 'alert':
+                device.updateOne({name: deviceName}, {$set: {alertButton: payload}}, (err, result)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        return err;
+                    }
+                    console.log("Alert updated!");
+                })
+                break;
+            default: 
+                console.error(topic + ": Topic khong khop!");
+        }
+        console.log("Updated:")
+        console.log(existDevice);
+        return existDevice;
+    }
+    @Mutation(()=>Device)
+    async motorUp(@Arg("id") id: number) {
+        const existDevice = await this.db.collection("device").findOne({ _id: id});
+        if (!existDevice){
+                console.error("Khong tim thay thiet bi!");
+                return {}
+            }
+        {
+            // Send message to mqtt
+        }
+        const device = this.db.collection("device");
+        device.updateOne({ _id: id},{$set: {"upButton": true, "downButton": false}}, (err, result)=>{
+            if (err)
+            {
+                console.log(err);
+                return err;
+            }
+            console.log("Mortor Up!");
+        })
+        return existDevice;
+    }
+    @Mutation(()=>Device)
+    async motorDown(@Arg("id") id: number) {
+        const existDevice = await this.db.collection("device").findOne({ _id: id});
+        if (!existDevice){
+                console.error("Khong tim thay thiet bi!");
+                return {}
+            }
+        {
+            // Send message to mqtt
+        }
+        const device = this.db.collection("device");
+        device.updateOne({ _id: id},{$set: {"downButton": true, "upButton": false}}, (err, result)=>{
+            if (err)
+            {
+                console.log(err);
+                return err;
+            }
+            console.log("Mortor Down!");
+        })
+        return existDevice;
+    }
+    @Mutation(()=>Device)
+    async sendAlert(@Arg("id") id: number){
+        const existDevice = await this.db.collection("device").findOne({ _id: id});
+        if (!existDevice){
+                console.error("Khong tim thay thiet bi!");
+                return {}
+            }
+        {
+            // Send message to mqtt
+        }
+        const device = this.db.collection("device");
+        device.updateOne({ _id: id},{$set: {"alertButton": true}}, (err, result)=>{
+            if (err)
+            {
+                console.log(err);
+                return err;
+            }
+            console.log("Alert sent!");
+        })
+        return existDevice;
     }
 }

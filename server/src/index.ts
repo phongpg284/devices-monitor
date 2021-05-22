@@ -12,9 +12,14 @@ import express from 'express';
 import { getApolloServer, getGraphqlSchema } from './apolloServer';
 import { createServer } from 'http';
 import Container from 'typedi';
+import { mqttClient} from './mqtt'
+import {MQTT_BRAND, MQTT_BROKER} from "./config"
+import mqtt from 'mqtt'
 
 const app = express();
-
+mqttClient.on('connect', function () {
+	logger.info("Connected to Mqtt!");
+  })
 const bootstrap = async (mongoClient: MongoClient) => {
 	try {
 		Container.set(DATABASE_INSTANCE_KEY, mongoClient.db("admin"));
@@ -30,13 +35,12 @@ const bootstrap = async (mongoClient: MongoClient) => {
 	const server = createServer(app);
 
 	apolloServer.installSubscriptionHandlers(server);
-
 	server.listen(PORT, () => {
 		logger.info(
 			`Server is running, Graphql Playground is available at port ${PORT}`
 		);
 	});
-
+	
 	return apolloServer;
 };
 
