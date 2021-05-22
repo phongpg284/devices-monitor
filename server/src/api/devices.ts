@@ -10,7 +10,7 @@ export class Device {
     @Field(() => ID)
     _id: string;
 
-    @Field()
+    @Field({ nullable: true })
     name: string;
 
 	@Field(()=>[Number])
@@ -43,7 +43,7 @@ export class Device {
     @Field()
     downButton: boolean;
 
-    @Field()
+    @Field({ nullable: true })
     lastUpdated: Date;
 
     @Field()
@@ -157,7 +157,7 @@ export class Devices {
 
     @Query(() => Device)
     async getDevice(@Arg("id") id: number) {
-        const result = await this.db.collection("device").findOne({ _id: id});
+        const result = await this.db.collection("devices").findOne({ _id: id});
         console.log(result);
         return result;
     }
@@ -167,7 +167,7 @@ export class Devices {
         @Arg("data") payload: string,
         @Arg("topic") topic: string
     ){
-        let existDevice = await this.db.collection("device").findOne({name: deviceName});
+        let existDevice = await this.db.collection("devices").findOne({name: deviceName});
         if (!existDevice)
             existDevice = this.createDevice(
                 {
@@ -186,7 +186,7 @@ export class Devices {
                 });
         console.log("Current status:")
         console.log(existDevice);
-        const device = this.db.collection("device");
+        const device = this.db.collection("devices");
         switch (topic){
             case 'temperature':
                 device.updateOne({name: deviceName}, {$push: {temperature: parseFloat(payload)}}, (err, result)=>{
@@ -313,7 +313,7 @@ export class Devices {
     }
     @Mutation(()=>Device)
     async motorUp(@Arg("id") id: number) {
-        const existDevice = await this.db.collection("device").findOne({ _id: id});
+        const existDevice = await this.db.collection("devices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");
                 return {}
@@ -321,7 +321,7 @@ export class Devices {
         {
             // Send message to mqtt
         }
-        const device = this.db.collection("device");
+        const device = this.db.collection("devices");
         device.updateOne({ _id: id},{$set: {"upButton": true, "downButton": false}}, (err, result)=>{
             if (err)
             {
@@ -334,7 +334,7 @@ export class Devices {
     }
     @Mutation(()=>Device)
     async motorDown(@Arg("id") id: number) {
-        const existDevice = await this.db.collection("device").findOne({ _id: id});
+        const existDevice = await this.db.collection("devices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");
                 return {}
@@ -342,7 +342,7 @@ export class Devices {
         {
             // Send message to mqtt
         }
-        const device = this.db.collection("device");
+        const device = this.db.collection("devices");
         device.updateOne({ _id: id},{$set: {"downButton": true, "upButton": false}}, (err, result)=>{
             if (err)
             {
@@ -355,7 +355,7 @@ export class Devices {
     }
     @Mutation(()=>Device)
     async sendAlert(@Arg("id") id: number){
-        const existDevice = await this.db.collection("device").findOne({ _id: id});
+        const existDevice = await this.db.collection("devices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");
                 return {}
@@ -363,7 +363,7 @@ export class Devices {
         {
             // Send message to mqtt
         }
-        const device = this.db.collection("device");
+        const device = this.db.collection("devices");
         device.updateOne({ _id: id},{$set: {"alertButton": true}}, (err, result)=>{
             if (err)
             {
@@ -373,5 +373,10 @@ export class Devices {
             console.log("Alert sent!");
         })
         return existDevice;
+    }
+    @Query(() => [Device])
+    async getDevices() {
+        const result = this.db.collection("devices").find();
+        return await result.toArray();
     }
 }
