@@ -16,6 +16,7 @@ import Map from "./components/map";
 import { deviceProps } from "./components/map/deviceMarker";
 import Statistic from "./components/statistic";
 import DeviceRoute from "./route-components/devices";
+
 export const DeviceContext = createContext({
   deviceState: {
     data: [],

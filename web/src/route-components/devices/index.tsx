@@ -8,7 +8,6 @@ import BootstrapTable from "react-bootstrap-table-next";
 import { useContext, useEffect, useState } from "react";
 import { DeviceContext } from "../../App";
 import paginationFactory from "react-bootstrap-table2-paginator";
-import { table } from "console";
 
 const DeviceRoute = () => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);

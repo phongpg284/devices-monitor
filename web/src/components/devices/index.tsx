@@ -128,21 +128,21 @@ const DeviceItem = (props: any) => {
                 onClick={handleToggle}
                 id={data._id}
             >
-                <Card className="device-item" id={data._id} style={{backgroundColor: hover? "#979ea3": ""}}>
-                    <Card.Text as="div" className="d-flex justify-content-space-between align-items-center" id={props._id}>
+                <Card className="device-item justify-content-flex-start" id={data._id} style={{backgroundColor: hover? "#979ea3": ""}}>
+                    <Card.Text as="div" className="d-flex p-2 justify-content-space-between align-items-center" id={props._id}>
                         <i 
-                            className="bi-wifi px-2"
-                            style={{fontSize: "2vw"}}
+                            className="bi-wifi px-3 align-self-center"
+                            style={{fontSize: "2.2vw"}}
                         />
-                        <div>
+                        <div className="my-3">
                             <h1 
-                                style={{fontSize: "2vw"}}
+                                style={{fontSize: "2.2vw"}}
                                 className="mx-3 d-flex align-self-left"
                             >
                                 {data.name}
                             </h1>
                             <h4 
-                                style={{fontSize: "0.8vw", paddingTop:"4px"}}
+                                style={{fontSize: "0.9vw", paddingTop:"4px"}}
                             >
                                 Vị trí: {data.lat}, {data.lng}
                             </h4>
@@ -161,15 +161,21 @@ const DeviceItem = (props: any) => {
                         </div>
                         <Button 
                             variant="danger"
-                            className="d-flex mx-1"
+                            className="d-flex mx-4"
                             onClick={handleAlert}
                         >
                             Alert
                         </Button>
-                    </Card.Text>                
+                    {isCollapse && 
+                        <i className="fa fa-sort-desc ml-auto mx-2 align-self-start pin" />                
+                    }
+                    {!isCollapse && 
+                        <i className="fa fa-sort-up ml-auto mx-2 align-self-start pin" />                
+                    }
+                    </Card.Text>
                 </Card>
             </Accordion.Toggle>
-            <Accordion.Collapse className="device-toogle" eventKey={data._id}>
+            <Accordion.Collapse className="device-collapse" eventKey={data._id}>
                 <Card className="device-collapse-content">
                     <Card.Body className="d-flex flex-row px-1">
                         <ul>

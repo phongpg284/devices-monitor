@@ -10,9 +10,9 @@ const Home = () => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
     return (
         <div className="main-contain d-flex justify-content-flex-start">
-            <div className="flex-grow-1">
+            {/* <div className="flex-grow-1">
               <Chart />
-            </div>
+            </div> */}
             <div className="flex-grow-1 pt-1 middle-content d-flex flex-column justify-content-flex-start">
               <Statistic />
               <Map
@@ -22,7 +22,7 @@ const Home = () => {
                 data={deviceState}
               />
             </div>
-            <div className="flex-grow-1">
+            <div className="flex-grow-1 right-content">
               <DeviceList />
             </div>
           </div>

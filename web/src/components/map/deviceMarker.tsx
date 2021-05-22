@@ -2,6 +2,7 @@ import "./map.scss";
 import { Overlay, OverlayTrigger, Popover} from "react-bootstrap"
 import { useContext, useEffect, useRef, useState } from "react";
 import { DeviceContext } from "../../App";
+// import 'font-awesome/css/font-awesome.min.css'
 
 export interface deviceProps {
     _id: string;
@@ -70,7 +71,7 @@ const DeviceMarker = (props: any) => {
                 
             > */}
                 <i 
-                    className="bi-broadcast-pin marker" 
+                    className="fa fa-map-marker marker" 
                     style={{ 
                         fontSize: "2.5em",
                         transform: (isHoverEffect||show)? "scale(1.5,1.5) translate(0,-7px)" : "none"
@@ -87,7 +88,7 @@ const DeviceMarker = (props: any) => {
                 containerPadding={20}
             >
                 <Popover id="popover-device">
-                    <Popover.Title>
+                    <Popover.Title style={{color: "black", fontWeight:"bold"}}>
                         {data.name}
                     </Popover.Title>
                     <Popover.Content>
