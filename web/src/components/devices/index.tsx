@@ -179,7 +179,7 @@ const DeviceItem = (props: any) => {
                         </ul>    
                         <ul className="pr-4">
                             <li>Độ bụi:: {data.dust} mg/m3</li>
-                            <li>Nồng đọ CO: {data.coGas} ppm</li>
+                            <li>Nồng độ CO: {data.coGas} ppm</li>
                             <li>Độ ẩm đất: {data.soilHumid} %</li>
                         </ul>
                     </Card.Body>

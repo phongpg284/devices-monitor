@@ -15,6 +15,7 @@ import Home from "./route-components/home";
 import Map from "./components/map";
 import { deviceProps } from "./components/map/deviceMarker";
 import Statistic from "./components/statistic";
+import DeviceRoute from "./route-components/devices";
 export const DeviceContext = createContext({
   deviceState: {
     data: [],
@@ -51,7 +52,9 @@ function App() {
             <BrowserRouter>
               <Header />
               <Switch>
-                <Route path="/devices">{/* <Device/> */}</Route>
+                <Route path="/devices">
+                  <DeviceRoute/>
+                </Route>
                 <Route path="/">
                   <Home />
                 </Route>
