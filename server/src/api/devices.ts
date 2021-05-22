@@ -8,34 +8,34 @@ export class Device {
     @Field(() => ID)
     _id: string;
 
-    @Field()
+    @Field({ nullable: true })
     name: string;
 
-	@Field()
+	@Field({ nullable: true })
     lat: number;
 
-	@Field()
+	@Field({ nullable: true })
     lng: number;
     
-    @Field()
+    @Field({ nullable: true })
     temperature: number;
     
-    @Field()
+    @Field({ nullable: true })
     humidity!: number;
     
-    @Field()
+    @Field({ nullable: true })
     rain: boolean;
 
-    @Field()
+    @Field({ nullable: true })
     dust: number;
     
-    @Field()
+    @Field({ nullable: true })
     coGas: number;
     
-    @Field()
+    @Field({ nullable: true })
     soilHumid: number;
 
-    @Field()
+    @Field({ nullable: true })
     lastUpdated: Date;
 } 
 
@@ -123,7 +123,14 @@ export class Devices {
 
     @Query(() => Device)
     async getDevice(@Arg("id") id: number) {
-        const result = await this.db.collection("device").findOne({ _id: id});
+        const result = await this.db.collection("devices").findOne({ _id: id});
         return result;
     }
+
+    @Query(() => [Device])
+    async getDevices() {
+        const result = this.db.collection("devices").find();
+        return await result.toArray();
+    }
+    
 }
