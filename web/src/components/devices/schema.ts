@@ -12,6 +12,7 @@ export const GET_DEVICES = gql`
             dust
             coGas
             soilHumid
+            lastUpdated
         }
     }
 `;

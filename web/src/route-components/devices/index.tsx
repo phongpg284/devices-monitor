@@ -20,6 +20,7 @@ const DeviceRoute = () => {
                 cordinate: `${device.lat},${device.lng}`,
                 id: index,
                 rain: device.rain? "Có" : "Không",
+                lastUpdated: new Date(device.lastUpdated).toString()
             }
         }) 
         if(tableData)
@@ -72,9 +73,11 @@ const DeviceRoute = () => {
         text: 'Độ ẩm đất',
         sort: true,
         filter: textFilter(),
-        // formatExtraData: {
-        //     currentLength: data?.length
-        // }
+    }, {
+        dataField: 'lastUpdated',
+        text: 'Cập nhật lần cuối',
+        sort: true,
+        filter: textFilter(),
     }];
     return (
         <div className="p-2">
