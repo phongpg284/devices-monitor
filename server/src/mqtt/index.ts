@@ -105,7 +105,6 @@ mqttClient.on("message", async(topic, payload)=>{
   logger.info(topicElement);
   console.log("payload:" + payload);
   let resolver = new Devices();
-  resolver.mqttMessageHandler(topicElement[1], payloadData, topicElement[topicElement.length - 1]);
-  resolver.sendAlert('60aa1af3aad08e33ace73a82');  
+  resolver.mqttMessageHandler(topicElement[1], payloadData, topicElement[topicElement.length - 1]);  
 })
 
