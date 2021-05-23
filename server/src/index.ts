@@ -18,7 +18,7 @@ import mqtt from 'mqtt'
 
 const app = express();
 mqttClient.on('connect', function () {
-	logger.info("Connected to Mqtt!");
+	logger.info("SUCCESS: Connected to Mqtt!");
   })
 const bootstrap = async (mongoClient: MongoClient) => {
 	try {

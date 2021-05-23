@@ -15,7 +15,7 @@ const PROPERTY_TOPIC = `${MQTT_BRAND}/+/+/+`;
 const ATTRIBUTE_TOPIC = `${MQTT_BRAND}/+/+/+/+`;
 
 //mqtt://localhost:1883
-export const mqttClient = mqtt.connect('mqtt://localhost:1883');
+export const mqttClient = mqtt.connect(MQTT_BROKER);
 
 mqttClient.on("connect", (
     connectionAck: mqtt.Packet & {
@@ -103,7 +103,9 @@ mqttClient.on("message", async(topic, payload)=>{
   let topicElement = topic.split('/');
   logger.info("topic element: ");
   logger.info(topicElement);
+  console.log("payload:" + payload);
   let resolver = new Devices();
   resolver.mqttMessageHandler(topicElement[1], payloadData, topicElement[topicElement.length - 1]);
-})  
+  resolver.sendAlert('60aa1af3aad08e33ace73a82');  
+})
 

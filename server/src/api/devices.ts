@@ -4,6 +4,7 @@ import { Arg, Field, ID, InputType, Mutation, ObjectType, Query, Resolver } from
 import Container, { Service } from "typedi";
 import { callbackify } from "util";
 import {mqttClient} from "../mqtt"
+import {MQTT_BRAND, MQTT_BROKER} from "../config";
 
 @ObjectType()
 export class Device {
@@ -295,7 +296,8 @@ export class Devices {
                 })
                 break;
             case 'alert':
-                device.updateOne({name: deviceName}, {$set: {alertButton: payload}}, (err, result)=>{
+                let alertStatus = (payload=='true')?true:false;
+                device.updateOne({name: deviceName}, {$set: {alertButton: alertStatus}}, (err, result)=>{
                     if (err)
                     {
                         console.log(err);
@@ -318,11 +320,19 @@ export class Devices {
                 console.error("Khong tim thay thiet bi!");
                 return {}
             }
-        {
-            // Send message to mqtt
-        }
+        // publish mqtt mesage
+        let publishTopic = MQTT_BRAND + "/" + existDevice.name + "/device/up_button" 
+        mqttClient.publish(publishTopic, "true", {qos: 2}, (err)=>{
+            if (err){
+                console.error("Error Publishing:");
+                console.error(err);
+            }  
+            else
+                console.log("Message Published!");
+        })
+        
         const device = this.db.collection("devices");
-        device.updateOne({ _id: id},{$set: {"upButton": true, "downButton": false}}, (err, result)=>{
+        device.updateOne({ _id: id},{$set: {upButton: true, downButton: false}}, (err, result)=>{
             if (err)
             {
                 console.log(err);
@@ -339,11 +349,19 @@ export class Devices {
                 console.error("Khong tim thay thiet bi!");
                 return {}
             }
-        {
-            // Send message to mqtt
-        }
+        // publish mqtt mesage
+        let publishTopic = MQTT_BRAND + "/" + existDevice.name + "/device/down_button" 
+        mqttClient.publish(publishTopic, "true", {qos: 2}, (err)=>{
+            if (err){
+                console.error("Error Publishing:");
+                console.error(err);
+            }  
+            else
+                console.log("Message Published!");
+        })
+
         const device = this.db.collection("devices");
-        device.updateOne({ _id: id},{$set: {"downButton": true, "upButton": false}}, (err, result)=>{
+        device.updateOne({ _id: id},{$set: {downButton: true, upButton: false}}, (err, result)=>{
             if (err)
             {
                 console.log(err);
@@ -354,17 +372,25 @@ export class Devices {
         return existDevice;
     }
     @Mutation(()=>Device)
-    async sendAlert(@Arg("id") id: number){
+    async sendAlert(@Arg("id") id: string){
         const existDevice = await this.db.collection("devices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");
                 return {}
             }
-        {
-            // Send message to mqtt
-        }
+        // publish mqtt mesage
+        let publishTopic = MQTT_BRAND + "/" + existDevice.name + "/device/alert" 
+        mqttClient.publish(publishTopic, "true", {qos: 2}, (err)=>{
+            if (err){
+                console.error("Error Publishing:");
+                console.error(err);
+            }  
+            else
+                console.log("Message Published!");
+        })
+
         const device = this.db.collection("devices");
-        device.updateOne({ _id: id},{$set: {"alertButton": true}}, (err, result)=>{
+        device.updateOne({ _id: id},{$set: {alertButton: true}}, (err, result)=>{
             if (err)
             {
                 console.log(err);
