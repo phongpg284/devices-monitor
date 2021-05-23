@@ -95,3 +95,8 @@ export const DB_URL_STRING =
 	process.env.DB_URI || 'mongodb://localhost:27017/thap-nang-luong';
 export const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 export const DATABASE_INSTANCE_KEY = 'db';
+
+export const {
+	MQTT_BROKER = "mqtt://localhost:1883",
+	MQTT_BRAND = "mandevices",
+  } = process.env;
