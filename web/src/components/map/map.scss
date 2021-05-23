@@ -1,5 +1,10 @@
 .google-map {
-    width: 100%;
+    max-height: 100vh;
+    min-height: 50vh;
     height: 100vh;
     padding: 5px;
+}
+
+.marker {
+    display: inline-block;
 }
