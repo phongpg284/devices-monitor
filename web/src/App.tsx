@@ -1,35 +1,69 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  useQuery,
+} from "@apollo/client";
+import { createContext, useEffect, useState } from "react";
+import { BrowserRouter, Route, Router, Switch } from "react-router-dom";
 import "./App.css";
 import Chart from "./components/charts";
-import DeviceList from "./components/devices";
+import DeviceList, { fakeData } from "./components/devices";
+import { GET_DEVICES } from "./components/devices/schema";
 import Header from "./components/header";
+import Home from "./route-components/home";
 import Map from "./components/map";
+import { deviceProps } from "./components/map/deviceMarker";
 import Statistic from "./components/statistic";
+import DeviceRoute from "./route-components/devices";
+export const DeviceContext = createContext({
+  deviceState: {
+    data: [],
+    hoveredId: "",
+  },
+  setDeviceState: (() => {}) as any,
+});
 
 function App() {
-  const client = new ApolloClient({
-    uri: process.env.REACT_APP_GRAPHQL_URI,
-    cache: new InMemoryCache(),
+  const { data } = useQuery(GET_DEVICES, {
+    pollInterval: 1000,
   });
-  
+  const [deviceState, setDeviceState] = useState({
+    data: [],
+    hoveredId: "",
+  });
+
+  useEffect(() => {
+    const updateData = data?.getDevices.map((device: deviceProps) => ({
+      ...device,
+      highlight: false,
+    }));
+    setDeviceState({
+      data: updateData,
+      hoveredId: "",
+    });
+  }, [data]);
+
   return (
-    <ApolloProvider client={client}>
+    <DeviceContext.Provider value={{ deviceState, setDeviceState }}>
       <div className="App">
         <div className="vh-100 mvw-100 m-0 flex-column flex no-wrap">
           <main className="flex-grow">
-            <Header />
+            <BrowserRouter>
+              <Header />
+              <Switch>
+                <Route path="/devices">
+                  <DeviceRoute/>
+                </Route>
+                <Route path="/">
+                  <Home />
+                </Route>
+              </Switch>
+            </BrowserRouter>
           </main>
-          <div className="main-contain d-flex justify-content-between">
-            <Chart />
-            <div>
-              <Statistic></Statistic>
-              <Map />
-            </div>
-            <DeviceList />
-          </div>
         </div>
       </div>
-    </ApolloProvider>
+    </DeviceContext.Provider>
   );
 }
 

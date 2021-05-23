@@ -1,20 +1,19 @@
 .update-timer {
-    background-color: rgb(149, 210, 245);
+    background-color: #d8e1e8;
     color: rgb(29, 27, 27);
-    // margin-right: auto;
-    // padding: 0px;
-    // width: 400px;
+    min-width: 300px;
+    max-width: 450px;
     height: 100px;
 }
 
 .update-timer-title {
     padding-top: 8px;
-    font-size: 20px;
+    font-size: 1.3vw;
     margin: 5px;
 }
 
 .update-timer-text {
-    font-size: 25px;
+    font-size: 1.2vw;
     padding-top: 0px;
     padding-bottom: 5px;
 }

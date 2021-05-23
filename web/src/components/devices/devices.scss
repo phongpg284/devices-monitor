@@ -1,17 +1,28 @@
 .device-item {
-    padding: 5px;
-    background-color: rgba(82, 82, 82, 0.067);
+    min-width: 320px;
+    max-width: 700px;
+    background-color: #d8e1e8;
+    :hover {
+        background-color: #979ea3
+    }
 }
 
 .device-toogle {
     margin: 5px;
-    width: 400px;
-    :hover {
-        background-color:rgb(207, 205, 205)
-    }
-    // width: 14cm;
+    max-width: 550px;
+    min-width: 300px;
+}
+
+.device-collapse-content {
+    background-color: #e5f1fa;
+}
+
+ul {
+    flex: auto;
 }
 
 li {
     text-align: start;
+    font-size: 1vw;
 }
+
