@@ -26,8 +26,8 @@ export class Device {
 	@Field(()=>[Number])
     humidity!: number[];
     
-	@Field(()=>[Number])
-    rain: number[];
+	@Field(()=>[Boolean])
+    rain: boolean[];
 
 	@Field(()=>[Number])
     dust: number[];
@@ -39,16 +39,13 @@ export class Device {
     soilHumid: number[];
 
     @Field()
-    upButton: boolean;
-
-    @Field()
-    downButton: boolean;
+    cylinder: boolean;
 
     @Field({ nullable: true })
     lastUpdated: Date;
 
     @Field()
-    alertButton: boolean
+    alert: boolean
 } 
 
 
@@ -69,8 +66,8 @@ class DeviceCreateInput {
 	@Field(()=>[Number],{ nullable: true })
     humidity: number[];
     
-	@Field(()=>[Number],{ nullable: true })
-    rain: number[];
+	@Field(()=>[Boolean], { nullable: true })
+    rain: boolean[];
 
 	@Field(()=>[Number],{ nullable: true })
     dust: number[];
@@ -82,13 +79,10 @@ class DeviceCreateInput {
     soilHumid: number[];
 
     @Field({ nullable: true })
-    upButton: boolean;
+    cylinder: boolean;
 
     @Field({ nullable: true })
-    downButton: boolean;
-
-    @Field()
-    alertButton: boolean
+    alert: boolean
 }
 
 @InputType()
@@ -111,8 +105,8 @@ class DeviceUpdateInput {
 	@Field(()=>[Number], { nullable: true })
     humidity: number[];
     
-	@Field(()=>[Number], { nullable: true })
-    rain: number[];
+	@Field(()=>[Boolean], { nullable: true })
+    rain: boolean[];
 
 	@Field(()=>[Number], { nullable: true })
     dust: number[];
@@ -124,13 +118,10 @@ class DeviceUpdateInput {
     soilHumid: number[];
 
     @Field({ nullable: true })
-    upButton: boolean;
+    cylinder: boolean;
 
     @Field({ nullable: true })
-    downButton: boolean;
-
-    @Field()
-    alertButton: boolean
+    alert: boolean
 }
 
 interface LocationDataType{
@@ -181,9 +172,8 @@ export class Devices {
                     dust: [], 
                     coGas: [], 
                     soilHumid: [],
-                    upButton: true,
-                    downButton: false,
-                    alertButton: false
+                    cylinder: false,
+                    alert: false
                 });
         console.log("Current status:")
         console.log(existDevice);

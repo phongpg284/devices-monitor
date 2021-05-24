@@ -5,16 +5,12 @@ import {
   useQuery,
 } from "@apollo/client";
 import { createContext, useEffect, useState } from "react";
-import { BrowserRouter, Route, Router, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
-import Chart from "./components/charts";
-import DeviceList, { fakeData } from "./components/devices";
 import { GET_DEVICES } from "./components/devices/schema";
 import Header from "./components/header";
 import Home from "./route-components/home";
-import Map from "./components/map";
-import { deviceProps } from "./components/map/deviceMarker";
-import Statistic from "./components/statistic";
+import { deviceProps } from "./components/devices/index";
 import DeviceRoute from "./route-components/devices";
 
 export const DeviceContext = createContext({
@@ -39,6 +35,7 @@ function App() {
       ...device,
       highlight: false,
     }));
+    console.log(updateData)
     setDeviceState({
       data: updateData,
       hoveredId: "",

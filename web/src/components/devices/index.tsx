@@ -3,73 +3,31 @@ import './devices.scss'
 import { useContext, useEffect, useState } from "react";
 import { DeviceContext } from "../../App";
 import { dataProps } from "../map";
-export const fakeData = [
-    {
-        _id: 1,
-        name: "device1",
-        lat: 21.043851,
-        lng: 105.837026,
-        temperature: 1,
-        humidity: 1,
-        rain: true,
-        dust: 1,
-        coGas: 1,
-        soilHumid: 1,
-    },
-    {
-        _id: 2,
-        name: "device2",
-        lat: 21.043810,
-        lng: 105.839026,
-        temperature: 2,
-        humidity: 2,
-        rain: true,
-        dust: 2,
-        coGas: 2,
-        soilHumid: 2,
-    },
-    {
-        _id: 3,
-        name: "device3",
-        lat: 21.043820,
-        lng: 105.838026,
-        temperature: 3,
-        humidity: 3,
-        rain: true,
-        dust: 3,
-        coGas: 3,
-        soilHumid: 3,
-    },
-    {
-        _id: 4,
-        name: "device4",
-        lat: 21.043170,
-        lng: 105.838026,
-        temperature: 4,
-        humidity: 4,
-        rain: false,
-        dust: 4,
-        coGas: 4,
-        soilHumid: 4,
-    },
-]
-
-interface deviceProps {
-    _id: number,
+export interface deviceProps {
+    _id: string,
     name: string,
-    lat: number,
-    lng: number,
-    temperature?: number,
-    humidity?: number,
-    rain?: boolean,
-    dust?: number,
-    coGas?: number,
-    soilHumid?: number,
+    lat: number[],
+    long: number[],
+    temperature: number[],
+    humidity: number[],
+    rain: boolean[],
+    dust: number[],
+    coGas: number[],
+    soilHumid: number[],
+    cylinder: boolean,
+    alert: boolean,
+    lastUpdate: Date,
 }
 
-const DeviceItem = (props: any) => {
+interface DeviceItemProps {
+    data: dataProps,
+    hover: boolean,
+}
+
+const DeviceItem = (props: DeviceItemProps) => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
     const { data, hover } = props;
+    console.log(data)
     const [ isCollapse, setIsCollapse ] = useState(false);
     const handleToggle = () => {
         setIsCollapse(!isCollapse);
@@ -129,7 +87,7 @@ const DeviceItem = (props: any) => {
                 id={data._id}
             >
                 <Card className="device-item justify-content-flex-start" id={data._id} style={{backgroundColor: hover? "#979ea3": ""}}>
-                    <Card.Text as="div" className="d-flex p-2 justify-content-space-between align-items-center" id={props._id}>
+                    <Card.Text as="div" className="d-flex p-2 justify-content-space-between align-items-center" id={data._id}>
                         <i 
                             className="bi-wifi px-3 align-self-center"
                             style={{fontSize: "2.2vw"}}
@@ -144,7 +102,7 @@ const DeviceItem = (props: any) => {
                             <h4 
                                 style={{fontSize: "0.9vw", paddingTop:"4px"}}
                             >
-                                Vị trí: {data.lat}, {data.lng}
+                                Vị trí: {data.lat[0]}, {data.long[0]}
                             </h4>
                         </div>  
                         <div className="d-flex flex-column justify-content-center ml-auto mx-2">
@@ -182,11 +140,13 @@ const DeviceItem = (props: any) => {
                             <li>Nhiệt độ: {data.temperature} C</li>
                             <li>Độ ẩm: {data.humidity} %</li>
                             <li>Mưa: {data.rain ? `Có`: `Không`}</li>
+                            <li>Độ bụi:: {data.dust} mg/m3</li>
                         </ul>    
                         <ul className="pr-4">
-                            <li>Độ bụi:: {data.dust} mg/m3</li>
                             <li>Nồng độ CO: {data.coGas} ppm</li>
                             <li>Độ ẩm đất: {data.soilHumid} %</li>
+                            <li>Xilanh: {data.cylinder? `Lên`: `Xuống`}</li>
+                            <li>Báo động: {data.alert ? `Có` : `Không`}</li>
                         </ul>
                     </Card.Body>
 
