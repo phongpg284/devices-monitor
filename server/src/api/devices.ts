@@ -124,6 +124,14 @@ class DeviceUpdateInput {
     alert: boolean
 }
 
+@InputType()
+class GetDevicesBetweenTime {
+    @Field()
+    start: Date;
+    @Field()
+    end: Date;
+}
+
 interface LocationDataType{
     long: number,
     lat: number,
@@ -393,6 +401,12 @@ export class Devices {
     @Query(() => [Device])
     async getDevices() {
         const result = this.db.collection("devices").find();
+        return await result.toArray();
+    }
+
+    @Query(() => [Device])
+    async getDevicesBetweenTime(@Arg("inputs") inputs: GetDevicesBetweenTime) {
+        const result = this.db.collection("devices").find({ lastUpdated: { $gt: inputs.start, $lt: inputs.end }});
         return await result.toArray();
     }
 }

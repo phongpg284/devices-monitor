@@ -17,7 +17,7 @@ const DeviceRoute = () => {
         const tableData =deviceState.data?.map((device: any, index: number) => {
             return {
                 ...device,
-                cordinate: `${device.lat},${device.lng}`,
+                cordinate: `${device.lat[0]},${device.long[0]}`,
                 id: index,
                 rain: device.rain? "Có" : "Không",
                 lastUpdated: new Date(device.lastUpdated).toString()
@@ -45,12 +45,12 @@ const DeviceRoute = () => {
         filter: textFilter(),
     }, {
         dataField: 'temperature',
-        text: 'Nhiệt dộ',
+        text: 'Nhiệt độ (°C)',
         sort: true,
         filter: textFilter(),
     }, {
         dataField: 'humidity',
-        text: 'Độ ẩm',
+        text: 'Độ ẩm (%)',
         sort: true,
         filter: textFilter(),
     }, {
@@ -60,17 +60,17 @@ const DeviceRoute = () => {
         filter: textFilter(),
     }, {
         dataField: 'dust',
-        text: 'Độ bụi',
+        text: 'Độ bụi (mg/m3)',
         sort: true,
         filter: textFilter(),
     }, {
         dataField: 'coGas',
-        text: 'Nồng độ CO',
+        text: 'Nồng độ CO (ppm)',
         sort: true,
         filter: textFilter(),
     }, {
         dataField: 'soilHumid',
-        text: 'Độ ẩm đất',
+        text: 'Độ ẩm đất (%)',
         sort: true,
         filter: textFilter(),
     }, {

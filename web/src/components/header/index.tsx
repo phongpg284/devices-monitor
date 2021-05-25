@@ -23,7 +23,7 @@ const Header: React.FC = () => {
           <Nav className="ml-auto d-flex align-items-center">
             <NavLink to="/" className="px-3">Home</NavLink>
             <NavLink to="/devices" className="px-3">Thiết bị</NavLink>
-            <NavLink to="/" className="px-3">Dữ liệu</NavLink>
+            <NavLink to="/statistics" className="px-3">Dữ liệu</NavLink>
             <NavLink to="/" className="px-3 mr-3">About</NavLink>
           </Nav>
           <Form inline className="mr-5">

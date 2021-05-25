@@ -12,6 +12,7 @@ import Header from "./components/header";
 import Home from "./route-components/home";
 import { deviceProps } from "./components/devices/index";
 import DeviceRoute from "./route-components/devices";
+import StatisticsRoute from "./route-components/statistics";
 
 export const DeviceContext = createContext({
   deviceState: {
@@ -52,6 +53,9 @@ function App() {
               <Switch>
                 <Route path="/devices">
                   <DeviceRoute/>
+                </Route>
+                <Route path="/statistics">
+                  <StatisticsRoute/>
                 </Route>
                 <Route path="/">
                   <Home />

@@ -137,14 +137,14 @@ const DeviceItem = (props: DeviceItemProps) => {
                 <Card className="device-collapse-content">
                     <Card.Body className="d-flex flex-row px-1">
                         <ul>
-                            <li>Nhiệt độ: {data.temperature} C</li>
-                            <li>Độ ẩm: {data.humidity} %</li>
-                            <li>Mưa: {data.rain ? `Có`: `Không`}</li>
-                            <li>Độ bụi:: {data.dust} mg/m3</li>
+                            <li>Nhiệt độ: {data.temperature[0]} C</li>
+                            <li>Độ ẩm: {data.humidity[0]} %</li>
+                            <li>Mưa: {data.rain[0] ? `Có`: `Không`}</li>
+                            <li>Độ bụi:: {data.dust[0]} mg/m3</li>
                         </ul>    
                         <ul className="pr-4">
-                            <li>Nồng độ CO: {data.coGas} ppm</li>
-                            <li>Độ ẩm đất: {data.soilHumid} %</li>
+                            <li>Nồng độ CO: {data.coGas[0]} ppm</li>
+                            <li>Độ ẩm đất: {data.soilHumid[0]} %</li>
                             <li>Xilanh: {data.cylinder? `Lên`: `Xuống`}</li>
                             <li>Báo động: {data.alert ? `Có` : `Không`}</li>
                         </ul>
