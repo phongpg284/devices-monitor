@@ -403,10 +403,4 @@ export class Devices {
         const result = this.db.collection("devices").find();
         return await result.toArray();
     }
-
-    @Query(() => [Device])
-    async getDevicesBetweenTime(@Arg("inputs") inputs: GetDevicesBetweenTime) {
-        const result = this.db.collection("devices").find({ lastUpdated: { $gt: inputs.start, $lt: inputs.end }});
-        return await result.toArray();
-    }
 }
