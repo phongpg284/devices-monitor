@@ -171,7 +171,7 @@ export class BorderDevices {
     }
 
     @Query(() => BorderDevice)
-    async getBorderDevice(@Arg("id") id: number) {
+    async getBorderDevice(@Arg("id") id: string) {
         const result = await this.db.collection("BorderDevices").findOne({ _id: id});
         console.log(result);
         return result;
@@ -395,7 +395,7 @@ export class BorderDevices {
     }
 
     @Mutation(()=>BorderDevice)
-    async cylinderUp(@Arg("id") id: number) {
+    async cylinderUp(@Arg("id") id: string) {
         const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");
@@ -418,7 +418,7 @@ export class BorderDevices {
     }
 
     @Mutation(()=>BorderDevice)
-    async cylinderDown(@Arg("id") id: number) {
+    async cylinderDown(@Arg("id") id: string) {
         const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");
@@ -441,7 +441,7 @@ export class BorderDevices {
     }
 
     @Mutation(()=>BorderDevice)
-    async sendAlert(@Arg("id") id: number){
+    async sendAlert(@Arg("id") id: string){
         const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");
@@ -464,7 +464,7 @@ export class BorderDevices {
     }
 
     @Mutation(()=>BorderDevice)
-    async setThreshold(@Arg("id") id: number, @Arg("property") property: string, @Arg("Value") value: number){
+    async setThreshold(@Arg("id") id: string, @Arg("property") property: string, @Arg("value") value: number){
         const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");
