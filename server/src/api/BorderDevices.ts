@@ -9,9 +9,18 @@ import {MQTT_BRAND, MQTT_BROKER} from "../config";
 @ObjectType()
 class environmentUnit{
     @Field(()=>[Number])
-    data: number[];
-    @Field(()=>Number, {nullable:true})
-    threshold?: number;
+    data?: number[];
+    @Field(()=>Number)
+    threshold: number;
+    @Field(()=>[Date])
+    updateTime?: Date[]
+}
+@ObjectType()
+class rainUnit{
+    @Field(()=>[Boolean])
+    data: boolean[];
+    @Field(()=>[Date])
+    updateTime?: Date[]
 }
 @ObjectType()
 export class BorderDevice  {
@@ -28,7 +37,7 @@ export class BorderDevice  {
     humidity: environmentUnit;
     
 	@Field()
-    rain: boolean;
+    rain: rainUnit;
 
 	@Field(()=>environmentUnit)
     dust: environmentUnit;
@@ -45,9 +54,6 @@ export class BorderDevice  {
     @Field()
     alert: boolean
     
-    @Field(()=>[Date],{ nullable: true })
-    updateTime: Date[];
-    
 	@Field(()=>[Number])
     lat: number[];
 
@@ -55,7 +61,7 @@ export class BorderDevice  {
     long: number[];
 
     @Field(()=>[Date])
-    locationUpdateTime: Date[];
+    locationUpdateTime?: Date[];
 } 
 
 
@@ -71,7 +77,7 @@ class BorderDeviceCreateInput {
     humidity: environmentUnit;
     
 	@Field({ nullable: true })
-    rain: boolean;
+    rain: rainUnit;
 
 	@Field(()=>environmentUnit,{ nullable: true })
     dust: environmentUnit;
@@ -88,9 +94,6 @@ class BorderDeviceCreateInput {
     @Field()
     alert: boolean
 
-    @Field(()=>[Date],{ nullable: true })
-    updateTime: Date[];
-
     @Field(()=>[Number],{ nullable: true })
     lat: number[];
 
@@ -98,7 +101,7 @@ class BorderDeviceCreateInput {
     long: number[];
     
     @Field(()=>[Date])
-    locationUpdateTime: Date[];
+    locationUpdateTime?: Date[];
 }
 
 @InputType()
@@ -116,7 +119,7 @@ class BorderDeviceUpdateInput {
     humidity: environmentUnit;
     
 	@Field({ nullable: true })
-    rain: boolean;
+    rain: rainUnit;
 
 	@Field(()=>environmentUnit, { nullable: true })
     dust: environmentUnit;
@@ -132,9 +135,6 @@ class BorderDeviceUpdateInput {
 
     @Field()
     alert: boolean
-
-    @Field(()=>[Date],{ nullable: true })
-    updateTime: Date[];
     
     @Field(()=>[Number],{ nullable: true })
     lat: number[];
@@ -174,6 +174,7 @@ export class BorderDevices {
         console.log(result);
         return result;
     }
+    
     @Mutation(()=>BorderDevice)
     async mqttMessageHandler(
         @Arg("name") BorderDeviceName: string,
@@ -188,139 +189,149 @@ export class BorderDevices {
                     lat: [], 
                     long: [], 
                     temperature: {
-                        data: [],
                         threshold: 1000
                     }, 
                     humidity: {
-                        data: [],
                         threshold: 1000
                     },  
-                    rain: false,
-                    dust: {
+                    rain: {
                         data: [],
+                    },
+                    dust: {
                         threshold: 1000
                     }, 
                     coGas: {
-                        data: [],
                         threshold: 1000
                     },  
                     soilHumid: {
-                        data: [],
                         threshold: 1000
                     }, 
                     cylinder: true,
                     alert: false,
-                    updateTime: [],
-                    locationUpdateTime:[]
                 });
         console.log("Current status:")
         console.log(existDevice);
         const device = this.db.collection("BorderDevices");
         switch (topic){
             case 'temperature':
-                device.updateOne({name: BorderDeviceName}, {$push: {"temperature.data": parseFloat(payload)}}, (err, result)=>{
-                    if (err)
-                    {
-                        console.log(err);
-                        return err;
-                        
-                    }
-                    console.log("temp updated!");
-                })
+                device.updateOne(
+                    {name: BorderDeviceName}, 
+                    {$push: {"temperature.data": parseFloat(payload), "temperature.updateTime" : new Date()}}, 
+                    (err, result)=>{
+                        if (err)
+                        {
+                            console.log(err);
+                            return err;
+                            
+                        }
+                        console.log("temp updated!");
+                    })
                 let temperatureThreshold = "true";
                 if (parseFloat(payload)>existDevice.temperature.threshold)
                     temperatureThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/temperature/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/temperature/threshold", 
                     temperatureThreshold, 
-                    {qos: 2});
+                    {qos: 2}, ()=>{
+                        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                        console.log(MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/temperature/threshold")
+                    });
                 break;
             case 'humidity':
-                device.updateOne({name: BorderDeviceName}, {$push: {"humidity.data": parseFloat(payload)}}, (err, result)=>{
-                    if (err)
-                    {
-                        console.log(err);
-                        return err;
-                    }
-                    console.log("humid updated!");
-                })
+                device.updateOne(
+                    {name: BorderDeviceName}, 
+                    {$push: {"humidity.data": parseFloat(payload), "humidity.updateTime": new Date()}}, 
+                    (err, result)=>{
+                        if (err)
+                        {
+                            console.log(err);
+                            return err;
+                        }
+                        console.log("humid updated!");
+                    })
                 let humidityThreshold = "true";
                 if (parseFloat(payload)>existDevice.humidity.threshold)
                     humidityThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/humidity/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/humidity/threshold", 
                     humidityThreshold, 
-                    {qos: 2});
+                    {qos: 2}, ()=>{
+                        console.log(MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/humidity/threshold");
+                    });
                 break;
             case 'dust':
-                device.updateOne({name: BorderDeviceName}, {$push: {"dust.data": parseFloat(payload)}}, (err, result)=>{
-                    if (err)
-                    {
-                        console.log(err);
-                        return err;
-                    }
-                    console.log("dust updated!");
-                })
+                device.updateOne(
+                    {name: BorderDeviceName}, 
+                    {$push: {"dust.data": parseFloat(payload), "dust.updateTime" : new Date()}}, 
+                    (err, result)=>{
+                        if (err)
+                        {
+                            console.log(err);
+                            return err;
+                        }
+                        console.log("dust updated!");
+                    })
                 let dustThreshold = "true";
                 if (parseFloat(payload)>existDevice.dust.threshold)
                     dustThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/dust/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/dust/threshold", 
                     dustThreshold, 
                     {qos: 2});
                 break;
             case 'rain':
                 let rainStatus = (payload=='true')?true:false;
-                device.updateOne({name: BorderDeviceName}, {$push: {rain: rainStatus}}, (err, result)=>{
-                    if (err)
-                    {
-                        console.log(err);
-                        return err;
-                    }
-                    console.log("rain updated!");
-                })
+                device.updateOne(
+                    {name: BorderDeviceName}, 
+                    {$push: {"rain.data": rainStatus, "rain.updateTime" : new Date()}}, 
+                    (err, result)=>{
+                        if (err)
+                        {
+                            console.log(err);
+                            return err;
+                        }
+                        console.log("rain updated!");
+                    })
                 break;
             case 'co_gas':
-                device.updateOne({name: BorderDeviceName}, {$push: {"coGas.data": parseFloat(payload)}}, (err, result)=>{
-                    if (err)
-                    {
-                        console.log(err);
-                        return err;
-                    }
-                    console.log("CO gas updated!");
-                })
+                device.updateOne(
+                    {name: BorderDeviceName}, 
+                    {$push: {"coGas.data": parseFloat(payload), "coGas.updateTime" : new Date()}}, 
+                    (err, result)=>{
+                        if (err)
+                        {
+                            console.log(err);
+                            return err;
+                        }
+                        console.log("CO gas updated!");
+                    })
                 let coGasThreshold = "true";
                 if (parseFloat(payload)>existDevice.coGas.threshold)
                     coGasThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/co_gas/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/co_gas/threshold", 
                     coGasThreshold, 
                     {qos: 2});
                 break;
             case 'soil_humid':
-                device.updateOne({name: BorderDeviceName}, {$push: {"soilHumid.data": parseFloat(payload)}}, (err, result)=>{
-                    if (err)
-                    {
-                        console.log(err);
-                        return err;
-                    }
-                    console.log("Soil Humid updated!");
-                })
+                device.updateOne(
+                    {name: BorderDeviceName}, 
+                    {$push: {"soilHumid.data": parseFloat(payload), "soilHumid.updateTime" : new Date()}}, 
+                    (err, result)=>{
+                        if (err)
+                        {
+                            console.log(err);
+                            return err;
+                        }
+                        console.log("Soil Humid updated!");
+                    })
                 let soilHumidThreshold = "true";
                 if (parseFloat(payload)>existDevice.soilHumid.threshold)
-                soilHumidThreshold = "false";
+                    soilHumidThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/soil_humid/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/soil_humid/threshold", 
                     soilHumidThreshold, 
                     {qos: 2});
-                device.updateOne({name: BorderDeviceName}, {$push: {updateTime: new Date()}}, (err, result)=>{
-                    if (err)
-                    {
-                        console.log(err);
-                        return err;
-                    }
-                    console.log("Time updated!");
-                })
                 break;
             case 'location':
                 let locationData: LocationDataType;
@@ -377,7 +388,7 @@ export class BorderDevices {
                 })
                 break;
             case 'threshold':
-                
+                break;
             default: 
                 console.error(topic + ": Topic khong khop!");
         }
@@ -385,6 +396,7 @@ export class BorderDevices {
         console.log(existDevice);
         return existDevice;
     }
+
     @Mutation(()=>BorderDevice)
     async cylinderUp(@Arg("id") id: number) {
         const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
@@ -407,6 +419,7 @@ export class BorderDevices {
         })
         return existDevice;
     }
+
     @Mutation(()=>BorderDevice)
     async cylinderDown(@Arg("id") id: number) {
         const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
@@ -429,6 +442,7 @@ export class BorderDevices {
         })
         return existDevice;
     }
+
     @Mutation(()=>BorderDevice)
     async sendAlert(@Arg("id") id: number){
         const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
@@ -451,6 +465,75 @@ export class BorderDevices {
         })
         return existDevice;
     }
+
+    @Mutation(()=>BorderDevice)
+    async setThreshold(@Arg("id") id: number, @Arg("property") property: string, @Arg("Value") value: number){
+        const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
+        if (!existDevice){
+                console.error("Khong tim thay thiet bi!");
+                return {}
+            }
+        const device = this.db.collection("BorderDevices");
+        switch (property){
+            case 'temperature':
+                device.updateOne( {_id: id}, {$set: {"temperature.threshold": value}}, (err, result)=>{
+                        if (err)
+                        {
+                            console.log(err);
+                            return err;
+                            
+                        }
+                        console.log("temp threshold updated!");
+                    })
+                break;
+            case 'humidity':
+                device.updateOne( {_id: id}, {$set: {"humidity.threshold": value}}, (err, result)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        return err;
+                        
+                    }
+                    console.log("humidity threshold updated!");
+                })
+                break;
+            case 'dust':
+                device.updateOne( {_id: id}, {$set: {"dust.threshold": value}}, (err, result)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        return err;
+                        
+                    }
+                    console.log("dust threshold updated!");
+                })
+                break;
+            case 'coGas':
+                device.updateOne( {_id: id}, {$set: {"coGas.threshold": value}}, (err, result)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        return err;
+                        
+                    }
+                    console.log("coGas threshold updated!");
+                })
+                break;
+            case 'soilHumid':
+                device.updateOne( {_id: id}, {$set: {"soilHumid.threshold": value}}, (err, result)=>{
+                    if (err)
+                    {
+                        console.log(err);
+                        return err;
+                        
+                    }
+                    console.log("soilHumid threshold updated!");
+                })
+                break;
+        }
+        return existDevice;
+    }
+
     @Query(() => [BorderDevice])
     async getBorderDevices() {
         const result = this.db.collection("BorderDevices").find();
