@@ -6,6 +6,7 @@ import { callbackify } from "util";
 import {mqttClient} from "../mqtt"
 import {MQTT_BRAND, MQTT_BROKER} from "../config";
 
+@InputType("environmentUnitInput")
 @ObjectType()
 class environmentUnit{
     @Field(()=>[Number])
@@ -15,6 +16,7 @@ class environmentUnit{
     @Field(()=>[Date])
     updateTime?: Date[]
 }
+@InputType("rainUnitInput")
 @ObjectType()
 class rainUnit{
     @Field(()=>[Boolean])
@@ -36,7 +38,7 @@ export class BorderDevice  {
 	@Field(()=>environmentUnit)
     humidity: environmentUnit;
     
-	@Field()
+	@Field(()=>rainUnit)
     rain: rainUnit;
 
 	@Field(()=>environmentUnit)
@@ -76,7 +78,7 @@ class BorderDeviceCreateInput {
 	@Field(()=>environmentUnit,{ nullable: true })
     humidity: environmentUnit;
     
-	@Field({ nullable: true })
+	@Field(()=>rainUnit, { nullable: true })
     rain: rainUnit;
 
 	@Field(()=>environmentUnit,{ nullable: true })
@@ -103,49 +105,6 @@ class BorderDeviceCreateInput {
     @Field(()=>[Date])
     locationUpdateTime?: Date[];
 }
-
-@InputType()
-class BorderDeviceUpdateInput {
-    @Field(() => ID)
-    _id: string;
-
-    @Field({ nullable: true })
-    name: string;
-
-	@Field(()=>environmentUnit, { nullable: true })
-    temperature: environmentUnit;
-    
-	@Field(()=>environmentUnit, { nullable: true })
-    humidity: environmentUnit;
-    
-	@Field({ nullable: true })
-    rain: rainUnit;
-
-	@Field(()=>environmentUnit, { nullable: true })
-    dust: environmentUnit;
-    
-	@Field(()=>environmentUnit, { nullable: true })
-    coGas: environmentUnit;
-    
-	@Field(()=>environmentUnit, { nullable: true })
-    soilHumid: environmentUnit;
-
-    @Field({ nullable: true })
-    cylinder:boolean
-
-    @Field()
-    alert: boolean
-    
-    @Field(()=>[Number],{ nullable: true })
-    lat: number[];
-
-	@Field(()=>[Number],{ nullable: true })
-    long: number[];
-
-    @Field(()=>[Date])
-    locationUpdateTime: Date[];
-}
-
 interface LocationDataType{
     long: number,
     lat: number,

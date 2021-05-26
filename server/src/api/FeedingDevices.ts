@@ -6,32 +6,33 @@ import { callbackify } from "util";
 import {mqttClient} from "../mqtt"
 import {MQTT_BRAND, MQTT_BROKER} from "../config";
 
+@InputType("environmentFeedingUnitInput")
 @ObjectType()
-class environmentUnit{
+class environmentFeedingUnit{
     @Field(()=>[Number])
     data?: number[];
-    @Field(()=>Number)
-    threshold: number;
+    @Field(()=>Number, {nullable:true})
+    threshold?: number;
     @Field(()=>[Date])
     updateTime?: Date[]
 }
 
 @ObjectType()
-class FeedingDevice{
+export class FeedingDevice  {
     @Field(() => ID)
     _id: string;
 
     @Field({ nullable: true })
     name: string;
     
-    @Field(()=>environmentUnit)
-    temperature: environmentUnit;
+    @Field(()=>environmentFeedingUnit)
+    temperature: environmentFeedingUnit;
     
-	@Field(()=>environmentUnit)
-    pH: environmentUnit;
+	@Field(()=>environmentFeedingUnit)
+    pH: environmentFeedingUnit;
 
-    @Field(()=>environmentUnit)
-    o2Gas: environmentUnit;
+    @Field(()=>environmentFeedingUnit)
+    o2Gas: environmentFeedingUnit;
 
     @Field(()=>Number)
     footCan: number;
@@ -48,14 +49,14 @@ class FeedingDeviceCreateInput{
     @Field({ nullable: true })
     name: string;
     
-    @Field(()=>environmentUnit)
-    temperature: environmentUnit;
+    @Field(()=>environmentFeedingUnit)
+    temperature: environmentFeedingUnit;
     
-	@Field(()=>environmentUnit)
-    pH: environmentUnit;
+	@Field(()=>environmentFeedingUnit)
+    pH: environmentFeedingUnit;
 
-    @Field(()=>environmentUnit)
-    o2Gas: environmentUnit;
+    @Field(()=>environmentFeedingUnit)
+    o2Gas: environmentFeedingUnit;
 
     @Field(()=>Number, {nullable: true})
     footCan?: number;
