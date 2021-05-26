@@ -1,14 +1,16 @@
 .statistic-item {
-    background-color: rgb(57, 91, 243);
-    color: white;
+    background-color: #d8e1e8;
+    color: black;
     margin: 5px;
-    width: 350px;
+    width: 100%;
+    min-width: 150px;
+    max-width: 500px;
     height: 100px;
 }
 
 .statistic-title {
     padding-top: 8px;
-    font-size: 15px;
+    font-size: 17px;
     margin: 0px;
 }
 

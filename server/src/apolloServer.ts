@@ -8,7 +8,7 @@ export const getGraphqlSchema = async (): Promise<GraphQLSchema> => {
 
 	return buildSchema({
 		resolvers: [path.join(__dirname, globPathNameToGraphQLResolverFiles)],
-		emitSchemaFile: path.resolve(__dirname, '../../web/schema.graphql'),
+		// emitSchemaFile: path.resolve(__dirname, '../../web/schema.graphql'),
 		validate: false,
 	});
 };

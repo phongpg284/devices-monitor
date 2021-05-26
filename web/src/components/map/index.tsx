@@ -1,34 +1,43 @@
 import "./map.scss";
 import GoogleMap from "google-map-react";
-import { useState } from "react";
-import DeviceMarker from "./deviceMarker";
-import { fakeData } from "../devices/index";
+import DeviceMarker, { deviceProps } from "./deviceMarker";
 export {fakeData} from "../devices/index";
-interface props {
-  center: {
+
+export interface dataProps extends deviceProps {
+  highlight: boolean;
+}
+
+interface MapProps {
+  defaultCenter: {
     lat: number;
     lng: number;
   }
-  zoom: number;
+  defaultZoom: number;
+  apiKey: string;
+  data: {
+    data: dataProps[],
+    hoveredId: string;
+  };
 }
 
-const Map = (props: any) => {
-  const [defaultStats, setDefaultStats] = useState({
-    center: {
-      lat: 21.04,
-      lng: 105.83,
-    },
-    zoom: 15,
-  });
+const Map = (props: MapProps) => {
   return (
     <div className="google-map">
       <GoogleMap
-        bootstrapURLKeys={{ key: "AIzaSyDumeWrTMi-7xbY7uRRupj3zMsTCaro8WQ" }}
-        defaultCenter = {defaultStats.center}
-        defaultZoom={defaultStats.zoom}
+        bootstrapURLKeys={{ key: props.apiKey }}
+        defaultCenter = {props.defaultCenter}
+        defaultZoom={props.defaultZoom}
+        hoverDistance={30}
       >
-        {fakeData.map(device => (
-          <DeviceMarker lat={device.lat} lng={device.lng} data={device} />
+        {props.data.data && props.data.data.map((device: dataProps) => (
+          <DeviceMarker 
+            key={device._id}
+            lat={device.lat} 
+            lng={device.lng} 
+            data={device} 
+            highlight={device.highlight} 
+            hover={props.data.hoveredId === device._id}
+          />
         ))}
       </GoogleMap>
     </div>
