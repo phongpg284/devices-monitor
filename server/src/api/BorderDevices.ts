@@ -252,9 +252,7 @@ export class BorderDevices {
                 mqttClient.publish(
                     MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/humidity/threshold", 
                     humidityThreshold, 
-                    {qos: 2}, ()=>{
-                        console.log(MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/humidity/threshold");
-                    });
+                    {qos: 2});
                 break;
             case 'dust':
                 device.updateOne(
