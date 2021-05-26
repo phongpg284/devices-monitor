@@ -16,6 +16,7 @@ class environmentUnit{
     @Field(()=>[Date])
     updateTime?: Date[]
 }
+@InputType("rainUnitInput")
 @ObjectType()
 class rainUnit{
     @Field(()=>[Boolean])
@@ -37,7 +38,7 @@ export class BorderDevice  {
 	@Field(()=>environmentUnit)
     humidity: environmentUnit;
     
-	@Field()
+	@Field(()=>rainUnit)
     rain: rainUnit;
 
 	@Field(()=>environmentUnit)
@@ -77,7 +78,7 @@ class BorderDeviceCreateInput {
 	@Field(()=>environmentUnit,{ nullable: true })
     humidity: environmentUnit;
     
-	@Field({ nullable: true })
+	@Field(()=>rainUnit, { nullable: true })
     rain: rainUnit;
 
 	@Field(()=>environmentUnit,{ nullable: true })
@@ -119,7 +120,7 @@ class BorderDeviceUpdateInput {
 	@Field(()=>environmentUnit, { nullable: true })
     humidity: environmentUnit;
     
-	@Field({ nullable: true })
+	@Field(()=>rainUnit, { nullable: true })
     rain: rainUnit;
 
 	@Field(()=>environmentUnit, { nullable: true })

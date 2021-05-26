@@ -13,7 +13,10 @@ class environmentFeedingUnit{
     data: number[];
     @Field(()=>Number, {nullable:true})
     threshold?: number;
+    @Field(()=>[Date])
+    updateTime?: Date[]
 }
+
 @ObjectType()
 export class FeedingDevice  {
     @Field(() => ID)

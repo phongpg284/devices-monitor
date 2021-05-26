@@ -31,10 +31,10 @@ const Property = [
         label: "Độ ẩm đất (%)",
         value: "soilHumid"
     },
-    {
-        label: "Báo động",
-        value: "alert"
-    },
+    // {
+    //     label: "Báo động",
+    //     value: "alert"
+    // },
 ]
 
 interface BaseGraphProps {
@@ -49,14 +49,17 @@ interface BaseGraphProps {
 
 const BaseGraph = (props: BaseGraphProps) => {
     const { data, startDate, endDate, property } = props;
-    let showData = [], showLabels = [];
-    if(data) {
-        showData = data[property.value].data;
-        showLabels = data.updateTime?.filter((time: Date) => {
-            if(time < endDate && time > startDate)
-            return time
+    let showData: any[] = [], showLabels: any[] = [];
+
+    if(data && startDate && endDate) {
+        data[property.value].updateTime.forEach((time: any, index: number) => {
+            if(time < endDate.toISOString() && time > startDate.toISOString()) {
+                showLabels.push(new Date(time).toLocaleString())
+                showData.push(data[property.value].data[index]);
+            }
         });
     }
+
     const state = {
         labels: showLabels,
         datasets: [

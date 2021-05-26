@@ -4,6 +4,7 @@ export const ENVIRONMENT_UNIT = gql`
     fragment EnvironmentUnit on environmentUnit {
         data
         threshold
+        updateTime
     }
 `;
 
@@ -21,7 +22,10 @@ export const GET_BORDER_DEVICES = gql`
             temperature {
                 ...EnvironmentUnit
             }
-            rain 
+            rain {
+                data
+                updateTime
+            } 
             dust {
                 ...EnvironmentUnit
             }
@@ -33,7 +37,6 @@ export const GET_BORDER_DEVICES = gql`
             }
             cylinder
             alert
-            updateTime
             locationUpdateTime
         }
     }
@@ -52,7 +55,10 @@ export const CREATE_BORDER_DEVICE = gql`
             temperature {
                 ...EnvironmentUnit
             }
-            rain 
+            rain {
+                data
+                updateTime
+            } 
             dust {
                 ...EnvironmentUnit
             }
@@ -64,7 +70,6 @@ export const CREATE_BORDER_DEVICE = gql`
             }
             cylinder
             alert
-            updateTime
             locationUpdateTime
         }
     }
@@ -83,7 +88,10 @@ export const UPDATE_BORDER_DEVICE = gql`
             temperature {
                 ...EnvironmentUnit
             }
-            rain 
+            rain {
+                data
+                updateTime
+            } 
             dust {
                 ...EnvironmentUnit
             }
@@ -95,7 +103,6 @@ export const UPDATE_BORDER_DEVICE = gql`
             }
             cylinder
             alert
-            updateTime
             locationUpdateTime
         }
     }
