@@ -1,59 +1,102 @@
 import { gql } from "@apollo/client";
 
-export const GET_DEVICES = gql`
-    query GetDevices {
-        getDevices {
+export const ENVIRONMENT_UNIT = gql`
+    fragment EnvironmentUnit on environmentUnit {
+        data
+        threshold
+    }
+`;
+
+export const GET_BORDER_DEVICES = gql`
+    ${ENVIRONMENT_UNIT}
+    query GetBorderDevices {
+        getBorderDevices {
             _id
-            name
+            name 
             lat
             long
-            humidity
-            temperature
-            rain
-            dust
-            coGas
-            soilHumid
+            humidity {
+                ...EnvironmentUnit
+            }
+            temperature {
+                ...EnvironmentUnit
+            }
+            rain 
+            dust {
+                ...EnvironmentUnit
+            }
+            coGas {
+                ...EnvironmentUnit
+            }
+            soilHumid {
+                ...EnvironmentUnit
+            }
             cylinder
             alert
-            lastUpdated
+            updateTime
+            locationUpdateTime
         }
     }
 `;
 
-export const CREATE_DEVICE = gql`
-    mutation CreateDevice($input: DeviceCreateInput) {
-        createDevice(input: $input) {
+export const CREATE_BORDER_DEVICE = gql`
+    mutation CreateBorderDevice($input: BorderDeviceCreateInput) {
+        createBorderDevice(input: $input) {
             _id
-            name
+            name 
             lat
             long
-            humidity
-            temperature
-            rain
-            coGas
-            soilHumid
+            humidity {
+                ...EnvironmentUnit
+            }
+            temperature {
+                ...EnvironmentUnit
+            }
+            rain 
+            dust {
+                ...EnvironmentUnit
+            }
+            coGas {
+                ...EnvironmentUnit
+            }
+            soilHumid {
+                ...EnvironmentUnit
+            }
             cylinder
             alert
-            lastUpdated
+            updateTime
+            locationUpdateTime
         }
     }
 `;
 
-export const UPDATE_DEVICE = gql`
-    mutation UpdateDevice($input: DeviceUpdateInput) {
-        updateDevice(input: $input) {
+export const UPDATE_BORDER_DEVICE = gql`
+    mutation UpdateBorderDevice($input: DeviceUpdateInput) {
+        updateBorderDevice(input: $input) {
             _id
-            name
+            name 
             lat
             long
-            humidity
-            temperature
-            rain
-            coGas
-            soilHumid
+            humidity {
+                ...EnvironmentUnit
+            }
+            temperature {
+                ...EnvironmentUnit
+            }
+            rain 
+            dust {
+                ...EnvironmentUnit
+            }
+            coGas {
+                ...EnvironmentUnit
+            }
+            soilHumid {
+                ...EnvironmentUnit
+            }
             cylinder
             alert
-            lastUpdated
+            updateTime
+            locationUpdateTime
         }
     }
 `;

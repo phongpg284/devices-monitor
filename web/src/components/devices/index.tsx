@@ -3,20 +3,25 @@ import './devices.scss'
 import { useContext, useEffect, useState } from "react";
 import { DeviceContext } from "../../App";
 import { dataProps } from "../map";
+
+export interface environmentUnit {
+    data: any[],
+    threshold: Date,
+}
 export interface deviceProps {
     _id: string,
     name: string,
     lat: number[],
     long: number[],
-    temperature: number[],
-    humidity: number[],
-    rain: boolean[],
-    dust: number[],
-    coGas: number[],
-    soilHumid: number[],
+    temperature: environmentUnit,
+    humidity: environmentUnit,
+    rain: boolean,
+    dust: environmentUnit,
+    coGas: environmentUnit,
+    soilHumid: environmentUnit,
     cylinder: boolean,
     alert: boolean,
-    lastUpdate: Date,
+    updateTime: Date[],
 }
 
 interface DeviceItemProps {
@@ -27,7 +32,6 @@ interface DeviceItemProps {
 const DeviceItem = (props: DeviceItemProps) => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
     const { data, hover } = props;
-    console.log(data)
     const [ isCollapse, setIsCollapse ] = useState(false);
     const handleToggle = () => {
         setIsCollapse(!isCollapse);
@@ -137,14 +141,14 @@ const DeviceItem = (props: DeviceItemProps) => {
                 <Card className="device-collapse-content">
                     <Card.Body className="d-flex flex-row px-1">
                         <ul>
-                            <li>Nhiệt độ: {data.temperature[0]} C</li>
-                            <li>Độ ẩm: {data.humidity[0]} %</li>
-                            <li>Mưa: {data.rain[0] ? `Có`: `Không`}</li>
-                            <li>Độ bụi:: {data.dust[0]} mg/m3</li>
+                            <li>Nhiệt độ: {data.temperature.data[0]} C</li>
+                            <li>Độ ẩm: {data.humidity.data[0]} %</li>
+                            <li>Mưa: {data.rain ? `Có`: `Không`}</li>
+                            <li>Độ bụi:: {data.dust.data} mg/m3</li>
                         </ul>    
                         <ul className="pr-4">
-                            <li>Nồng độ CO: {data.coGas[0]} ppm</li>
-                            <li>Độ ẩm đất: {data.soilHumid[0]} %</li>
+                            <li>Nồng độ CO: {data.coGas.data[0]} ppm</li>
+                            <li>Độ ẩm đất: {data.soilHumid.data[0]} %</li>
                             <li>Xilanh: {data.cylinder? `Lên`: `Xuống`}</li>
                             <li>Báo động: {data.alert ? `Có` : `Không`}</li>
                         </ul>

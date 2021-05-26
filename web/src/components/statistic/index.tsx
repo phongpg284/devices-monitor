@@ -2,7 +2,6 @@ import { Card } from "react-bootstrap"
 import "./statistic.scss"
 const Statistic = (props: any) => {
     const { data } = props;
-    console.log(data);
     const totalDevices = data?.data?.length;
     const alertDevices = data?.data?.filter((device: any) => device?.alert === true).length;
     const workingDevices = totalDevices - alertDevices;

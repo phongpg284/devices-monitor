@@ -8,19 +8,25 @@ import BootstrapTable from "react-bootstrap-table-next";
 import { useContext, useEffect, useState } from "react";
 import { DeviceContext } from "../../App";
 import paginationFactory from "react-bootstrap-table2-paginator";
+import { dataProps } from "../../components/map";
 
 const DeviceRoute = () => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
     const [ data, setData ] = useState([]);
     
     useEffect(() => {
-        const tableData =deviceState.data?.map((device: any, index: number) => {
+        const tableData = deviceState.data?.map((device: dataProps, index: number) => {
             return {
                 ...device,
                 cordinate: `${device.lat[0]},${device.long[0]}`,
                 id: index,
+                humidity: device.humidity.data[0],
+                temperature: device.temperature.data[0],
+                coGas: device.coGas.data[0],
+                dust: device.dust.data[0],
+                soilHumid: device.soilHumid.data[0],
                 rain: device.rain? "Có" : "Không",
-                lastUpdated: new Date(device.lastUpdated).toString()
+                // lastUpdated: new Date(device.updateTime[0]).toString()
             }
         }) 
         if(tableData)
@@ -33,6 +39,7 @@ const DeviceRoute = () => {
         text: 'ID',
         sort: true,
         filter: textFilter(),
+        headerStyle: { width: '80px'},
     }, {
         dataField: 'name',
         text: 'Tên thiết bị',
@@ -43,6 +50,7 @@ const DeviceRoute = () => {
         text: 'Toạ độ',
         sort: true,
         filter: textFilter(),
+        headerStyle: { width: '180px' }
     }, {
         dataField: 'temperature',
         text: 'Nhiệt độ (°C)',

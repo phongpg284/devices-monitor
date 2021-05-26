@@ -6,6 +6,7 @@ import { callbackify } from "util";
 import {mqttClient} from "../mqtt"
 import {MQTT_BRAND, MQTT_BROKER} from "../config";
 
+@InputType("environmentUnitInput")
 @ObjectType()
 class environmentUnit{
     @Field(()=>[Number])

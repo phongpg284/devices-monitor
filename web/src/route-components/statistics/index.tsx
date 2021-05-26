@@ -49,12 +49,16 @@ interface BaseGraphProps {
 
 const BaseGraph = (props: BaseGraphProps) => {
     const { data, startDate, endDate, property } = props;
-    console.log(property)
-    let showData = [];
-    if(data)
-    showData = data[property.value];
+    let showData = [], showLabels = [];
+    if(data) {
+        showData = data[property.value].data;
+        showLabels = data.updateTime?.filter((time: Date) => {
+            if(time < endDate && time > startDate)
+            return time
+        });
+    }
     const state = {
-        labels: ['January', 'February', 'March', 'April', 'May'],
+        labels: showLabels,
         datasets: [
             {
                 // lineTension: 0.5,
@@ -168,7 +172,7 @@ const StatisticsRoute = () => {
                     </Form.Control>
                 </FormGroup>
                 <FormGroup className="px-5">
-                    <Form.Label>Chọn thời gian</Form.Label>
+                    <Form.Label>Chọn khoảng thời gian</Form.Label>
                     <Form.Text>
                         <DatePicker.RangePicker 
                             showTime

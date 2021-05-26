@@ -7,7 +7,7 @@ import {
 import { createContext, useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
-import { GET_DEVICES } from "./components/devices/schema";
+import { GET_BORDER_DEVICES } from "./components/devices/schema";
 import Header from "./components/header";
 import Home from "./route-components/home";
 import { deviceProps } from "./components/devices/index";
@@ -23,8 +23,8 @@ export const DeviceContext = createContext({
 });
 
 function App() {
-  const { data } = useQuery(GET_DEVICES, {
-    pollInterval: 1000,
+  const { data } = useQuery(GET_BORDER_DEVICES, {
+    // pollInterval: 1000,
   });
   const [deviceState, setDeviceState] = useState({
     data: [],
@@ -32,11 +32,10 @@ function App() {
   });
 
   useEffect(() => {
-    const updateData = data?.getDevices.map((device: deviceProps) => ({
+    const updateData = data?.getBorderDevices.map((device: deviceProps) => ({
       ...device,
       highlight: false,
     }));
-    console.log(updateData)
     setDeviceState({
       data: updateData,
       hoveredId: "",
