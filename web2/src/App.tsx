@@ -7,6 +7,7 @@ import Switch from "react-bootstrap/esm/Switch";
 import { useQuery } from "@apollo/client";
 import { GET_FEEDING_DEVICES } from "./component/devices/schema";
 import StatisticsRoute from "./component/statistic";
+import Home from "./component/home";
 
 export const DeviceContext = createContext({
   deviceState: {
@@ -20,11 +21,14 @@ function App() {
     pollInterval: 1000,
   });
   const [deviceState, setDeviceState] = useState({data: []});
-
+  
   useEffect(() => {
-    setDeviceState(data?.getFeedingDevices);
+    if(data)
+    setDeviceState({
+      data: data?.getFeedingDevices
+    })
   }, [data]);
-
+  
   return (
     <DeviceContext.Provider value={{ deviceState, setDeviceState}}>
       <div className="App">
@@ -37,7 +41,9 @@ function App() {
                 <Route path="/statistics">
                   <StatisticsRoute />
                 </Route>
-                <Route path="/"></Route>
+                <Route path="/">
+                  <Home/>
+                </Route>
               </Switch>
             </BrowserRouter>
           </main>

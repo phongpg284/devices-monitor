@@ -10,7 +10,7 @@ import "./App.css";
 import { GET_BORDER_DEVICES } from "./components/devices/schema";
 import Header from "./components/header";
 import Home from "./route-components/home";
-import { deviceProps } from "./components/devices/index";
+import { Device } from "./components/devices/index";
 import DeviceRoute from "./route-components/devices";
 import StatisticsRoute from "./route-components/statistics";
 
@@ -32,7 +32,7 @@ function App() {
   });
 
   useEffect(() => {
-    const updateData = data?.getBorderDevices.map((device: deviceProps) => ({
+    const updateData = data?.getBorderDevices.map((device: Device) => ({
       ...device,
       highlight: false,
     }));

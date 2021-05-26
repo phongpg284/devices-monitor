@@ -1,9 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_URI,
@@ -15,7 +15,7 @@ ReactDOM.render(
     <React.StrictMode>
       <App />
     </React.StrictMode>
-  </ApolloProvider>, 
+  </ApolloProvider>,
   document.getElementById('root')
 );
 

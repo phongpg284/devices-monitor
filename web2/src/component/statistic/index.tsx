@@ -4,8 +4,9 @@ import { DeviceContext } from "../../App";
 import { Bar, Line } from "react-chartjs-2";
 import { DatePicker } from "antd";
 import moment from "moment";
+import { Device } from "../devices";
 
-const Property = [
+const Properties = [
     {
         label: "Nồng độ O2 trong nước (ppm)",
         value: "o2Gas"
@@ -16,12 +17,8 @@ const Property = [
     },
     {
         label: "Nhiệt độ nước (°C)",
-        value: "temparature"
+        value: "temperature"
     },
-    // {
-    //     label: "Báo động",
-    //     value: "alert"
-    // },
 ]
 
 interface BaseGraphProps {
@@ -36,10 +33,9 @@ interface BaseGraphProps {
 
 const BaseGraph = (props: BaseGraphProps) => {
     const { data, startDate, endDate, property } = props;
-    console.log(property)
     let showData = [];
     if(data)
-    showData = data[property.value];
+    showData = data[property.value].data;
     const state = {
         labels: ['January', 'February', 'March', 'April', 'May'],
         datasets: [
@@ -99,13 +95,13 @@ const StatisticsRoute = () => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
     const { data } = deviceState;
     const [ deviceIdChoose, setDeviceIdChoose ] = useState(0); 
-    const [ propertyChoose, setPropertyChoose ] = useState(Property[0]);
+    const [ propertyChoose, setPropertyChoose ] = useState(Properties[0]);
     const handleDeviceChange = (e: any) => {
         setDeviceIdChoose(e.target.value)
     }
 
     const handlePropertyChange = (e: any) => {
-        setPropertyChoose(Property[e.target.value])
+        setPropertyChoose(Properties[e.target.value])
     }
     const [ startDate, setStartDate ] = useState<any>(new Date());
     const [ endDate, setEndDate ] = useState<any>(new Date());    
@@ -136,7 +132,7 @@ const StatisticsRoute = () => {
                         onChange={handleDeviceChange}
                     >
                         {data && data.map((device: any, index: number) => (
-                            <option value={index}>{device.name}</option>
+                            <option key={device._id} value={index}>{device.name}</option>
                         ))}
                     </Form.Control>
                 </FormGroup>
@@ -149,8 +145,8 @@ const StatisticsRoute = () => {
                         className=""
                         onChange={handlePropertyChange}
                     >
-                        {Property.map((property: any, index: number) => (
-                            <option value={index}>{property.label}</option>
+                        {Properties.map((property: any, index: number) => (
+                            <option key={property.label} value={index}>{property.label}</option>
                         ))}
                     </Form.Control>
                 </FormGroup>

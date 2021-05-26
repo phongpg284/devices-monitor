@@ -1,8 +1,8 @@
 import "./map.scss";
 import GoogleMap from "google-map-react";
-import { deviceProps } from "../devices/index"
+import { Device } from "../devices/index"
 import DeviceMarker from "./deviceMarker";
-export interface dataProps extends deviceProps {
+export interface dataProps extends Device {
   highlight: boolean;
 }
 

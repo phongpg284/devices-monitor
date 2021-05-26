@@ -8,7 +8,7 @@ export interface environmentUnit {
     data: any[],
     threshold: Date,
 }
-export interface deviceProps {
+export interface Device {
     _id: string,
     name: string,
     lat: number[],

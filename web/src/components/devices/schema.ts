@@ -71,7 +71,7 @@ export const CREATE_BORDER_DEVICE = gql`
 `;
 
 export const UPDATE_BORDER_DEVICE = gql`
-    mutation UpdateBorderDevice($input: DeviceUpdateInput) {
+    mutation UpdateBorderDevice($input: BorderDeviceUpdateInput) {
         updateBorderDevice(input: $input) {
             _id
             name 
