@@ -8,7 +8,7 @@ import {MQTT_BRAND, MQTT_BROKER} from "../config";
 
 @InputType("environmentFeedingUnitInput")
 @ObjectType()
-class environmentUnit{
+class environmentFeedingUnit{
     @Field(()=>[Number])
     data?: number[];
     @Field(()=>Number, {nullable:true})
@@ -25,14 +25,14 @@ export class FeedingDevice  {
     @Field({ nullable: true })
     name: string;
     
-    @Field(()=>environmentUnit)
-    temperature: environmentUnit;
+    @Field(()=>environmentFeedingUnit)
+    temperature: environmentFeedingUnit;
     
-	@Field(()=>environmentUnit)
-    pH: environmentUnit;
+	@Field(()=>environmentFeedingUnit)
+    pH: environmentFeedingUnit;
 
-    @Field(()=>environmentUnit)
-    o2Gas: environmentUnit;
+    @Field(()=>environmentFeedingUnit)
+    o2Gas: environmentFeedingUnit;
 
     @Field(()=>Number)
     footCan: number;
@@ -49,14 +49,14 @@ class FeedingDeviceCreateInput{
     @Field({ nullable: true })
     name: string;
     
-    @Field(()=>environmentUnit)
-    temperature: environmentUnit;
+    @Field(()=>environmentFeedingUnit)
+    temperature: environmentFeedingUnit;
     
-	@Field(()=>environmentUnit)
-    pH: environmentUnit;
+	@Field(()=>environmentFeedingUnit)
+    pH: environmentFeedingUnit;
 
-    @Field(()=>environmentUnit)
-    o2Gas: environmentUnit;
+    @Field(()=>environmentFeedingUnit)
+    o2Gas: environmentFeedingUnit;
 
     @Field(()=>Number, {nullable: true})
     footCan?: number;

@@ -105,49 +105,6 @@ class BorderDeviceCreateInput {
     @Field(()=>[Date])
     locationUpdateTime?: Date[];
 }
-
-@InputType()
-class BorderDeviceUpdateInput {
-    @Field(() => ID)
-    _id: string;
-
-    @Field({ nullable: true })
-    name: string;
-
-	@Field(()=>environmentUnit, { nullable: true })
-    temperature: environmentUnit;
-    
-	@Field(()=>environmentUnit, { nullable: true })
-    humidity: environmentUnit;
-    
-	@Field(()=>rainUnit, { nullable: true })
-    rain: rainUnit;
-
-	@Field(()=>environmentUnit, { nullable: true })
-    dust: environmentUnit;
-    
-	@Field(()=>environmentUnit, { nullable: true })
-    coGas: environmentUnit;
-    
-	@Field(()=>environmentUnit, { nullable: true })
-    soilHumid: environmentUnit;
-
-    @Field({ nullable: true })
-    cylinder:boolean
-
-    @Field()
-    alert: boolean
-    
-    @Field(()=>[Number],{ nullable: true })
-    lat: number[];
-
-	@Field(()=>[Number],{ nullable: true })
-    long: number[];
-
-    @Field(()=>[Date])
-    locationUpdateTime: Date[];
-}
-
 interface LocationDataType{
     long: number,
     lat: number,
