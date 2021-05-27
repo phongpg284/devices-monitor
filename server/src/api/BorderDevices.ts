@@ -1,13 +1,14 @@
 import { Collection, Db, ObjectId } from "mongodb";
 import { DATABASE_INSTANCE_KEY } from "../config/index";
-import { Arg, Field, ID, InputType, Mutation, ObjectType, Query, Resolver } from "type-graphql";
+import { Arg, Field, ID, InputType, Mutation, ObjectType, Query, Resolver, registerEnumType } from "type-graphql";
 import Container, { Service } from "typedi";
 import { callbackify } from "util";
 import {mqttClient} from "../mqtt"
 import {MQTT_BRAND, MQTT_BROKER} from "../config";
+import { INSPECT_MAX_BYTES } from "buffer";
 
 @ObjectType()
-class environmentUnit{
+class EnvironmentUnit{
     @Field(()=>[Number])
     data?: number[];
     @Field(()=>Number)
@@ -16,12 +17,20 @@ class environmentUnit{
     updateTime?: Date[]
 }
 @ObjectType()
-class rainUnit{
+class RainUnit{
     @Field(()=>[Boolean])
     data: boolean[];
     @Field(()=>[Date])
     updateTime?: Date[]
 }
+export enum CylinderStatus{
+    UP = 'up',
+    DOWN = 'down',
+    STOP = 'stop'
+}
+registerEnumType(CylinderStatus, {
+    name: "CylinderStatus",
+})
 @ObjectType()
 export class BorderDevice  {
     @Field(() => ID)
@@ -30,26 +39,26 @@ export class BorderDevice  {
     @Field({ nullable: true })
     name: string;
     
-	@Field(()=>environmentUnit)
-    temperature: environmentUnit;
+	@Field(()=>EnvironmentUnit)
+    temperature: EnvironmentUnit;
     
-	@Field(()=>environmentUnit)
-    humidity: environmentUnit;
+	@Field(()=>EnvironmentUnit)
+    humidity: EnvironmentUnit;
     
 	@Field()
-    rain: rainUnit;
+    rain: RainUnit;
 
-	@Field(()=>environmentUnit)
-    dust: environmentUnit;
+	@Field(()=>EnvironmentUnit)
+    dust: EnvironmentUnit;
     
-	@Field(()=>environmentUnit)
-    coGas: environmentUnit
+	@Field(()=>EnvironmentUnit)
+    coGas: EnvironmentUnit
     
-	@Field(()=>environmentUnit)
-    soilHumid: environmentUnit;
+	@Field(()=>EnvironmentUnit)
+    soilHumid: EnvironmentUnit;
 
-    @Field()
-    cylinder: boolean;
+    @Field(()=>CylinderStatus)
+    cylinder: CylinderStatus;
 
     @Field()
     alert: boolean
@@ -70,26 +79,26 @@ class BorderDeviceCreateInput {
     @Field()
     name: string;
 
-	@Field(()=>environmentUnit,{ nullable: true })
-    temperature: environmentUnit;
+	@Field(()=>EnvironmentUnit,{ nullable: true })
+    temperature: EnvironmentUnit;
     
-	@Field(()=>environmentUnit,{ nullable: true })
-    humidity: environmentUnit;
+	@Field(()=>EnvironmentUnit,{ nullable: true })
+    humidity: EnvironmentUnit;
     
 	@Field({ nullable: true })
-    rain: rainUnit;
+    rain: RainUnit;
 
-	@Field(()=>environmentUnit,{ nullable: true })
-    dust: environmentUnit;
+	@Field(()=>EnvironmentUnit,{ nullable: true })
+    dust: EnvironmentUnit;
     
-	@Field(()=>environmentUnit,{ nullable: true })
-    coGas: environmentUnit;
+	@Field(()=>EnvironmentUnit,{ nullable: true })
+    coGas: EnvironmentUnit;
     
-	@Field(()=>environmentUnit,{ nullable: true })
-    soilHumid: environmentUnit;
+	@Field(()=>EnvironmentUnit,{ nullable: true })
+    soilHumid: EnvironmentUnit;
 
-    @Field({ nullable: true })
-    cylinder: boolean;
+    @Field(()=>CylinderStatus, { nullable: true })
+    cylinder: CylinderStatus;
 
     @Field()
     alert: boolean
@@ -112,26 +121,26 @@ class BorderDeviceUpdateInput {
     @Field({ nullable: true })
     name: string;
 
-	@Field(()=>environmentUnit, { nullable: true })
-    temperature: environmentUnit;
+	@Field(()=>EnvironmentUnit, { nullable: true })
+    temperature: EnvironmentUnit;
     
-	@Field(()=>environmentUnit, { nullable: true })
-    humidity: environmentUnit;
+	@Field(()=>EnvironmentUnit, { nullable: true })
+    humidity: EnvironmentUnit;
     
 	@Field({ nullable: true })
-    rain: rainUnit;
+    rain: RainUnit;
 
-	@Field(()=>environmentUnit, { nullable: true })
-    dust: environmentUnit;
+	@Field(()=>EnvironmentUnit, { nullable: true })
+    dust: EnvironmentUnit;
     
-	@Field(()=>environmentUnit, { nullable: true })
-    coGas: environmentUnit;
+	@Field(()=>EnvironmentUnit, { nullable: true })
+    coGas: EnvironmentUnit;
     
-	@Field(()=>environmentUnit, { nullable: true })
-    soilHumid: environmentUnit;
+	@Field(()=>EnvironmentUnit, { nullable: true })
+    soilHumid: EnvironmentUnit;
 
-    @Field({ nullable: true })
-    cylinder:boolean
+    @Field(()=>CylinderStatus, { nullable: true })
+    cylinder: CylinderStatus;
 
     @Field()
     alert: boolean
@@ -206,7 +215,7 @@ export class BorderDevices {
                     soilHumid: {
                         threshold: 1000
                     }, 
-                    cylinder: true,
+                    cylinder: CylinderStatus.STOP,
                     alert: false,
                 });
         console.log("Current status:")
@@ -361,15 +370,18 @@ export class BorderDevices {
                     console.error("Du lieu location khong hop le!");
                 break;
             case 'cylinder':
-                let cylinderStatus = (payload=='true')?true:false;
-                device.updateOne({name: BorderDeviceName}, {$set: {cylinder: cylinderStatus}}, (err, result)=>{
-                    if (err)
-                    {
-                        console.log(err);
-                        return err;
-                    }
-                    console.log("Cylinder Status updated!");
-                })
+                if ((<any>Object).values(CylinderStatus).includes(payload))
+                    device.updateOne({name: BorderDeviceName}, {$set: {cylinder: payload}}, (err, result)=>{
+                        if (err)
+                        {
+                            console.log(err);
+                            return err;
+                        }
+                        console.log("Cylinder Status updated!");
+                    });
+                else{
+                    console.error("CylinderStatus khong hop le!");
+                }
                 break;
             case 'alert':
                 let alertStatus = (payload=='true')?true:false;
@@ -393,7 +405,7 @@ export class BorderDevices {
     }
 
     @Mutation(()=>BorderDevice)
-    async cylinderUp(@Arg("id") id: string) {
+    async updateCyllinderStatus(@Arg("id") id: string, @Arg("status") status: CylinderStatus) {
         const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");
@@ -401,39 +413,16 @@ export class BorderDevices {
             }
         // publish mqtt mesage
         let publishTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/cylinder" 
-        mqttClient.publish(publishTopic, "true", {qos: 2})
+        mqttClient.publish(publishTopic, status, {qos: 2});
         
         const device = this.db.collection("BorderDevices");
-        device.updateOne({ _id: id},{$set: {cylinder: true}}, (err, result)=>{
+        device.updateOne({ _id: id},{$set: {cylinder: status}}, (err, result)=>{
             if (err)
             {
                 console.log(err);
                 return err;
             }
-            console.log("Cylinder Up!");
-        })
-        return existDevice;
-    }
-
-    @Mutation(()=>BorderDevice)
-    async cylinderDown(@Arg("id") id: string) {
-        const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
-        if (!existDevice){
-                console.error("Khong tim thay thiet bi!");
-                return {}
-            }
-        // publish mqtt mesage
-        let publishTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/cylinder" 
-        mqttClient.publish(publishTopic, "false", {qos: 2})
-        
-        const device = this.db.collection("BorderDevices");
-        device.updateOne({ _id: id},{$set: {cylinder: false}}, (err, result)=>{
-            if (err)
-            {
-                console.log(err);
-                return err;
-            }
-            console.log("Cylinder Down!");
+            console.log("Cylinder updated!");
         })
         return existDevice;
     }
