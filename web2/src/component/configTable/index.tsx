@@ -1,30 +1,24 @@
+import { DocumentNode } from "graphql";
 import { Device } from "../devices";
 import SlideItem from "./slideItem";
 
-const Properties = [
-    {
-        label: "Nhiệt độ nước (°C)",
-        value: "temperature",
-    },
-    {
-        label: "Nồng độ O2 trong nước (ppm)",
-        value: "o2Gas",
-    },
-    {
-        label: "Độ pH",
-        value: "pH",
-    }
-];
+export interface Property {
+    label: string,
+    value: string,
+    marks?: any,
+    apiKey: DocumentNode,
+}
 
 interface configTableProps {
     data: Device;
+    properties: Property[];
 }
 
 const ConfigTable = (props: configTableProps) => {
-    const { data } = props;
+    const { data, properties } = props;
     return (
         <div>
-            {Properties.map(property => (
+            {properties.map(property => (
                 <SlideItem data={data} property={property}/>    
             ))}
         </div>

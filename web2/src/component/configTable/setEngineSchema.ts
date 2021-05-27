@@ -8,10 +8,10 @@ export const ENVIRONMENT_FEEDING_UNIT = gql`
     }
 `;
 
-export const GET_FEEDING_DEVICES = gql`
+export const SET_FOOT_CAN = gql`
     ${ENVIRONMENT_FEEDING_UNIT}
-    query getFeedingDevices {
-        getFeedingDevices {
+    mutation SetFootCan($value: Float!, $id: String!) {
+        setFootCan(value: $value, id: $id) {
             _id
             name 
             temperature {
@@ -30,9 +30,10 @@ export const GET_FEEDING_DEVICES = gql`
     }
 `;
 
-export const CREATE_FEEDING_DEVICE = gql`
-    mutation CreateFeedingDevice($input: FeedingDeviceCreateInput) {
-        createFeedingDevice(input: $input) {
+export const SET_FOOT_TRAY = gql`
+    ${ENVIRONMENT_FEEDING_UNIT}
+    mutation SetFootTray($value: Float!, $id: String!) {
+        setFootTray(value: $value, id: $id) {
             _id
             name 
             temperature {
@@ -51,9 +52,10 @@ export const CREATE_FEEDING_DEVICE = gql`
     }
 `;
 
-export const UPDATE_FEEDING_DEVICE = gql`
-    mutation UpdateFeedingDevice($input: FeedingDeviceUpdateInput) {
-        updateFeedingDevice(input: $input) {
+export const SET_FAN = gql`
+    ${ENVIRONMENT_FEEDING_UNIT}
+    mutation SetFan($value: Float!, $id: String!) {
+        setFan(value: $value, id: $id) {
             _id
             name 
             temperature {
