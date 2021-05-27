@@ -2,129 +2,71 @@ import { useContext, useEffect, useState } from "react";
 import { Form, FormGroup } from "react-bootstrap"
 import { DeviceContext } from "../../App";
 import { dataProps } from "../../components/map";
-import { Bar, Line } from "react-chartjs-2";
 import { DatePicker } from "antd";
 import moment from "moment";
+import ThresholdSlideItem from "./thresholdSlide";
+import "./index.scss"
+import BaseGraph from "./baseGraph";
+const Marks = {
+    "0": "0",
+    "100": {
+        style: {
+            color: '#f50',
+        },
+        label: <strong>100</strong>,
+    },
+    "50": {
+        style: {
+            color: '#d4d106',
+        },
+        label: <strong>50</strong>,
+    },
+}
 
-const Property = [
+const Properties = [
     {
         label: "Nhiệt độ (°C)",
-        value: "temperature"
+        value: "temperature",
+        marks: Marks,
     },
     {
         label: "Độ ẩm (%)",
-        value: "humidity"
+        value: "humidity",
+        marks: Marks,
     },
     {
         label: "Mưa",
-        value: "rain"
+        value: "rain",
+        marks: Marks,
     },
     {
         label: "Độ bụi (mg/m3)",
-        value: "dust"
+        value: "dust",
+        marks: Marks,
     },
     {
         label: "Nồng độ CO (ppm)",
-        value: "coGas"
+        value: "coGas",
+        marks: Marks,
     },
     {
         label: "Độ ẩm đất (%)",
-        value: "soilHumid"
+        value: "soilHumid",
+        marks: Marks,
     },
-    // {
-    //     label: "Báo động",
-    //     value: "alert"
-    // },
 ]
-
-interface BaseGraphProps {
-    data: any;
-    startDate: Date;
-    endDate: Date;
-    property: {
-        label: string,
-        value: string,
-    };
-}
-
-const BaseGraph = (props: BaseGraphProps) => {
-    const { data, startDate, endDate, property } = props;
-    let showData: any[] = [], showLabels: any[] = [];
-    if(data && startDate && endDate) {
-        data[property.value].updateTime.forEach((time: any, index: number) => {
-            if(time <= new Date(endDate).toISOString() && time >= new Date(startDate).toISOString()) {
-                showLabels.push(new Date(time).toLocaleString())
-                showData.push(data[property.value].data[index]);
-            }
-        });
-    }
-
-    const state = {
-        labels: showLabels,
-        datasets: [
-            {
-                // lineTension: 0.5,
-                label: property.label,
-                backgroundColor: '#00d9ff',
-                borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
-                data: showData,
-            }
-        ]
-    }
-
-    
-    return (
-        <div>
-            <Bar
-                style={{margin: "100px"}}
-                height={300}
-                width={1000}
-                data={state}
-                options={{
-                    plugins: {
-                        title:{
-                            display:true,
-                            text: `Biểu đồ ${property.label}`,
-                            font: {
-                                size: 30
-                            },
-                            padding: 20
-                        },
-                        legend:{
-                            display:true,
-                            position:'bottom',
-                        },               
-                    },
-                    // scales: {
-                    //     y: {
-                    //         title: "jfjfjf",
-                    //         ticks: {
-                    //             // Include a dollar sign in the ticks
-                    //             callback: function(value: any) {
-                    //                 return '$' + value;
-                    //             }
-                    //         }
-                    //     }
-                    // }
-                }}
-                type="bar"
-            />
-        </div>
-    )
-}
 
 const StatisticsRoute = () => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
     const { data } = deviceState;
     const [ deviceIdChoose, setDeviceIdChoose ] = useState(0); 
-    const [ propertyChoose, setPropertyChoose ] = useState(Property[0]);
+    const [ propertyChoose, setPropertyChoose ] = useState(Properties[0]);
     const handleDeviceChange = (e: any) => {
         setDeviceIdChoose(e.target.value)
     }
 
     const handlePropertyChange = (e: any) => {
-        setPropertyChoose(Property[e.target.value])
+        setPropertyChoose(Properties[e.target.value])
     }
     const [ startDate, setStartDate ] = useState<any>(null);
     const [ endDate, setEndDate ] = useState<any>(null);    
@@ -150,56 +92,66 @@ const StatisticsRoute = () => {
     }
 
     return (
-        <div className="p-3">
-            <Form className="d-flex flex-row justify-content-center">
-                <FormGroup className="px-5">
-                    <Form.Label>Chọn thiết bị</Form.Label>
-                    <Form.Control
-                        as="select"
-                        type="name"
-                        placeholder="Name"
-                        className=""
-                        onChange={handleDeviceChange}
-                    >
-                        {data && data.map((device: dataProps, index: number) => (
-                            <option key={device._id} value={index}>{device.name}</option>
-                        ))}
-                    </Form.Control>
-                </FormGroup>
-                <FormGroup className="px-5">
-                    <Form.Label>Chọn thông số</Form.Label>
-                    <Form.Control
-                        as="select"
-                        type="property"
-                        placeholder="Property"
-                        className=""
-                        onChange={handlePropertyChange}
-                    >
-                        {Property.map((property: any, index: number) => (
-                            <option key={property.label} value={index}>{property.label}</option>
-                        ))}
-                    </Form.Control>
-                </FormGroup>
-                <FormGroup className="px-5">
-                    <Form.Label>Chọn khoảng thời gian</Form.Label>
-                    <Form.Text>
-                        <DatePicker.RangePicker 
-                            showTime
-                            disabledDate={disabledDate}
-                            onChange={handleOnChangeDate}
-                            onOk={onOk}
-                        />
-                    </Form.Text>
-                </FormGroup>
-            </Form>
-            {data && (
-                <BaseGraph 
-                    data={data[deviceIdChoose]} 
-                    startDate={startDate}
-                    endDate={endDate}
-                    property={propertyChoose}
-                />
-            )}
+        <div className="d-flex flex-row justify-content-center">
+            <div className="p-3 graphContainer">
+                <Form className="d-flex flex-row justify-content-center">
+                    <FormGroup className="px-5">
+                        <Form.Label>Chọn thiết bị</Form.Label>
+                        <Form.Control
+                            as="select"
+                            type="name"
+                            placeholder="Name"
+                            className=""
+                            onChange={handleDeviceChange}
+                        >
+                            {data && data.map((device: dataProps, index: number) => (
+                                <option key={device._id} value={index}>{device.name}</option>
+                            ))}
+                        </Form.Control>
+                    </FormGroup>
+                    <FormGroup className="px-5">
+                        <Form.Label>Chọn thông số</Form.Label>
+                        <Form.Control
+                            as="select"
+                            type="property"
+                            placeholder="Property"
+                            className=""
+                            onChange={handlePropertyChange}
+                        >
+                            {Properties.map((property: any, index: number) => (
+                                <option key={property.label} value={index}>{property.label}</option>
+                            ))}
+                        </Form.Control>
+                    </FormGroup>
+                    <FormGroup className="px-5">
+                        <Form.Label>Chọn khoảng thời gian</Form.Label>
+                        <Form.Text>
+                            <DatePicker.RangePicker 
+                                showTime
+                                disabledDate={disabledDate}
+                                onChange={handleOnChangeDate}
+                                onOk={onOk}
+                            />
+                        </Form.Text>
+                    </FormGroup>
+                </Form>
+                {data && (
+                    <BaseGraph
+                        data={data[deviceIdChoose]} 
+                        startDate={startDate}
+                        endDate={endDate}
+                        property={propertyChoose}
+                    />
+                )}
+            </div>
+            <div className="setThresholdContainer">
+                {data && data[deviceIdChoose] && (
+                    <ThresholdSlideItem
+                        data={data[deviceIdChoose]}
+                        property={propertyChoose}
+                    />
+                )}
+            </div>
         </div>
     )
 }

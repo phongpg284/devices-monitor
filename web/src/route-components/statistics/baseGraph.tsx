@@ -7,14 +7,12 @@ interface BaseGraphProps {
     property: {
         label: string,
         value: string,
-        marks?: any,
     };
 }
 
 const BaseGraph = (props: BaseGraphProps) => {
     const { data, startDate, endDate, property } = props;
     let showData: any[] = [], showLabels: any[] = [];
-    
     if(data && startDate && endDate) {
         data[property.value].updateTime.forEach((time: any, index: number) => {
             if(time <= new Date(endDate).toISOString() && time >= new Date(startDate).toISOString()) {
@@ -77,4 +75,5 @@ const BaseGraph = (props: BaseGraphProps) => {
         </div>
     )
 }
+
 export default BaseGraph;

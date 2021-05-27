@@ -59,7 +59,6 @@ const StatisticsRoute = () => {
 
     useEffect(() => {
         if(data && data[0] && !startDate && !endDate) {
-            console.log((data[deviceIdChoose][propertyChoose.value] as any));
             setStartDate((data[deviceIdChoose][propertyChoose.value] as any).updateTime[0].toLocaleString());
             setEndDate((data[deviceIdChoose][propertyChoose.value] as any).updateTime[(data[deviceIdChoose][propertyChoose.value]as any).updateTime.length-1].toLocaleString())
         }

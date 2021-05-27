@@ -6,7 +6,8 @@ import { dataProps } from "../map";
 
 export interface environmentUnit {
     data: any[],
-    threshold: Date,
+    threshold: number,
+    updateTime: Date[]
 }
 export interface Device {
     _id: string,
@@ -15,13 +16,16 @@ export interface Device {
     long: number[],
     temperature: environmentUnit,
     humidity: environmentUnit,
-    rain: boolean,
+    rain: {
+        data: boolean[],
+        updateTime: Date[],
+    },
     dust: environmentUnit,
     coGas: environmentUnit,
     soilHumid: environmentUnit,
     cylinder: boolean,
     alert: boolean,
-    updateTime: Date[],
+    locationUpdateTime: Date[],
 }
 
 interface DeviceItemProps {

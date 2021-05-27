@@ -1,9 +1,8 @@
 import "./index.scss"
 import { Button, Col, InputNumber, Modal, Row, Slider } from "antd";
 import { useEffect, useState } from "react";
-import { Device } from "../devices";
 import { useMutation } from "@apollo/client";
-import { SET_THRESHOLD } from "./setThresholdSchema";
+import { Device } from "../../components/devices";
 interface ThresholdSlideItemProps {
     data: Device,
     property: {
@@ -15,7 +14,8 @@ interface ThresholdSlideItemProps {
 
 const ThresholdSlideItem = (props: ThresholdSlideItemProps) => {
     const { data, property } = props;
-    const [ updateThreshold ] = useMutation(SET_THRESHOLD);
+    console.log(data,property)
+    // const [ updateThreshold, { data: updatedData }] = useMutation(SET_THRESHOLD);
     const [ inputValue, setInputValue ] = useState((data as any)[property.value].threshold);
     const formatter = (value: any) => `${value}%`
     const [ isDisableButton, setIsDisableButton ] = useState(true);
@@ -39,13 +39,13 @@ const ThresholdSlideItem = (props: ThresholdSlideItemProps) => {
             content: `${property.label} thay đổi chỉ số từ ${(data as any)[property.value].threshold} thành ${inputValue}`,
             onOk() {
                 setIsDisableButton(true);
-                updateThreshold({
-                    variables: {
-                        value: inputValue,
-                        id: data._id,
-                        property: property.value,
-                    }
-                });
+                // updateThreshold({
+                //     variables: {
+                //         value: inputValue,
+                //         id: data._id,
+                //         property: property.value,
+                //     }
+                // });
             },
             onCancel() {
             },
