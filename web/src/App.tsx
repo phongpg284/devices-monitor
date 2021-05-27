@@ -5,17 +5,15 @@ import {
   useQuery,
 } from "@apollo/client";
 import { createContext, useEffect, useState } from "react";
-import { BrowserRouter, Route, Router, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
-import Chart from "./components/charts";
-import DeviceList, { fakeData } from "./components/devices";
-import { GET_DEVICES } from "./components/devices/schema";
+import { GET_BORDER_DEVICES } from "./components/devices/schema";
 import Header from "./components/header";
 import Home from "./route-components/home";
-import Map from "./components/map";
-import { deviceProps } from "./components/map/deviceMarker";
-import Statistic from "./components/statistic";
+import { Device } from "./components/devices/index";
 import DeviceRoute from "./route-components/devices";
+import StatisticsRoute from "./route-components/statistics";
+
 export const DeviceContext = createContext({
   deviceState: {
     data: [],
@@ -25,8 +23,8 @@ export const DeviceContext = createContext({
 });
 
 function App() {
-  const { data } = useQuery(GET_DEVICES, {
-    pollInterval: 1000,
+  const { data } = useQuery(GET_BORDER_DEVICES, {
+    // pollInterval: 1000,
   });
   const [deviceState, setDeviceState] = useState({
     data: [],
@@ -34,10 +32,11 @@ function App() {
   });
 
   useEffect(() => {
-    const updateData = data?.getDevices.map((device: deviceProps) => ({
+    const updateData = data?.getBorderDevices.map((device: Device) => ({
       ...device,
       highlight: false,
     }));
+    console.log(updateData)
     setDeviceState({
       data: updateData,
       hoveredId: "",
@@ -54,6 +53,9 @@ function App() {
               <Switch>
                 <Route path="/devices">
                   <DeviceRoute/>
+                </Route>
+                <Route path="/statistics">
+                  <StatisticsRoute/>
                 </Route>
                 <Route path="/">
                   <Home />

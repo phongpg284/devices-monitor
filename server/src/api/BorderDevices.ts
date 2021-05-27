@@ -7,6 +7,7 @@ import {mqttClient} from "../mqtt"
 import {MQTT_BRAND, MQTT_BROKER} from "../config";
 import { INSPECT_MAX_BYTES } from "buffer";
 
+@InputType("environmentUnitInput")
 @ObjectType()
 class EnvironmentUnit{
     @Field(()=>[Number])
@@ -16,6 +17,7 @@ class EnvironmentUnit{
     @Field(()=>[Date])
     updateTime?: Date[]
 }
+@InputType("rainUnitInput")
 @ObjectType()
 class RainUnit{
     @Field(()=>[Boolean])
@@ -112,49 +114,6 @@ class BorderDeviceCreateInput {
     @Field(()=>[Date])
     locationUpdateTime?: Date[];
 }
-
-@InputType()
-class BorderDeviceUpdateInput {
-    @Field(() => ID)
-    _id: string;
-
-    @Field({ nullable: true })
-    name: string;
-
-	@Field(()=>EnvironmentUnit, { nullable: true })
-    temperature: EnvironmentUnit;
-    
-	@Field(()=>EnvironmentUnit, { nullable: true })
-    humidity: EnvironmentUnit;
-    
-	@Field({ nullable: true })
-    rain: RainUnit;
-
-	@Field(()=>EnvironmentUnit, { nullable: true })
-    dust: EnvironmentUnit;
-    
-	@Field(()=>EnvironmentUnit, { nullable: true })
-    coGas: EnvironmentUnit;
-    
-	@Field(()=>EnvironmentUnit, { nullable: true })
-    soilHumid: EnvironmentUnit;
-
-    @Field(()=>CylinderStatus, { nullable: true })
-    cylinder: CylinderStatus;
-
-    @Field()
-    alert: boolean
-    
-    @Field(()=>[Number],{ nullable: true })
-    lat: number[];
-
-	@Field(()=>[Number],{ nullable: true })
-    long: number[];
-
-    @Field(()=>[Date])
-    locationUpdateTime: Date[];
-}
-
 interface LocationDataType{
     long: number,
     lat: number,

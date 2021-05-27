@@ -3,71 +3,33 @@ import './devices.scss'
 import { useContext, useEffect, useState } from "react";
 import { DeviceContext } from "../../App";
 import { dataProps } from "../map";
-export const fakeData = [
-    {
-        _id: 1,
-        name: "device1",
-        lat: 21.043851,
-        lng: 105.837026,
-        temperature: 1,
-        humidity: 1,
-        rain: true,
-        dust: 1,
-        coGas: 1,
-        soilHumid: 1,
-    },
-    {
-        _id: 2,
-        name: "device2",
-        lat: 21.043810,
-        lng: 105.839026,
-        temperature: 2,
-        humidity: 2,
-        rain: true,
-        dust: 2,
-        coGas: 2,
-        soilHumid: 2,
-    },
-    {
-        _id: 3,
-        name: "device3",
-        lat: 21.043820,
-        lng: 105.838026,
-        temperature: 3,
-        humidity: 3,
-        rain: true,
-        dust: 3,
-        coGas: 3,
-        soilHumid: 3,
-    },
-    {
-        _id: 4,
-        name: "device4",
-        lat: 21.043170,
-        lng: 105.838026,
-        temperature: 4,
-        humidity: 4,
-        rain: false,
-        dust: 4,
-        coGas: 4,
-        soilHumid: 4,
-    },
-]
 
-interface deviceProps {
-    _id: number,
+export interface environmentUnit {
+    data: any[],
+    threshold: Date,
+}
+export interface Device {
+    _id: string,
     name: string,
-    lat: number,
-    lng: number,
-    temperature?: number,
-    humidity?: number,
-    rain?: boolean,
-    dust?: number,
-    coGas?: number,
-    soilHumid?: number,
+    lat: number[],
+    long: number[],
+    temperature: environmentUnit,
+    humidity: environmentUnit,
+    rain: boolean,
+    dust: environmentUnit,
+    coGas: environmentUnit,
+    soilHumid: environmentUnit,
+    cylinder: boolean,
+    alert: boolean,
+    updateTime: Date[],
 }
 
-const DeviceItem = (props: any) => {
+interface DeviceItemProps {
+    data: dataProps,
+    hover: boolean,
+}
+
+const DeviceItem = (props: DeviceItemProps) => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
     const { data, hover } = props;
     const [ isCollapse, setIsCollapse ] = useState(false);
@@ -128,23 +90,23 @@ const DeviceItem = (props: any) => {
                 onClick={handleToggle}
                 id={data._id}
             >
-                <Card className="device-item" id={data._id} style={{backgroundColor: hover? "#979ea3": ""}}>
-                    <Card.Text as="div" className="d-flex justify-content-space-between align-items-center" id={props._id}>
+                <Card className="device-item justify-content-flex-start" id={data._id} style={{backgroundColor: hover? "#979ea3": ""}}>
+                    <Card.Text as="div" className="d-flex p-2 justify-content-space-between align-items-center" id={data._id}>
                         <i 
-                            className="bi-wifi px-2"
-                            style={{fontSize: "2vw"}}
+                            className="bi-wifi px-3 align-self-center"
+                            style={{fontSize: "2.2vw"}}
                         />
-                        <div>
+                        <div className="my-3">
                             <h1 
-                                style={{fontSize: "2vw"}}
+                                style={{fontSize: "2.2vw"}}
                                 className="mx-3 d-flex align-self-left"
                             >
                                 {data.name}
                             </h1>
                             <h4 
-                                style={{fontSize: "0.8vw", paddingTop:"4px"}}
+                                style={{fontSize: "0.9vw", paddingTop:"4px"}}
                             >
-                                Vị trí: {data.lat}, {data.lng}
+                                Vị trí: {data.lat[0]}, {data.long[0]}
                             </h4>
                         </div>  
                         <div className="d-flex flex-column justify-content-center ml-auto mx-2">
@@ -161,26 +123,34 @@ const DeviceItem = (props: any) => {
                         </div>
                         <Button 
                             variant="danger"
-                            className="d-flex mx-1"
+                            className="d-flex mx-4"
                             onClick={handleAlert}
                         >
                             Alert
                         </Button>
-                    </Card.Text>                
+                    {isCollapse && 
+                        <i className="fa fa-sort-desc ml-auto mx-2 align-self-start pin" />                
+                    }
+                    {!isCollapse && 
+                        <i className="fa fa-sort-up ml-auto mx-2 align-self-start pin" />                
+                    }
+                    </Card.Text>
                 </Card>
             </Accordion.Toggle>
-            <Accordion.Collapse className="device-toogle" eventKey={data._id}>
+            <Accordion.Collapse className="device-collapse" eventKey={data._id}>
                 <Card className="device-collapse-content">
                     <Card.Body className="d-flex flex-row px-1">
                         <ul>
-                            <li>Nhiệt độ: {data.temperature} C</li>
-                            <li>Độ ẩm: {data.humidity} %</li>
+                            <li>Nhiệt độ: {data.temperature.data[0]} C</li>
+                            <li>Độ ẩm: {data.humidity.data[0]} %</li>
                             <li>Mưa: {data.rain ? `Có`: `Không`}</li>
+                            <li>Độ bụi:: {data.dust.data} mg/m3</li>
                         </ul>    
                         <ul className="pr-4">
-                            <li>Độ bụi:: {data.dust} mg/m3</li>
-                            <li>Nồng độ CO: {data.coGas} ppm</li>
-                            <li>Độ ẩm đất: {data.soilHumid} %</li>
+                            <li>Nồng độ CO: {data.coGas.data[0]} ppm</li>
+                            <li>Độ ẩm đất: {data.soilHumid.data[0]} %</li>
+                            <li>Xilanh: {data.cylinder? `Lên`: `Xuống`}</li>
+                            <li>Báo động: {data.alert ? `Có` : `Không`}</li>
                         </ul>
                     </Card.Body>
 
