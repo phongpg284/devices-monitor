@@ -4,7 +4,7 @@ const Statistic = (props: any) => {
     const { data } = props;
     const totalDevices = data?.data?.length;
     const alertDevices = data?.data?.filter((device: any) => device?.alert === true).length;
-    const workingDevices = totalDevices - alertDevices;
+    const workingDevices = (totalDevices && alertDevices)? totalDevices - alertDevices : 0;
 
     return (
         <div className="d-flex flex-row justify-content-center statistic-header">

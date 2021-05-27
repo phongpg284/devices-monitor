@@ -36,7 +36,6 @@ function App() {
       ...device,
       highlight: false,
     }));
-    console.log(updateData)
     setDeviceState({
       data: updateData,
       hoveredId: "",
