@@ -1,8 +1,12 @@
-import { Accordion, Button, Card, Form, FormControl } from "react-bootstrap";
+import { Accordion, Card, Form, FormControl } from "react-bootstrap";
+import { Button } from "antd"
+import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import './devices.scss'
 import { useContext, useEffect, useState } from "react";
 import { DeviceContext } from "../../App";
 import { dataProps } from "../map";
+import { useMutation } from "@apollo/client";
+import { CYLINDER_DOWN, CYLINDER_UP, SEND_ALERT } from "./commandSchema";
 
 export interface environmentUnit {
     data: any[],
@@ -35,8 +39,14 @@ interface DeviceItemProps {
 
 const DeviceItem = (props: DeviceItemProps) => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
+    const [ cylinderUp ] = useMutation(CYLINDER_UP);
+    const [ cylinderDown ] = useMutation(CYLINDER_DOWN);
+    const [ sendAlert ] = useMutation(SEND_ALERT);
+
     const { data, hover } = props;
     const [ isCollapse, setIsCollapse ] = useState(false);
+    const [ isAlert, setIsAlert ] = useState(data.alert);
+    
     const handleToggle = () => {
         setIsCollapse(!isCollapse);
     }
@@ -56,16 +66,31 @@ const DeviceItem = (props: DeviceItemProps) => {
     }, [isCollapse]);
 
     const handleClickUp = (e: any) => {
-        //TODO: do sth
         e.stopPropagation();
+        cylinderUp({
+            variables: {
+                id: data._id
+            }
+        })
     }
 
     const handleClickDown = (e: any) => {
         e.stopPropagation();
+        cylinderDown({
+            variables: {
+                id: data._id
+            }
+        })
     }
 
     const handleAlert = (e: any) => {
         e.stopPropagation();
+        sendAlert({
+            variables: {
+                id: data._id
+            }
+        })
+        setIsAlert(true);
     }
 
     const handleHover = (e: any) => { 
@@ -114,20 +139,22 @@ const DeviceItem = (props: DeviceItemProps) => {
                             </h4>
                         </div>  
                         <div className="d-flex flex-column justify-content-center ml-auto mx-2">
-                            <i 
-                                className="bi-caret-up-square"
-                                style={{fontSize: "2rem"}} 
+                            <Button 
                                 onClick={handleClickUp}
-                            />            
-                            <i 
-                                className="bi-caret-down-square" 
-                                style={{fontSize: "2rem"}} 
+                                icon={<CaretUpOutlined />}
+                                size="large"
+                            />
+                            <Button 
                                 onClick={handleClickDown}
+                                icon={<CaretDownOutlined />}
+                                size="large"
                             />
                         </div>
-                        <Button 
-                            variant="danger"
-                            className="d-flex mx-4"
+                        <Button
+                            style={{ marginBottom: '16px' }}
+                            type="primary"
+                            danger
+                            disabled={isAlert}
                             onClick={handleAlert}
                         >
                             Alert
