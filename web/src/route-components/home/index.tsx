@@ -2,7 +2,7 @@ import { useContext } from "react"
 import { DeviceContext } from "../../App"
 import DeviceList from "../../components/devices"
 import Map from "../../components/map"
-import Statistic from "../../components/statistic"
+import Counter from "../../components/counter"
 import "./home.scss"
 
 const Home = () => {
@@ -13,7 +13,7 @@ const Home = () => {
               <Chart />
             </div> */}
             <div className="flex-grow-1 pt-1 middle-content d-flex flex-column justify-content-flex-start">
-              <Statistic data={deviceState}/>
+              <Counter data={deviceState}/>
               <Map
                 defaultCenter={{ lat: 21.04, lng: 105.83 }}
                 defaultZoom={15}

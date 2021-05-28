@@ -1,11 +1,24 @@
 .google-map {
-    max-height: 100vh;
-    min-height: 50vh;
     height: 100vh;
     padding: 5px;
 }
 
-.marker {
-    // display: inline-block;
+.marker-none {
     color: red;
+}
+
+.marker-blink {
+    color: red;
+    animation: blink 2s steps(5, start) infinite;
+    -webkit-animation: blink 1s steps(5, start) infinite;
+}
+@keyframes blink {
+    to {
+    visibility: hidden;
+    }
+}
+@-webkit-keyframes blink {
+    to {
+        visibility: hidden;
+    }
 }

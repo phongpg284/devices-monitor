@@ -30,7 +30,7 @@ const BaseGraph = (props: BaseGraphProps) => {
                 label: property.label,
                 backgroundColor: '#00d9ff',
                 borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
+                borderWidth: 1,
                 data: showData,
             }
         ]
@@ -40,8 +40,8 @@ const BaseGraph = (props: BaseGraphProps) => {
         <div>
             <Bar
                 style={{margin: "30px"}}
-                height={250}
-                width={450}
+                height={350}
+                width={500}
                 data={state}
                 options={{
                     plugins: {

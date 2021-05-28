@@ -8,7 +8,7 @@ import {MQTT_BRAND, MQTT_BROKER} from "../config";
 
 @InputType("environmentFeedingUnitInput")
 @ObjectType()
-class environmentFeedingUnit{
+class EnvironmentFeedingUnit{
     @Field(()=>[Number])
     data?: number[];
     @Field(()=>Number, {nullable:true})
@@ -25,16 +25,16 @@ export class FeedingDevice  {
     @Field({ nullable: true })
     name: string;
     
-    @Field(()=>environmentFeedingUnit)
-    temperature: environmentFeedingUnit;
+    @Field(() => EnvironmentFeedingUnit)
+    temperature: EnvironmentFeedingUnit;
     
-	@Field(()=>environmentFeedingUnit)
-    pH: environmentFeedingUnit;
+	@Field(() => EnvironmentFeedingUnit)
+    pH: EnvironmentFeedingUnit;
 
-    @Field(()=>environmentFeedingUnit)
-    o2Gas: environmentFeedingUnit;
+    @Field(() => EnvironmentFeedingUnit)
+    o2Gas: EnvironmentFeedingUnit;
 
-    @Field(()=>Number)
+    @Field(() => Number)
     footCan: number;
     
     @Field(()=>Number)
@@ -49,14 +49,14 @@ class FeedingDeviceCreateInput{
     @Field({ nullable: true })
     name: string;
     
-    @Field(()=>environmentFeedingUnit)
-    temperature: environmentFeedingUnit;
+    @Field(() => EnvironmentFeedingUnit)
+    temperature: EnvironmentFeedingUnit;
     
-	@Field(()=>environmentFeedingUnit)
-    pH: environmentFeedingUnit;
+	@Field(()=> EnvironmentFeedingUnit)
+    pH: EnvironmentFeedingUnit;
 
-    @Field(()=>environmentFeedingUnit)
-    o2Gas: environmentFeedingUnit;
+    @Field(() => EnvironmentFeedingUnit)
+    o2Gas: EnvironmentFeedingUnit;
 
     @Field(()=>Number, {nullable: true})
     footCan?: number;

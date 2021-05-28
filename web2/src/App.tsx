@@ -17,7 +17,7 @@ export const DeviceContext = createContext({
 
 function App() {
   const { data } = useQuery(GET_FEEDING_DEVICES, {
-    // pollInterval: 1000,
+    pollInterval: 10000,
   });
   const [deviceState, setDeviceState] = useState({data: []});
   

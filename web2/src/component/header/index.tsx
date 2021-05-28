@@ -21,10 +21,10 @@ const Header: React.FC = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto d-flex align-items-center">
-            <NavLink to="/" className="px-3">Home</NavLink>
-            <NavLink to="/devices" className="px-3">Thiết bị</NavLink>
-            <NavLink to="/statistics" className="px-3">Dữ liệu</NavLink>
-            <NavLink to="/about" className="px-3 mr-3">About</NavLink>
+            <NavLink to="/" className="px-3" style={{fontSize: "1.2rem"}}>Home</NavLink>
+            <NavLink to="/devices" className="px-3" style={{fontSize: "1.2rem"}}>Thiết bị</NavLink>
+            <NavLink to="/statistics" className="px-3" style={{fontSize: "1.2rem"}}>Dữ liệu</NavLink>
+            <NavLink to="/about" className="px-3 mr-3" style={{fontSize: "1.2rem"}}>About</NavLink>
           </Nav>
           <Form inline className="mr-5">
             <FormControl

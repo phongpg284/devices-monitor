@@ -8,7 +8,6 @@ const DeviceMarker = (props: any) => {
     const [ isHoverEffect, setIsHoverEffect ] = useState(false); 
     const { hover, $hover, highlight, data } = props;
     const [ show, setShow] = useState(false);
-    
     const ref = useRef(null);
 
     const handleClick = (event: any) => {
@@ -32,11 +31,10 @@ const DeviceMarker = (props: any) => {
         if(highlight)
         setIsHoverEffect(highlight);
     },[highlight])
-
     return (
         <div >
             <i 
-                className="fa fa-map-marker marker" 
+                className={`fa fa-map-marker marker-${data.alert? "blink":"none"}`} 
                 style={{ 
                     fontSize: "2.5em",
                     transform: (isHoverEffect||show)? "scale(1.5,1.5) translate(0,-7px)" : "none"

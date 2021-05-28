@@ -42,8 +42,8 @@ const BaseGraph = (props: BaseGraphProps) => {
         <div>
             <Bar
                 style={{margin: "30px"}}
-                height={250}
-                width={450}
+                height={350}
+                width={500}
                 data={state}
                 options={{
                     plugins: {

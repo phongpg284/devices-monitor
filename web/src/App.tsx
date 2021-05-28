@@ -19,7 +19,7 @@ export const DeviceContext = createContext({
 
 function App() {
   const { data } = useQuery(GET_BORDER_DEVICES, {
-    pollInterval: 1000,
+    pollInterval: 10000,
   });
   const [deviceState, setDeviceState] = useState({
     data: [],

@@ -364,7 +364,7 @@ export class BorderDevices {
     }
 
     @Mutation(()=>BorderDevice)
-    async updateCyllinderStatus(@Arg("id") id: string, @Arg("status") status: CylinderStatus) {
+    async updateCylinderStatus(@Arg("id") id: string, @Arg("status") status: CylinderStatus) {
         const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");

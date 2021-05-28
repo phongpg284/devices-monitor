@@ -1,5 +1,5 @@
 import { Accordion, Card, Form, FormControl } from "react-bootstrap";
-import { Button } from "antd"
+import { Button, Modal } from "antd"
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import './devices.scss'
 import { useContext, useEffect, useState } from "react";
@@ -38,18 +38,18 @@ interface DeviceItemProps {
     hover: boolean,
 }
 
-const DeviceItem = (props: DeviceItemProps) => {
+const DeviceItem:React.FC<DeviceItemProps> = (props: DeviceItemProps) => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
     const [ updateCylinder ] = useMutation(UPDATE_CYLINDER_STATUS);
     const [ sendAlert ] = useMutation(SEND_ALERT);
 
     const { data, hover } = props;
     const [ isCollapse, setIsCollapse ] = useState(false);
-    const [ isAlert, setIsAlert ] = useState(data.alert);
     
     const handleToggle = () => {
         setIsCollapse(!isCollapse);
     }
+    
     useEffect(() => {        
         const updateState = {
             hovereId: deviceState.hoveredId,
@@ -66,14 +66,22 @@ const DeviceItem = (props: DeviceItemProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isCollapse]);
 
-    const handleAlert = (e: any) => {
-        e.stopPropagation();
-        sendAlert({
-            variables: {
-                id: data._id
-            }
-        })
-        setIsAlert(true);
+    const { confirm } = Modal;
+    const showAlertConfirm = () => {
+        confirm({
+            title: 'Xác nhận báo động thiết bị',
+            content: `Báo động thiết bị ${data.name}`,
+            onOk() {
+                sendAlert({
+                    variables: {
+                        id: data._id
+                    }
+                })
+            },
+            onCancel() {
+            },
+        });
+        
     }
 
     const handleHover = (e: any) => { 
@@ -182,8 +190,8 @@ const DeviceItem = (props: DeviceItemProps) => {
                             style={{ marginBottom: '16px' }}
                             type="primary"
                             danger
-                            disabled={isAlert}
-                            onClick={handleAlert}
+                            disabled={data.alert}
+                            onClick={showAlertConfirm}
                         >
                             Alert
                         </Button>
