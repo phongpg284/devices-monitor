@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { DeviceContext } from "../../App";
 import { dataProps } from "../map";
 import { useMutation } from "@apollo/client";
-import { SEND_ALERT, UPDATE_CYLINDER_STATUS } from "./commandSchema";
+import { SEND_ALERT, UPDATE_BORDER_CYLINDER_STATUS } from "./commandSchema";
 import useLongPress from "./useLongPress";
 
 export interface environmentUnit {
@@ -40,7 +40,7 @@ interface DeviceItemProps {
 
 const DeviceItem:React.FC<DeviceItemProps> = (props: DeviceItemProps) => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
-    const [ updateCylinder ] = useMutation(UPDATE_CYLINDER_STATUS);
+    const [ updateCylinder ] = useMutation(UPDATE_BORDER_CYLINDER_STATUS);
     const [ sendAlert ] = useMutation(SEND_ALERT);
 
     const { data, hover } = props;

@@ -10,8 +10,8 @@ export const ENVIRONMENT_FEEDING_UNIT = gql`
 
 export const SET_THRESHOLD = gql`
     ${ENVIRONMENT_FEEDING_UNIT}
-    mutation SetThreshold($value: Float!, $property: String!, $id: String!) {
-        setThreshold(value: $value, property: $property, id: $id) {
+    mutation SetFeedingThreshold($value: Float!, $property: String!, $id: String!) {
+        setFeedingThreshold(value: $value, property: $property, id: $id) {
             _id
             name 
             temperature {
@@ -26,6 +26,7 @@ export const SET_THRESHOLD = gql`
             footCan
             footTray
             fan
+            cylinder
         }
     }
 `;

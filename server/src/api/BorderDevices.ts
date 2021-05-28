@@ -378,7 +378,7 @@ export class BorderDevices {
     }
 
     @Mutation(()=>BorderDevice)
-    async updateCylinderStatus(@Arg("id") id: string, @Arg("status") status: CylinderStatus) {
+    async updateBorderCylinderStatus(@Arg("id") id: string, @Arg("status") status: CylinderStatus) {
         const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");
@@ -437,7 +437,7 @@ export class BorderDevices {
     }
 
     @Mutation(()=>BorderDevice)
-    async setThreshold(@Arg("id") id: string, @Arg("property") property: string, @Arg("value") value: number){
+    async setBorderThreshold(@Arg("id") id: string, @Arg("property") property: string, @Arg("value") value: number){
         const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");

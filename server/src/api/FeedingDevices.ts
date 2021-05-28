@@ -257,7 +257,7 @@ export class FeedingDevices{
         return existDevice;
     }
     @Mutation(()=>FeedingDevice)
-    async setThreshold(@Arg("id") id: string, @Arg("property") property: string, @Arg("value") value: number){
+    async setFeedingThreshold(@Arg("id") id: string, @Arg("property") property: string, @Arg("value") value: number){
         const existDevice = await this.db.collection("FeedingDevices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");
@@ -368,7 +368,7 @@ export class FeedingDevices{
         return existDevice;
     }
     @Mutation(()=>FeedingDevice)
-    async updateCyllinderStatus(@Arg("id") id: string, @Arg("status") status: CylinderStatus) {
+    async updateFeedingCylinderStatus(@Arg("id") id: string, @Arg("status") status: CylinderStatus) {
         const existDevice = await this.db.collection("FeedingDevices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");
