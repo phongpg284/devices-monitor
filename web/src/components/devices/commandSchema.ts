@@ -8,44 +8,10 @@ export const ENVIRONMENT_UNIT = gql`
     }
 `;
 
-export const GET_BORDER_DEVICES = gql`
+export const SEND_ALERT = gql`
     ${ENVIRONMENT_UNIT}
-    query GetBorderDevices {
-        getBorderDevices {
-            _id
-            name 
-            lat
-            long
-            humidity {
-                ...EnvironmentUnit
-            }
-            temperature {
-                ...EnvironmentUnit
-            }
-            rain {
-                data
-                updateTime
-            } 
-            dust {
-                ...EnvironmentUnit
-            }
-            coGas {
-                ...EnvironmentUnit
-            }
-            soilHumid {
-                ...EnvironmentUnit
-            }
-            cylinder 
-            alert
-            locationUpdateTime
-        }
-    }
-`;
-
-export const CREATE_BORDER_DEVICE = gql`
-    mutation CreateBorderDevice($input: BorderDeviceCreateInput) {
-        ${ENVIRONMENT_UNIT}
-        createBorderDevice(input: $input) {
+    mutation SendAlert($id: String!) {
+        sendAlert(id: $id) {
             _id
             name 
             lat
@@ -76,10 +42,10 @@ export const CREATE_BORDER_DEVICE = gql`
     }
 `;
 
-export const UPDATE_BORDER_DEVICE = gql`
-    mutation UpdateBorderDevice($input: BorderDeviceUpdateInput) {
-        ${ENVIRONMENT_UNIT}
-        updateBorderDevice(input: $input) {
+export const UPDATE_CYLINDER_STATUS = gql`
+    ${ENVIRONMENT_UNIT}
+    mutation UpdateCylinderStatus($id: String!, $status: String!) {
+        updateCylinderStatus(id: $id, status: $status) {
             _id
             name 
             lat

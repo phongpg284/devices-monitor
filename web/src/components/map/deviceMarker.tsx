@@ -1,47 +1,17 @@
 import "./map.scss";
-import { Overlay, OverlayTrigger, Popover} from "react-bootstrap"
+import { Overlay, Popover} from "react-bootstrap"
 import { useContext, useEffect, useRef, useState } from "react";
 import { DeviceContext } from "../../App";
-
-export interface deviceProps {
-    _id: string;
-    name: string;
-    lat: number;
-    lng: number;
-    temperature?: number;
-    humidity?: number;
-    rain?: boolean;
-    dust?: number;
-    coGas?: number;
-    soilHumid?: number;
-}
-const DevicePopover = (device: Partial<deviceProps>) => {
-    return (
-        <Popover id="popover-device">
-            <Popover.Title>
-                {device.name}
-            </Popover.Title>
-            <Popover.Content>
-                {device.lat}
-                ,
-                {device.lng}
-            </Popover.Content>
-        </Popover>
-    )
-}
 
 const DeviceMarker = (props: any) => {   
     const { deviceState, setDeviceState } = useContext(DeviceContext)
     const [ isHoverEffect, setIsHoverEffect ] = useState(false); 
     const { hover, $hover, highlight, data } = props;
     const [ show, setShow] = useState(false);
-    // const [ target, setTarget] = useState(null);
-    
     const ref = useRef(null);
 
     const handleClick = (event: any) => {
         setShow(!show);
-        // setTarget(event.target);
     }
 
     useEffect(() => {
@@ -50,6 +20,7 @@ const DeviceMarker = (props: any) => {
             ...deviceState,
             hoveredId: $hover ? data._id : "",
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[$hover])
 
     useEffect(() => {
@@ -60,25 +31,17 @@ const DeviceMarker = (props: any) => {
         if(highlight)
         setIsHoverEffect(highlight);
     },[highlight])
-
     return (
         <div >
-            {/* <OverlayTrigger 
-                placement="top"
-                overlay={DevicePopover(data)}
-                trigger={["hover","focus"]}
-                
-            > */}
-                <i 
-                    className="bi-broadcast-pin marker" 
-                    style={{ 
-                        fontSize: "2.5em",
-                        transform: (isHoverEffect||show)? "scale(1.5,1.5) translate(0,-7px)" : "none"
-                    }}
-                    ref={ref}
-                    onClick={handleClick}
-                />
-            {/* </OverlayTrigger>   */}
+            <i 
+                className={`fa fa-map-marker marker-${data.alert? "blink":"none"}`} 
+                style={{ 
+                    fontSize: "2.5em",
+                    transform: (isHoverEffect||show)? "scale(1.5,1.5) translate(0,-7px)" : "none"
+                }}
+                ref={ref}
+                onClick={handleClick}
+            />
             <Overlay
                 show={show||isHoverEffect}
                 target={ref.current}
@@ -87,11 +50,11 @@ const DeviceMarker = (props: any) => {
                 containerPadding={20}
             >
                 <Popover id="popover-device">
-                    <Popover.Title>
+                    <Popover.Title style={{color: "black", fontWeight:"bold"}}>
                         {data.name}
                     </Popover.Title>
                     <Popover.Content>
-                        {data.lat},{data.lng}
+                        {data.lat[0]},{data.long[0]}
                     </Popover.Content>
                 </Popover>
             </Overlay>     

@@ -8,11 +8,12 @@ import {
 } from '../config';
 import { Collection, Db, ObjectId } from 'mongodb';
 import {MQTT_BRAND, MQTT_BROKER} from "../config";
-import {Devices} from '../api/devices'
-const DEVICE_TOPIC = `${MQTT_BRAND}/+`;
-const NODE_TOPIC = `${MQTT_BRAND}/+/+`;
-const PROPERTY_TOPIC = `${MQTT_BRAND}/+/+/+`;
-const ATTRIBUTE_TOPIC = `${MQTT_BRAND}/+/+/+/+`;
+import {BorderDevices} from '../api/BorderDevices'
+import {FeedingDevices} from '../api/FeedingDevices'
+const DEVICE_TOPIC = `${MQTT_BRAND}/+/+`;
+const NODE_TOPIC = `${MQTT_BRAND}/+/+/+`;
+const PROPERTY_TOPIC = `${MQTT_BRAND}/+/+/+/+`;
+const ATTRIBUTE_TOPIC = `${MQTT_BRAND}/+/+/+/+/+`;
 
 //mqtt://localhost:1883
 export const mqttClient = mqtt.connect(MQTT_BROKER);
@@ -104,7 +105,13 @@ mqttClient.on("message", async(topic, payload)=>{
   logger.info("topic element: ");
   logger.info(topicElement);
   console.log("payload:" + payload);
-  let resolver = new Devices();
-  resolver.mqttMessageHandler(topicElement[1], payloadData, topicElement[topicElement.length - 1]);  
+  if(topicElement[1] == 'thap_bien_gioi'){
+    let resolver = new BorderDevices();
+    resolver.mqttMessageHandler(topicElement[2], payloadData, topicElement[topicElement.length - 1]);
+  }
+  else if(topicElement[1] == 'thap_cho_ca'){
+    let resolver = new FeedingDevices();
+    resolver.mqttMessageHandler(topicElement[2], payloadData, topicElement[topicElement.length - 1]);
+  }  
 })
 
