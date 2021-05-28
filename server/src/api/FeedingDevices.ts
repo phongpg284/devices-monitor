@@ -5,6 +5,7 @@ import Container, { Service } from "typedi";
 import { callbackify } from "util";
 import { mqttClient } from "../mqtt"
 import {MQTT_BRAND, MQTT_BROKER} from "../config";
+import { CylinderStatus } from "./BorderDevices";
 
 @InputType("environmentFeedingUnitInput")
 @ObjectType()
@@ -16,14 +17,14 @@ class EnvironmentFeedingUnit{
     @Field(()=>[Date])
     updateTime?: Date[]
 }
-export enum CylinderStatus{
-    UP = 'up',
-    DOWN = 'down',
-    STOP = 'stop'
-}
-registerEnumType(CylinderStatus, {
-    name: "CylinderStatus",
-})
+// export enum CylinderStatus{
+//     UP = 'up',
+//     DOWN = 'down',
+//     STOP = 'stop'
+// }
+// registerEnumType(CylinderStatus, {
+//     name: "CylinderStatus",
+// })
 @ObjectType()
 export class FeedingDevice  {
     @Field(() => ID)
