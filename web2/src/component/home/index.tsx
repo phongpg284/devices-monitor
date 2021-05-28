@@ -1,8 +1,13 @@
+import { Button } from "antd";
 import { useContext, useState } from "react";
 import { Form } from "react-bootstrap";
 import { DeviceContext } from "../../App";
 import ConfigTable from "../configTable";
-import { SET_FAN, SET_FOOT_CAN, SET_FOOT_TRAY } from "../configTable/setEngineSchema";
+import { SET_FAN, SET_FOOT_CAN, SET_FOOT_TRAY, UPDATE_FEEDING_CYLINDER_STATUS } from "../configTable/setEngineSchema";
+import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
+import { useMutation } from "@apollo/client";
+import useLongPress from "./useLongPress";
+
 
 const DefaultMarks = {
     "0": "0",
@@ -66,30 +71,93 @@ const Properties = [
 
 const Home = () => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
+    const [ updateCylinder ] = useMutation(UPDATE_FEEDING_CYLINDER_STATUS);
+
     const { data } = deviceState;
     const [ deviceIdChoose, setDeviceIdChoose ] = useState(0); 
     const handleDeviceChange = (e: any) => {
         setDeviceIdChoose(e.target.value)
     }
 
+    const onLongPressUp = () => {
+        console.log('longpress up is triggered');
+        updateCylinder({
+            variables: {
+                id: (data[deviceIdChoose] as any)._id,
+                status: "up"
+            }
+        })
+    };
+    
+    const onLongPressDown = () => {
+        console.log('longpress down is triggered');
+        updateCylinder({
+            variables: {
+                id: (data[deviceIdChoose] as any)._id,
+                status: "down"
+            }
+        })
+    };
+    const onRelease = () => {
+        console.log('release up')
+        updateCylinder({
+            variables: {
+                id: (data[deviceIdChoose] as any)._id,
+                status: "stop"
+            }
+        })
+        
+    }
+    
+    const onClickUp = () => {
+        console.log('click up is triggered')
+    }
+    const onClickDown = () => {
+        console.log('click down is triggered')
+    }
+
+    const defaultOptions = {
+        shouldPreventDefault: true,
+        delay: 200,
+    };
+
+    const longPressUpEvent = useLongPress(onLongPressUp, onClickUp, onRelease, defaultOptions);
+    const longPressDownEvent = useLongPress(onLongPressDown, onClickDown, onRelease, defaultOptions);
+
+
     return (
-        <div className="p-3 mx-4">
-            <h1 className="py-1">Điều chỉnh thông số thiết bị</h1> 
-            <Form className="d-flex flex-row justify-content-flex-start">
-                <Form.Group className="p-4">
-                    <Form.Label style={{fontSize: "2vh"}}>Chọn thiết bị</Form.Label>
+        <div className="px-5 py-4">
+            <h1>Điều chỉnh thông số động cơ thiết bị</h1> 
+            <Form className="d-flex ">
+                <Form.Group className="py-2 px-4">
+                    <Form.Label style={{fontSize: "1.2rem"}}>Chọn thiết bị</Form.Label>
                     <Form.Control
                         as="select"
                         type="name"
                         placeholder="Name"
                         onChange={handleDeviceChange}
-                        >
+                    >
                         {data && data.map((device: any, index: number) => (
                             <option value={index}>{device.name}</option>
-                            ))}
+                        ))}
                     </Form.Control>
                 </Form.Group>
             </Form>
+            <div className="d-flex flex-row justify-content-flex-start px-4">
+                <h4 className="align-self-center">Điều chỉnh khay thức ăn</h4>
+                <div className="d-flex flex-column justify-content-center mx-5">
+                    <Button 
+                        {...longPressUpEvent}
+                        icon={<CaretUpOutlined />}
+                        size="large"
+                    />
+                    <Button 
+                        {...longPressDownEvent}
+                        icon={<CaretDownOutlined />}
+                        size="large"
+                    />
+                </div>
+            </div>
             {data[0] && <ConfigTable data={data[deviceIdChoose]} properties={Properties}/>}
         </div>
     )

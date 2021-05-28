@@ -3,7 +3,7 @@ import { DATABASE_INSTANCE_KEY } from "../config/index";
 import { Arg, Field, ID, InputType, Mutation, ObjectType, Query, Resolver, registerEnumType } from "type-graphql";
 import Container, { Service } from "typedi";
 import { callbackify } from "util";
-import {mqttClient} from "../mqtt"
+import { mqttClient } from "../mqtt"
 import {MQTT_BRAND, MQTT_BROKER} from "../config";
 import { INSPECT_MAX_BYTES } from "buffer";
 
@@ -343,15 +343,29 @@ export class BorderDevices {
                 }
                 break;
             case 'alert':
-                let alertStatus = (payload=='true')?true:false;
-                device.updateOne({name: BorderDeviceName}, {$set: {alert: alertStatus}}, (err, result)=>{
-                    if (err)
-                    {
-                        console.log(err);
-                        return err;
-                    }
-                    console.log("Alert updated!");
-                })
+                if (payload=='true'){
+                    device.updateOne({name: BorderDeviceName}, {$set: {alert: true}}, (err, result)=>{
+                        if (err)
+                        {
+                            console.log(err);
+                            return err;
+                        }
+                        console.log("Alert updated!");
+                    })
+                    // Alert = False after 5m
+                    setTimeout(()=>{
+                        device.updateOne({name: BorderDeviceName},{$set: {alert: false}}, (err, result)=>{
+                            if (err)
+                            {
+                                console.log(err);
+                                return err;
+                            }
+                            console.log("Alert Disabled")
+                        })
+                        let alertTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/alert" 
+                        mqttClient.publish(alertTopic, "false", {qos: 2});
+                    }, 300000);
+                }
                 break;
             case 'threshold':
                 break;
@@ -364,7 +378,7 @@ export class BorderDevices {
     }
 
     @Mutation(()=>BorderDevice)
-    async updateCylinderStatus(@Arg("id") id: string, @Arg("status") status: CylinderStatus) {
+    async updateBorderCylinderStatus(@Arg("id") id: string, @Arg("status") status: CylinderStatus) {
         const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");
@@ -393,6 +407,7 @@ export class BorderDevices {
                 console.error("Khong tim thay thiet bi!");
                 return {}
             }
+
         // publish mqtt mesage
         let publishTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/alert" 
         mqttClient.publish(publishTopic, "true", {qos: 2})
@@ -406,11 +421,23 @@ export class BorderDevices {
             }
             console.log("Alert sent!");
         })
+        // Alert = False after 5m
+        setTimeout(()=>{
+            device.updateOne({ _id: id},{$set: {alert: false}}, (err, result)=>{
+                if (err)
+                {
+                    console.log(err);
+                    return err;
+                }
+                console.log("Alert Disabled")
+            })
+            mqttClient.publish(publishTopic, "false", {qos: 2});
+        }, 300000);
         return existDevice;
     }
 
     @Mutation(()=>BorderDevice)
-    async setThreshold(@Arg("id") id: string, @Arg("property") property: string, @Arg("value") value: number){
+    async setBorderThreshold(@Arg("id") id: string, @Arg("property") property: string, @Arg("value") value: number){
         const existDevice = await this.db.collection("BorderDevices").findOne({ _id: id});
         if (!existDevice){
                 console.error("Khong tim thay thiet bi!");

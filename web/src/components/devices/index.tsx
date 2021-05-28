@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { DeviceContext } from "../../App";
 import { dataProps } from "../map";
 import { useMutation } from "@apollo/client";
-import { SEND_ALERT, UPDATE_CYLINDER_STATUS } from "./commandSchema";
+import { SEND_ALERT, UPDATE_BORDER_CYLINDER_STATUS } from "./commandSchema";
 import useLongPress from "./useLongPress";
 
 export interface environmentUnit {
@@ -40,7 +40,7 @@ interface DeviceItemProps {
 
 const DeviceItem:React.FC<DeviceItemProps> = (props: DeviceItemProps) => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
-    const [ updateCylinder ] = useMutation(UPDATE_CYLINDER_STATUS);
+    const [ updateCylinder ] = useMutation(UPDATE_BORDER_CYLINDER_STATUS);
     const [ sendAlert ] = useMutation(SEND_ALERT);
 
     const { data, hover } = props;
@@ -208,16 +208,20 @@ const DeviceItem:React.FC<DeviceItemProps> = (props: DeviceItemProps) => {
                 <Card className="device-collapse-content">
                     <Card.Body className="d-flex flex-row px-1">
                         <ul>
-                            <li>Nhiệt độ: {data.temperature.data[0]} C</li>
-                            <li>Độ ẩm: {data.humidity.data[0]} %</li>
-                            <li>Mưa: {data.rain ? `Có`: `Không`}</li>
-                            <li>Độ bụi:: {data.dust.data} mg/m3</li>
+                            <li>Nhiệt độ: {data.temperature.data[data.temperature.data.length-1]} °C</li>
+                            <i>(Cập nhật lần cuối: {new Date(data.temperature.updateTime[data.temperature.updateTime.length-1]).toLocaleString()})</i> 
+                            <li>Độ ẩm: {data.humidity.data[data.humidity.data.length-1]} %</li>
+                            <i>(Cập nhật lần cuối: {new Date(data.humidity.updateTime[data.humidity.updateTime.length-1]).toLocaleString()})</i> 
+                            <li>Mưa: {data.rain.data[data.rain.data.length-1] ? `Có`: `Không`}</li>
+                            <i>(Cập nhật lần cuối: {new Date(data.rain.updateTime[data.rain.updateTime.length-1]).toLocaleString()})</i> 
                         </ul>    
                         <ul className="pr-4">
-                            <li>Nồng độ CO: {data.coGas.data[0]} ppm</li>
-                            <li>Độ ẩm đất: {data.soilHumid.data[0]} %</li>
-                            <li>Xilanh: {data.cylinder? `Lên`: `Xuống`}</li>
-                            <li>Báo động: {data.alert ? `Có` : `Không`}</li>
+                            <li>Độ bụi: {data.dust.data[data.dust.data.length-1]} mg/m3</li>
+                            <i>(Cập nhật lần cuối: {new Date(data.dust.updateTime[data.dust.updateTime.length-1]).toLocaleString()})</i> 
+                            <li>Nồng độ CO: {data.coGas.data[data.coGas.data.length-1]} ppm</li>
+                            <i>(Cập nhật lần cuối: {new Date(data.coGas.updateTime[data.coGas.updateTime.length-1]).toLocaleString()})</i> 
+                            <li>Độ ẩm đất: {data.soilHumid.data[data.soilHumid.data.length-1]} %</li>
+                            <i>(Cập nhật lần cuối: {new Date(data.soilHumid.updateTime[data.soilHumid.updateTime.length-1]).toLocaleString()})</i> 
                         </ul>
                     </Card.Body>
 

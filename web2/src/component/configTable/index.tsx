@@ -17,11 +17,11 @@ interface configTableProps {
 const ConfigTable = (props: configTableProps) => {
     const { data, properties } = props;
     return (
-        <div>
+        <>
             {properties.map(property => (
                 <SlideItem data={data} property={property}/>    
             ))}
-        </div>
+        </>
     )
 }
 
