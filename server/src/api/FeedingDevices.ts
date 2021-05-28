@@ -1,9 +1,9 @@
 import { Collection, Db, ObjectId } from "mongodb";
 import { DATABASE_INSTANCE_KEY } from "../config/index";
-import { Arg, Field, ID, InputType, Mutation, ObjectType, Query, Resolver } from "type-graphql";
+import { Arg, Field, ID, InputType, Mutation, ObjectType, Query, Resolver, registerEnumType } from "type-graphql";
 import Container, { Service } from "typedi";
 import { callbackify } from "util";
-import {mqttClient} from "../mqtt"
+import { mqttClient } from "../mqtt"
 import {MQTT_BRAND, MQTT_BROKER} from "../config";
 
 @InputType("environmentFeedingUnitInput")
@@ -16,7 +16,14 @@ class EnvironmentFeedingUnit{
     @Field(()=>[Date])
     updateTime?: Date[]
 }
-
+export enum CylinderStatus{
+    UP = 'up',
+    DOWN = 'down',
+    STOP = 'stop'
+}
+registerEnumType(CylinderStatus, {
+    name: "CylinderStatus",
+})
 @ObjectType()
 export class FeedingDevice  {
     @Field(() => ID)
@@ -42,6 +49,9 @@ export class FeedingDevice  {
 
     @Field(()=>Number)
     fan: number
+
+    @Field(()=>CylinderStatus)
+    cylinder: CylinderStatus;
 }
 
 @InputType()
@@ -66,6 +76,9 @@ class FeedingDeviceCreateInput{
 
     @Field(()=>Number, {nullable: true})
     fan?: number
+
+    @Field(()=>CylinderStatus, { nullable: true })
+    cylinder: CylinderStatus;
 }
 
 @Resolver()
@@ -118,6 +131,7 @@ export class FeedingDevices{
                     },
                     footCan: 0,
                     footTray: 0,
+                    cylinder: CylinderStatus.STOP,
                     fan: 0
                 });
         console.log("Current status:")
@@ -217,6 +231,20 @@ export class FeedingDevices{
                         }
                         console.log("fan updated!");
                     })
+                break;
+            case 'cylinder':
+                if ((<any>Object).values(CylinderStatus).includes(payload))
+                    device.updateOne({name: FeedingDeviceName}, {$set: {cylinder: payload}}, (err, result)=>{
+                        if (err)
+                        {
+                            console.log(err);
+                            return err;
+                        }
+                        console.log("Cylinder Status updated!");
+                    });
+                else{
+                    console.error("CylinderStatus khong hop le!");
+                }
                 break;
             case 'threshold':
                 break;
@@ -335,6 +363,28 @@ export class FeedingDevices{
                 return err;
             }
             console.log("fan set!");
+        })
+        return existDevice;
+    }
+    @Mutation(()=>FeedingDevice)
+    async updateCyllinderStatus(@Arg("id") id: string, @Arg("status") status: CylinderStatus) {
+        const existDevice = await this.db.collection("FeedingDevices").findOne({ _id: id});
+        if (!existDevice){
+                console.error("Khong tim thay thiet bi!");
+                return {}
+            }
+        // publish mqtt mesage
+        let publishTopic = MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/device/cylinder" 
+        mqttClient.publish(publishTopic, status, {qos: 2});
+        
+        const device = this.db.collection("FeedingDevices");
+        device.updateOne({ _id: id},{$set: {cylinder: status}}, (err, result)=>{
+            if (err)
+            {
+                console.log(err);
+                return err;
+            }
+            console.log("Cylinder updated!");
         })
         return existDevice;
     }
