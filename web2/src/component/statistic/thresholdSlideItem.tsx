@@ -3,7 +3,7 @@ import { Button, Col, InputNumber, Modal, Row, Slider } from "antd";
 import { useEffect, useState } from "react";
 import { Device } from "../devices";
 import { useMutation } from "@apollo/client";
-import { SET_THRESHOLD } from "./setThresholdSchema";
+import { SET_FEEDING_THRESHOLD } from "./setThresholdSchema";
 interface ThresholdSlideItemProps {
     data: Device,
     property: {
@@ -15,9 +15,8 @@ interface ThresholdSlideItemProps {
 
 const ThresholdSlideItem = (props: ThresholdSlideItemProps) => {
     const { data, property } = props;
-    const [ updateThreshold ] = useMutation(SET_THRESHOLD);
+    const [ updateThreshold ] = useMutation(SET_FEEDING_THRESHOLD);
     const [ inputValue, setInputValue ] = useState((data as any)[property.value].threshold);
-    const formatter = (value: any) => `${value}%`
     const [ isDisableButton, setIsDisableButton ] = useState(true);
     
     useEffect(() => {
@@ -26,6 +25,7 @@ const ThresholdSlideItem = (props: ThresholdSlideItemProps) => {
 
     useEffect(() => {
         setIsDisableButton(inputValue === (data as any)[property.value].threshold);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[inputValue]);
 
     const handleOnChange = (value: number) => {

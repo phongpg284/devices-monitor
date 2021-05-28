@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const ENVIRONMENT_FEEDING_UNIT = gql`
-    fragment EnvironmentFeedingUnit on environmentFeedingUnit {
+    fragment EnvironmentFeedingUnit on EnvironmentFeedingUnit {
         data
         threshold
         updateTime

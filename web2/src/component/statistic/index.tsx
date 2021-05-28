@@ -43,7 +43,7 @@ const Properties = [
 
 
 const StatisticsRoute = () => {
-    const { deviceState, setDeviceState } = useContext(DeviceContext);
+    const { deviceState } = useContext(DeviceContext);
     const { data } = deviceState;
     const [ deviceIdChoose, setDeviceIdChoose ] = useState(0); 
     const [ propertyChoose, setPropertyChoose ] = useState(Properties[0]);
@@ -62,6 +62,7 @@ const StatisticsRoute = () => {
             setStartDate((data[deviceIdChoose][propertyChoose.value] as any).updateTime[0].toLocaleString());
             setEndDate((data[deviceIdChoose][propertyChoose.value] as any).updateTime[(data[deviceIdChoose][propertyChoose.value]as any).updateTime.length-1].toLocaleString())
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[data])
 
     const handleOnChangeDate = (value: any, dateString: any) => {
