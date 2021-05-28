@@ -64,8 +64,6 @@ export class BorderDevice  {
 
     @Field()
     alert: boolean
-    @Field()
-    alertEnable: boolean
     
 	@Field(()=>[Number])
     lat: number[];
@@ -106,8 +104,6 @@ class BorderDeviceCreateInput {
 
     @Field()
     alert: boolean
-    @Field()
-    alertEnable: boolean
 
     @Field(()=>[Number],{ nullable: true })
     lat: number[];
@@ -180,7 +176,6 @@ export class BorderDevices {
                     }, 
                     cylinder: CylinderStatus.STOP,
                     alert: false,
-                    alertEnable: true
                 });
         console.log("Current status:")
         console.log(existDevice);
