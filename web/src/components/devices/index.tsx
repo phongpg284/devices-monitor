@@ -6,7 +6,8 @@ import { useContext, useEffect, useState } from "react";
 import { DeviceContext } from "../../App";
 import { dataProps } from "../map";
 import { useMutation } from "@apollo/client";
-import { CYLINDER_DOWN, CYLINDER_UP, SEND_ALERT } from "./commandSchema";
+import { SEND_ALERT, UPDATE_CYLINDER_STATUS } from "./commandSchema";
+import useLongPress from "./useLongPress";
 
 export interface environmentUnit {
     data: any[],
@@ -39,8 +40,7 @@ interface DeviceItemProps {
 
 const DeviceItem = (props: DeviceItemProps) => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
-    const [ cylinderUp ] = useMutation(CYLINDER_UP);
-    const [ cylinderDown ] = useMutation(CYLINDER_DOWN);
+    const [ updateCylinder ] = useMutation(UPDATE_CYLINDER_STATUS);
     const [ sendAlert ] = useMutation(SEND_ALERT);
 
     const { data, hover } = props;
@@ -63,25 +63,8 @@ const DeviceItem = (props: DeviceItemProps) => {
             }),
         }
         setDeviceState(updateState)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isCollapse]);
-
-    const handleClickUp = (e: any) => {
-        e.stopPropagation();
-        cylinderUp({
-            variables: {
-                id: data._id
-            }
-        })
-    }
-
-    const handleClickDown = (e: any) => {
-        e.stopPropagation();
-        cylinderDown({
-            variables: {
-                id: data._id
-            }
-        })
-    }
 
     const handleAlert = (e: any) => {
         e.stopPropagation();
@@ -107,6 +90,51 @@ const DeviceItem = (props: DeviceItemProps) => {
             hoveredId: "",
         })
     }
+
+    const onLongPressUp = () => {
+        console.log('longpress up is triggered');
+        updateCylinder({
+            variables: {
+                id: data._id,
+                status: "up"
+            }
+        })
+    };
+    
+    const onLongPressDown = () => {
+        console.log('longpress down is triggered');
+        updateCylinder({
+            variables: {
+                id: data._id,
+                status: "down"
+            }
+        })
+    };
+    const onRelease = () => {
+        console.log('release up')
+        updateCylinder({
+            variables: {
+                id: data._id,
+                status: "stop"
+            }
+        })
+        
+    }
+    
+    const onClickUp = () => {
+        console.log('click up is triggered')
+    }
+    const onClickDown = () => {
+        console.log('click down is triggered')
+    }
+
+    const defaultOptions = {
+        shouldPreventDefault: true,
+        delay: 200,
+    };
+
+    const longPressUpEvent = useLongPress(onLongPressUp, onClickUp, onRelease, defaultOptions);
+    const longPressDownEvent = useLongPress(onLongPressDown, onClickDown, onRelease, defaultOptions);
 
     return (
         <Accordion>
@@ -140,12 +168,12 @@ const DeviceItem = (props: DeviceItemProps) => {
                         </div>  
                         <div className="d-flex flex-column justify-content-center ml-auto mx-2">
                             <Button 
-                                onClick={handleClickUp}
+                                {...longPressUpEvent}
                                 icon={<CaretUpOutlined />}
                                 size="large"
                             />
                             <Button 
-                                onClick={handleClickDown}
+                                {...longPressDownEvent}
                                 icon={<CaretDownOutlined />}
                                 size="large"
                             />
@@ -192,7 +220,7 @@ const DeviceItem = (props: DeviceItemProps) => {
 }
 
 const DeviceList = () => {
-    const { deviceState, setDeviceState } = useContext(DeviceContext);
+    const { deviceState } = useContext(DeviceContext);
     const [devicesData, setDevicesData] = useState({
         data: [],
         hoveredId: "",

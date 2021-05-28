@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const ENVIRONMENT_UNIT = gql`
-    fragment EnvironmentUnit on environmentUnit {
+    fragment EnvironmentUnit on EnvironmentUnit {
         data
         threshold
         updateTime
@@ -35,7 +35,7 @@ export const GET_BORDER_DEVICES = gql`
             soilHumid {
                 ...EnvironmentUnit
             }
-            cylinder
+            cylinder 
             alert
             locationUpdateTime
         }
@@ -44,6 +44,7 @@ export const GET_BORDER_DEVICES = gql`
 
 export const CREATE_BORDER_DEVICE = gql`
     mutation CreateBorderDevice($input: BorderDeviceCreateInput) {
+        ${ENVIRONMENT_UNIT}
         createBorderDevice(input: $input) {
             _id
             name 
@@ -77,6 +78,7 @@ export const CREATE_BORDER_DEVICE = gql`
 
 export const UPDATE_BORDER_DEVICE = gql`
     mutation UpdateBorderDevice($input: BorderDeviceUpdateInput) {
+        ${ENVIRONMENT_UNIT}
         updateBorderDevice(input: $input) {
             _id
             name 

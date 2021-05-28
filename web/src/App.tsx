@@ -1,9 +1,4 @@
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  useQuery,
-} from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { createContext, useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
@@ -24,7 +19,7 @@ export const DeviceContext = createContext({
 
 function App() {
   const { data } = useQuery(GET_BORDER_DEVICES, {
-    // pollInterval: 1000,
+    pollInterval: 1000,
   });
   const [deviceState, setDeviceState] = useState({
     data: [],

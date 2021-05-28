@@ -21,6 +21,7 @@ const DeviceMarker = (props: any) => {
             ...deviceState,
             hoveredId: $hover ? data._id : "",
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[$hover])
 
     useEffect(() => {

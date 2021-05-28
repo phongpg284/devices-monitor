@@ -1,13 +1,12 @@
 import { useContext } from "react"
 import { DeviceContext } from "../../App"
-import Chart from "../../components/charts"
 import DeviceList from "../../components/devices"
 import Map from "../../components/map"
 import Statistic from "../../components/statistic"
 import "./home.scss"
 
 const Home = () => {
-    const { deviceState, setDeviceState } = useContext(DeviceContext);
+    const { deviceState } = useContext(DeviceContext);
     return (
         <div className="main-contain d-flex justify-content-flex-start">
             {/* <div className="flex-grow-1">

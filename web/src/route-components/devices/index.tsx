@@ -11,7 +11,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import { dataProps } from "../../components/map";
 
 const DeviceRoute = () => {
-    const { deviceState, setDeviceState } = useContext(DeviceContext);
+    const { deviceState } = useContext(DeviceContext);
     const [ data, setData ] = useState([]);
     
     useEffect(() => {

@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const ENVIRONMENT_UNIT = gql`
-    fragment EnvironmentUnit on environmentUnit {
+    fragment EnvironmentUnit on EnvironmentUnit {
         data
         threshold
         updateTime
@@ -42,44 +42,10 @@ export const SEND_ALERT = gql`
     }
 `;
 
-export const CYLINDER_UP = gql`
+export const UPDATE_CYLINDER_STATUS = gql`
     ${ENVIRONMENT_UNIT}
-    mutation CylinerUp($id: String!) {
-        cylinderUp(id: $id) {
-            _id
-            name 
-            lat
-            long
-            humidity {
-                ...EnvironmentUnit
-            }
-            temperature {
-                ...EnvironmentUnit
-            }
-            rain {
-                data
-                updateTime
-            } 
-            dust {
-                ...EnvironmentUnit
-            }
-            coGas {
-                ...EnvironmentUnit
-            }
-            soilHumid {
-                ...EnvironmentUnit
-            }
-            cylinder
-            alert
-            locationUpdateTime
-        }
-    }
-`;
-
-export const CYLINDER_DOWN = gql`
-    ${ENVIRONMENT_UNIT}
-    mutation CylinerDown($id: String!) {
-        cylinderDown(id: $id) {
+    mutation UpdateCylinderStatus($id: String!, $status: String!) {
+        updateCylinderStatus(id: $id, status: $status) {
             _id
             name 
             lat
