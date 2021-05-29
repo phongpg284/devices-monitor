@@ -1,9 +1,9 @@
-# Tháp biên giới - tháp cho cá ăn
+# Tháp biên giới - tháp nuôi cá
 
 ## Cấu trúc dự án: 
 - /server: server của dự án
 - /web: web client của tháp biên giới
-- /web2: web client của tháp cho cá ăn
+- /web2: web client của tháp nuôi cá
 
 ## Yêu cầu cài đặt: 
 - NodeJS
