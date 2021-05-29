@@ -32,4 +32,4 @@
 - Sau khi chạy `yarn` cài hết thư viện ở 3 thư mục 
 - Tại thư mục `/server` chạy `yarn dev` để chạy server
 - Tại thư mục `/web` chạy `yarn dev` để chạy web tháp biên giới
-- Tại thư mục `/web2` chạy ``yarn dev` để chạy web tháp nuôi cá  
+- Tại thư mục `/web2` chạy `yarn dev` để chạy web tháp nuôi cá  
