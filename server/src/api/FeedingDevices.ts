@@ -302,7 +302,6 @@ export class FeedingDevices{
                     {
                         console.log(err);
                         return err;
-                        
                     }
                     console.log("ph threshold updated!");
                 })
