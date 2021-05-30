@@ -122,13 +122,19 @@ export class FeedingDevices{
                 {
                     name: FeedingDeviceName,  
                     temperature: {
-                        threshold: 1000
+                        threshold: 1000,
+                        data: [],
+                        updateTime: [],
                     }, 
                     pH: {
-                        threshold: 1000
+                        threshold: 1000,
+                        data: [],
+                        updateTime: [],
                     },
                     o2Gas: {
-                        threshold: 1000
+                        threshold: 1000,
+                        data: [],
+                        updateTime: [],
                     },
                     footCan: 0,
                     footTray: 0,
