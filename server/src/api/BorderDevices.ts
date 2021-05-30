@@ -10,19 +10,19 @@ import { INSPECT_MAX_BYTES } from "buffer";
 @InputType("environmentUnitInput")
 @ObjectType()
 class EnvironmentUnit{
-    @Field(()=>[Number])
+    @Field(()=>[Number], { nullable: true })
     data?: number[];
-    @Field(()=>Number)
-    threshold: number;
-    @Field(()=>[Date])
+    @Field(()=>Number, { nullable: true })
+    threshold?: number;
+    @Field(()=>[Date], { nullable: true })
     updateTime?: Date[]
 }
 @InputType("rainUnitInput")
 @ObjectType()
 class RainUnit{
-    @Field(()=>[Boolean])
+    @Field(()=>[Boolean], { nullable: true })
     data: boolean[];
-    @Field(()=>[Date])
+    @Field(()=>[Date], { nullable: true })
     updateTime?: Date[]
 }
 export enum CylinderStatus{
@@ -41,44 +41,44 @@ export class BorderDevice  {
     @Field({ nullable: true })
     name: string;
     
-	@Field(()=>EnvironmentUnit)
+	@Field(()=>EnvironmentUnit, { nullable: true })
     temperature: EnvironmentUnit;
     
-	@Field(()=>EnvironmentUnit)
+	@Field(()=>EnvironmentUnit, { nullable: true })
     humidity: EnvironmentUnit;
     
-	@Field()
+	@Field({ nullable: true })
     rain: RainUnit;
 
-	@Field(()=>EnvironmentUnit)
+	@Field(()=>EnvironmentUnit, { nullable: true })
     dust: EnvironmentUnit;
     
-	@Field(()=>EnvironmentUnit)
+	@Field(()=>EnvironmentUnit, { nullable: true })
     coGas: EnvironmentUnit
     
-	@Field(()=>EnvironmentUnit)
+	@Field(()=>EnvironmentUnit, { nullable: true })
     soilHumid: EnvironmentUnit;
 
-    @Field(()=>CylinderStatus)
+    @Field(()=>CylinderStatus, { nullable: true })
     cylinder: CylinderStatus;
 
-    @Field()
+    @Field({ nullable: true })
     alert: boolean
     
-	@Field(()=>[Number])
+	@Field(()=>[Number], { nullable: true })
     lat: number[];
 
-	@Field(()=>[Number])
+	@Field(()=>[Number], { nullable: true })
     long: number[];
 
-    @Field(()=>[Date])
+    @Field(()=>[Date], { nullable: true })
     locationUpdateTime?: Date[];
 } 
 
 
 @InputType()
 class BorderDeviceCreateInput {
-    @Field()
+    @Field({ nullable: true })
     name: string;
 
 	@Field(()=>EnvironmentUnit,{ nullable: true })
@@ -102,7 +102,7 @@ class BorderDeviceCreateInput {
     @Field(()=>CylinderStatus, { nullable: true })
     cylinder: CylinderStatus;
 
-    @Field()
+    @Field({ nullable: true })
     alert: boolean
 
     @Field(()=>[Number],{ nullable: true })
@@ -111,7 +111,7 @@ class BorderDeviceCreateInput {
 	@Field(()=>[Number],{ nullable: true })
     long: number[];
     
-    @Field(()=>[Date])
+    @Field(()=>[Date], { nullable: true })
     locationUpdateTime?: Date[];
 }
 interface LocationDataType{
@@ -157,22 +157,33 @@ export class BorderDevices {
                     lat: [], 
                     long: [], 
                     temperature: {
-                        threshold: 1000
+                        threshold: 1000,
+                        data: [],
+                        updateTime: [],
                     }, 
                     humidity: {
-                        threshold: 1000
+                        threshold: 1000,
+                        data: [],
+                        updateTime: [],
                     },  
                     rain: {
                         data: [],
+                        updateTime: []
                     },
                     dust: {
-                        threshold: 1000
+                        threshold: 1000,
+                        data: [],
+                        updateTime: []
                     }, 
                     coGas: {
-                        threshold: 1000
+                        threshold: 1000,
+                        data: [],
+                        updateTime: [],
                     },  
                     soilHumid: {
-                        threshold: 1000
+                        threshold: 1000,
+                        data: [],
+                        updateTime: [],
                     }, 
                     cylinder: CylinderStatus.STOP,
                     alert: false,
