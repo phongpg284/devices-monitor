@@ -39,7 +39,7 @@ const BaseGraph = (props: BaseGraphProps) => {
                 label: property.label,
                 backgroundColor: showColors,
                 borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
+                borderWidth: 1,
                 data: showData,
             }
         ]

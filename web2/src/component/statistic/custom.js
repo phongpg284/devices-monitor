@@ -21,13 +21,13 @@ const ThresholdColor = {
 
 export const Properties = [
     {
-        label: "Nồng độ O2 trong nước (ppm)",
+        label: "Nồng độ O2 trong nước (mg/m3)",
         value: "o2Gas",
         marks: Marks,
         thresholdColor: ThresholdColor,
     },
     {
-        label: "Độ pH (%)",
+        label: "Độ pH",
         value: "pH",
         marks: Marks,
         thresholdColor: ThresholdColor,
