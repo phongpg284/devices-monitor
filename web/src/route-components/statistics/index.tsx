@@ -7,54 +7,7 @@ import moment from "moment";
 import ThresholdSlideItem from "./thresholdSlide";
 import "./index.scss"
 import BaseGraph from "./baseGraph";
-const Marks = {
-    "0": "0",
-    "100": {
-        style: {
-            color: '#f50',
-        },
-        label: <strong>100</strong>,
-    },
-    "50": {
-        style: {
-            color: '#d4d106',
-        },
-        label: <strong>50</strong>,
-    },
-}
-
-const Properties = [
-    {
-        label: "Nhiệt độ (°C)",
-        value: "temperature",
-        marks: Marks,
-    },
-    {
-        label: "Độ ẩm (%)",
-        value: "humidity",
-        marks: Marks,
-    },
-    {
-        label: "Mưa",
-        value: "rain",
-        marks: Marks,
-    },
-    {
-        label: "Độ bụi (mg/m3)",
-        value: "dust",
-        marks: Marks,
-    },
-    {
-        label: "Nồng độ CO (ppm)",
-        value: "coGas",
-        marks: Marks,
-    },
-    {
-        label: "Độ ẩm đất (%)",
-        value: "soilHumid",
-        marks: Marks,
-    },
-]
+import { Properties } from "./custom";
 
 const StatisticsRoute = () => {
     const { deviceState } = useContext(DeviceContext);

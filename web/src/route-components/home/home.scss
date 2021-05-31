@@ -1,14 +1,15 @@
 .middle-content {
   height: 94vh;
   width: 100%;
-  min-width: 1000px;
+  min-width: 700px;
   max-width: 1500px;
   flex-grow: 1;
+  display: block
 }
 
 .right-content {
-  min-width: 400px;
-  max-width: 650px;
+  min-width: 500px;
+  max-width: 550px;
   width: 100%;
 }
 

@@ -8,6 +8,7 @@ import { dataProps } from "../map";
 import { useMutation } from "@apollo/client";
 import { SEND_ALERT, UPDATE_BORDER_CYLINDER_STATUS } from "./commandSchema";
 import useLongPress from "./useLongPress";
+import { latLng2Tile } from "google-map-react";
 
 export interface environmentUnit {
     data: any[],
@@ -158,21 +159,26 @@ const DeviceItem:React.FC<DeviceItemProps> = (props: DeviceItemProps) => {
                 <Card className="device-item justify-content-flex-start" id={data._id} style={{backgroundColor: hover? "#979ea3": ""}}>
                     <Card.Text as="div" className="d-flex p-2 justify-content-space-between align-items-center" id={data._id}>
                         <i 
-                            className="bi-wifi px-3 align-self-center"
-                            style={{fontSize: "2.2vw"}}
+                            className="bi-wifi px-3 align-self-center d-flex"
+                            style={{fontSize: "2.8rem"}}
                         />
-                        <div className="my-3">
+                        <div className="my-2">
                             <h1 
-                                style={{fontSize: "2.2vw"}}
-                                className="mx-3 d-flex align-self-left"
+                                style={{fontSize: "2.2rem"}}
+                                className="mx-3"
                             >
                                 {data.name}
                             </h1>
-                            <h4 
-                                style={{fontSize: "0.9vw", paddingTop:"4px"}}
+                            {data.lat && data.long &&<h4 
+                                style={{fontSize: "1.1rem"}}
                             >
-                                Vị trí: {data.lat[0]}, {data.long[0]}
-                            </h4>
+                                Vị trí: {data.lat[data.lat.length-1]}, {data.long[data.long.length-1]}
+                            </h4> }
+                            {data.locationUpdateTime && <i 
+                                style={{fontSize: "0.8rem", paddingTop:"4px"}}
+                            >
+                                Cập nhật vị trí lần cuối: {new Date(data.locationUpdateTime[data.locationUpdateTime.length-1]).toLocaleString()}
+                            </i>}
                         </div>  
                         <div className="d-flex flex-column justify-content-center ml-auto mx-2">
                             <Button 

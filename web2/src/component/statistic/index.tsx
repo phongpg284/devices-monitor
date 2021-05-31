@@ -3,44 +3,10 @@ import { Form, FormGroup } from "react-bootstrap"
 import { DeviceContext } from "../../App";
 import { DatePicker } from "antd";
 import moment from "moment";
-import BaseGraph from "./basegraph";
+import BaseGraph from "./baseGraph";
 import ThresholdSlideItem from "./thresholdSlideItem";
 import "./index.scss"
-
-const Marks = {
-    "0": "0",
-    "100": {
-        style: {
-            color: '#f50',
-        },
-        label: <strong>100</strong>,
-    },
-    "50": {
-        style: {
-            color: '#d4d106',
-        },
-        label: <strong>50</strong>,
-    },
-}
-
-const Properties = [
-    {
-        label: "Nồng độ O2 trong nước (ppm)",
-        value: "o2Gas",
-        marks: Marks,
-    },
-    {
-        label: "Độ pH (%)",
-        value: "pH",
-        marks: Marks,
-    },
-    {
-        label: "Nhiệt độ nước (°C)",
-        value: "temperature",
-        marks: Marks,
-    },
-]
-
+import { Properties } from "./custom";
 
 const StatisticsRoute = () => {
     const { deviceState } = useContext(DeviceContext);

@@ -81,11 +81,6 @@ const DeviceRoute = () => {
         text: 'Độ ẩm đất (%)',
         sort: true,
         filter: textFilter(),
-    }, {
-        dataField: 'lastUpdated',
-        text: 'Cập nhật lần cuối',
-        sort: true,
-        filter: textFilter(),
     }];
     return (
         <div className="p-2">
