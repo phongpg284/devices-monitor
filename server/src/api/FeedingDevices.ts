@@ -163,10 +163,7 @@ export class FeedingDevices{
                 mqttClient.publish(
                     MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/environment/pH/$threshold/set", 
                         temperatureThreshold, 
-                        {qos: 2},
-                        ()=>{
-                            console.log(">>>>>>>>>>> pH threshold sent!");
-                        });
+                        {qos: 2, retain: true});
                 break;
             case 'o2_gas':
                 device.updateOne(
@@ -184,9 +181,9 @@ export class FeedingDevices{
                 if (parseFloat(payload)>existDevice.o2Gas.threshold)
                     o2GasThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/environment/o2_gas/threshold", 
+                    MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/environment/o2_gas/$threshold/set", 
                     o2GasThreshold, 
-                    {qos: 2});
+                    {qos: 2, retain: true});
                 break;
             case 'pH':
                 device.updateOne(
@@ -204,9 +201,9 @@ export class FeedingDevices{
                 if (parseFloat(payload)>existDevice.pH.threshold)
                     pHThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/environment/pH/threshold", 
+                    MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/environment/pH/$threshold/set", 
                     pHThreshold, 
-                    {qos: 2});
+                    {qos: 2, retain: true});
                 break;
             case 'foot_can':
                 device.updateOne({name: FeedingDeviceName}, {$set: {footCan: parseFloat(payload)}}, (err, result)=>{
@@ -302,7 +299,6 @@ export class FeedingDevices{
                     {
                         console.log(err);
                         return err;
-                        
                     }
                     console.log("ph threshold updated!");
                 })
@@ -318,8 +314,8 @@ export class FeedingDevices{
                 return {}
             }
         // publish mqtt mesage
-        let publishTopic = MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/device/foot_can" 
-        mqttClient.publish(publishTopic, value.toString(), {qos: 2});
+        let publishTopic = MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/device/foot_can/set" 
+        mqttClient.publish(publishTopic, value.toString(), {qos: 2, retain: true});
 
         const device = this.db.collection("FeedingDevices");
         device.updateOne({ _id: id},{$set: {footCan: value}}, (err, result)=>{
@@ -340,8 +336,8 @@ export class FeedingDevices{
                 return {}
             }
         // publish mqtt mesage
-        let publishTopic = MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/device/foot_tray" 
-        mqttClient.publish(publishTopic, value.toString(), {qos: 2});
+        let publishTopic = MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/device/foot_tray/set" 
+        mqttClient.publish(publishTopic, value.toString(), {qos: 2, retain: true});
 
         const device = this.db.collection("FeedingDevices");
         device.updateOne({ _id: id},{$set: {footTray: value}}, (err, result)=>{
@@ -362,8 +358,8 @@ export class FeedingDevices{
                 return {}
             }
         // publish mqtt mesage
-        let publishTopic = MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/device/fan" 
-        mqttClient.publish(publishTopic, value.toString(), {qos: 2});
+        let publishTopic = MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/device/fan/sset" 
+        mqttClient.publish(publishTopic, value.toString(), {qos: 2, retain: true});
 
         const device = this.db.collection("FeedingDevices");
         device.updateOne({ _id: id},{$set: {fan: value}}, (err, result)=>{
@@ -384,8 +380,8 @@ export class FeedingDevices{
                 return {}
             }
         // publish mqtt mesage
-        let publishTopic = MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/device/cylinder" 
-        mqttClient.publish(publishTopic, status, {qos: 2});
+        let publishTopic = MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/device/cylinder/set" 
+        mqttClient.publish(publishTopic, status, {qos: 2, retain: true});
         
         const device = this.db.collection("FeedingDevices");
         device.updateOne({ _id: id},{$set: {cylinder: status}}, (err, result)=>{

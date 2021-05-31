@@ -209,9 +209,9 @@ export class BorderDevices {
                 if (parseFloat(payload)>existDevice.temperature.threshold)
                     temperatureThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/temperature/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/temperature/$threshold/set", 
                     temperatureThreshold, 
-                    {qos: 2});
+                    {qos: 2, retain: true});
                 break;
             case 'humidity':
                 device.updateOne(
@@ -229,9 +229,9 @@ export class BorderDevices {
                 if (parseFloat(payload)>existDevice.humidity.threshold)
                     humidityThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/humidity/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/humidity/$threshold/set", 
                     humidityThreshold, 
-                    {qos: 2});
+                    {qos: 2, retain: true});
                 break;
             case 'dust':
                 device.updateOne(
@@ -249,9 +249,9 @@ export class BorderDevices {
                 if (parseFloat(payload)>existDevice.dust.threshold)
                     dustThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/dust/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/dust/$threshold/set", 
                     dustThreshold, 
-                    {qos: 2});
+                    {qos: 2, retain: true});
                 break;
             case 'rain':
                 let rainStatus = (payload=='true')?true:false;
@@ -283,9 +283,9 @@ export class BorderDevices {
                 if (parseFloat(payload)>existDevice.coGas.threshold)
                     coGasThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/co_gas/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/co_gas/$threshold/set", 
                     coGasThreshold, 
-                    {qos: 2});
+                    {qos: 2, retain: true});
                 break;
             case 'soil_humid':
                 device.updateOne(
@@ -303,9 +303,9 @@ export class BorderDevices {
                 if (parseFloat(payload)>existDevice.soilHumid.threshold)
                     soilHumidThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/soil_humid/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/soil_humid/$threshold/set", 
                     soilHumidThreshold, 
-                    {qos: 2});
+                    {qos: 2, retain: true});
                 break;
             case 'location':
                 let locationData: LocationDataType;
@@ -373,8 +373,8 @@ export class BorderDevices {
                             }
                             console.log("Alert Disabled")
                         })
-                        let alertTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/alert" 
-                        mqttClient.publish(alertTopic, "false", {qos: 2});
+                        let alertTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/alert/set" 
+                        mqttClient.publish(alertTopic, "false", {qos: 2, retain: true});
                     }, 300000);
                 }
                 break;
@@ -396,8 +396,8 @@ export class BorderDevices {
                 return {}
             }
         // publish mqtt mesage
-        let publishTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/cylinder" 
-        mqttClient.publish(publishTopic, status, {qos: 2});
+        let publishTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/cylinder/set" 
+        mqttClient.publish(publishTopic, status, {qos: 2, retain: true});
         
         const device = this.db.collection("BorderDevices");
         device.updateOne({ _id: id},{$set: {cylinder: status}}, (err, result)=>{
@@ -420,8 +420,8 @@ export class BorderDevices {
             }
 
         // publish mqtt mesage
-        let publishTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/alert" 
-        mqttClient.publish(publishTopic, "true", {qos: 2})
+        let publishTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/alert/set" 
+        mqttClient.publish(publishTopic, "true", {qos: 2, retain: true})
 
         const device = this.db.collection("BorderDevices");
         device.updateOne({ _id: id},{$set: {alert: true}}, (err, result)=>{
@@ -442,7 +442,7 @@ export class BorderDevices {
                 }
                 console.log("Alert Disabled")
             })
-            mqttClient.publish(publishTopic, "false", {qos: 2});
+            mqttClient.publish(publishTopic, "false", {qos: 2, retain: true});
         }, 300000);
         return existDevice;
     }
