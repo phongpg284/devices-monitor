@@ -1,13 +1,13 @@
+import "./index.scss"
+import moment from "moment";
 import { useContext, useEffect, useState } from "react";
 import { Form, FormGroup } from "react-bootstrap"
 import { DeviceContext } from "../../App";
 import { dataProps } from "../../components/Map";
 import { DatePicker } from "antd";
-import moment from "moment";
-import ThresholdSlideItem from "./thresholdSlide";
-import "./index.scss"
-import BaseGraph from "./baseGraph";
 import { Properties } from "./custom";
+import Graph from "../../components/Graph";
+import ThresholdSlideItem from "../../components/ThresholdSlide";
 
 const StatisticsComponent = () => {
     const { deviceState } = useContext(DeviceContext);
@@ -90,7 +90,7 @@ const StatisticsComponent = () => {
                     </FormGroup>
                 </Form>
                 {data && (
-                    <BaseGraph
+                    <Graph
                         data={data[deviceIdChoose]} 
                         startDate={startDate}
                         endDate={endDate}
