@@ -1,6 +1,6 @@
 import { Bar } from "react-chartjs-2";
 
-interface BaseGraphProps {
+interface GraphProps {
     data: any;
     startDate: Date;
     endDate: Date;
@@ -15,7 +15,7 @@ interface BaseGraphProps {
     };
 }
 
-const BaseGraph = (props: BaseGraphProps) => {
+const Graph = (props: GraphProps) => {
     const { data, startDate, endDate, property } = props;
     let showData: any[] = [];
     let showLabels: any[] = [];
@@ -84,4 +84,4 @@ const BaseGraph = (props: BaseGraphProps) => {
         </div>
     )
 }
-export default BaseGraph;
+export default Graph;

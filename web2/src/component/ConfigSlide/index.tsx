@@ -1,31 +1,27 @@
-import "./index.scss"
-import { Button, Col, InputNumber, Modal, Row, Slider } from "antd";
+import { Button, Col, InputNumber, Row, Slider, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { Device } from "../devices";
+import { Property } from "../ConfigTable/index";
 import { useMutation } from "@apollo/client";
-import { SET_FEEDING_THRESHOLD } from "./setThresholdSchema";
-interface ThresholdSlideItemProps {
+
+interface SlideItemProps {
     data: Device,
-    property: {
-        label: string,
-        value: string,
-        marks?: any,
-    },
+    property: Property,
 }
 
-const ThresholdSlideItem = (props: ThresholdSlideItemProps) => {
+const ConfigSlideItem = (props: SlideItemProps) => {
     const { data, property } = props;
-    const [ updateThreshold ] = useMutation(SET_FEEDING_THRESHOLD);
-    const [ inputValue, setInputValue ] = useState((data as any)[property.value].threshold);
+    const [ inputValue, setInputValue ] = useState((data as any)[property.value]);
+    const formatter = (value: any) => `${value}%`
     const [ isDisableButton, setIsDisableButton ] = useState(true);
+    const [ updateDevice, { data: updateData }] = useMutation(property.apiKey)
     
     useEffect(() => {
-        setInputValue((data as any)[property.value].threshold)
-    },[property,data])
+        setInputValue((data as any)[property.value])
+    },[data])
 
     useEffect(() => {
-        setIsDisableButton(inputValue === (data as any)[property.value].threshold);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        setIsDisableButton(inputValue === (data as any)[property.value]);
     },[inputValue]);
 
     const handleOnChange = (value: number) => {
@@ -35,15 +31,14 @@ const ThresholdSlideItem = (props: ThresholdSlideItemProps) => {
     const { confirm } = Modal;
     const showConfirm = () => {
         confirm({
-            title: 'Xác nhận điều chỉnh ngưỡng',
-            content: `${property.label} thay đổi chỉ số từ ${(data as any)[property.value].threshold} thành ${inputValue}`,
+            title: 'Xác nhận điều chỉnh thông số',
+            content: `${property.label} thay đổi chỉ số từ ${(data as any)[property.value]} thành ${inputValue}`,
             onOk() {
                 setIsDisableButton(true);
-                updateThreshold({
+                updateDevice({
                     variables: {
                         value: inputValue,
                         id: data._id,
-                        property: property.value,
                     }
                 });
             },
@@ -55,47 +50,45 @@ const ThresholdSlideItem = (props: ThresholdSlideItemProps) => {
 
     const handleClickReset = () => {
         setIsDisableButton(false);
-        setInputValue((data as any)[property.value].threshold);
+        setInputValue((data as any)[property.value]);
     }
 
     return (
-        <div className="thresholdSlideItem">
-            <h3 className="">Thiết lập ngưỡng cho phép</h3>
-            <h4 className="">{property.label}</h4>
+        <div className="p-3 m-2">
+            <h4 className="d-flex justify-content-flex-start">{property.label}</h4>
             <Row>
-                <Col span={8}>
-                    <div style={{display:'inline-block', height:'45vh', marginTop:"4vh"}}>
+                <Col span={7}>
                     <Slider
-                        min={0}
+                        min={-100}
                         max={100}
                         onChange={handleOnChange}
                         value={typeof inputValue === 'number' ? inputValue : 0}
                         marks={property.marks}
-                        defaultValue={(data as any)[property.value].threshold}
-                        included
-                        vertical
+                        defaultValue={(data as any)[property.value]}
+                        tipFormatter={formatter}
                     />
-                    </div>
                 </Col>
-                <Col span={8} style={{ margin: '0 16px' }}>
+                <Col span={3}>
                     <InputNumber
-                        min={0}
+                        min={-100}
                         max={100}
-                        className="my-5"
-                        // formatter={value => `${value}`}
+                        style={{ margin: '0 16px' }}
+                        formatter={value => `${value}`}
                         value={inputValue}
                         onChange={handleOnChange}
                     />
+                </Col>
+                <Col span={1}>
                     <Button
-                        style={{ marginBottom: '16px' }}
                         type="primary"
                         onClick={showConfirm}
                         disabled={isDisableButton}
                     >
                         Confirm
                     </Button>
+                </Col>
+                <Col span={3}>
                     <Button
-                        style={{ marginBottom: '16px' }}
                         type="primary"
                         danger
                         onClick={handleClickReset}
@@ -108,4 +101,4 @@ const ThresholdSlideItem = (props: ThresholdSlideItemProps) => {
     )
 }
 
-export default ThresholdSlideItem;
+export default ConfigSlideItem;

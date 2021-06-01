@@ -1,12 +1,11 @@
-import React, { createContext, useEffect, useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import { createContext, useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Header from "./component/header";
 import { useQuery } from "@apollo/client";
 import { GET_FEEDING_DEVICES } from "./component/devices/schema";
-import StatisticsRoute from "./component/statistic";
-import Home from "./component/home";
+import Header from "./component/Header";
+import ConfigComponent from "./component/ConfigComponent";
+import Statistics from "./component/Statistics";
 
 export const DeviceContext = createContext({
   deviceState: {
@@ -37,13 +36,13 @@ function App() {
               <Header />
               <Switch>
                 <Route path="/devices">
-                  <StatisticsRoute />
+                  <Statistics />
                 </Route>
                 <Route path="/statistics">
-                  <StatisticsRoute />
+                  <Statistics />
                 </Route>
                 <Route path="/">
-                  <Home/>
+                  <ConfigComponent/>
                 </Route>
               </Switch>
             </BrowserRouter>
