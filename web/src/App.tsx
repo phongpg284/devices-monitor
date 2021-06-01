@@ -2,12 +2,12 @@ import { useQuery } from "@apollo/client";
 import { createContext, useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
-import { GET_BORDER_DEVICES } from "./components/devices/schema";
-import Header from "./components/header";
-import Home from "./route-components/home";
-import { Device } from "./components/devices/index";
-import DeviceRoute from "./route-components/devices";
-import StatisticsRoute from "./route-components/statistics";
+import { GET_BORDER_DEVICES } from "./components/DevicesList/schema";
+import Header from "./components/Header";
+import Home from "./route-components/Home";
+import { Device } from "./components/DevicesList/index";
+import DevicesTable from "./route-components/DevicesTable";
+import StatisticsComponent from "./route-components/Statistics";
 
 export const DeviceContext = createContext({
   deviceState: {
@@ -47,10 +47,10 @@ function App() {
               <Header />
               <Switch>
                 <Route path="/devices">
-                  <DeviceRoute/>
+                  <DevicesTable/>
                 </Route>
                 <Route path="/statistics">
-                  <StatisticsRoute/>
+                  <StatisticsComponent/>
                 </Route>
                 <Route path="/">
                   <Home />
