@@ -1,4 +1,4 @@
-import "./map.scss";
+import "./marker.scss";
 import { Overlay, Popover} from "react-bootstrap"
 import { useContext, useEffect, useRef, useState } from "react";
 import { DeviceContext } from "../../App";
@@ -54,7 +54,7 @@ const DeviceMarker = (props: any) => {
                         {data.name}
                     </Popover.Title>
                     <Popover.Content>
-                        {data.lat[0]},{data.long[0]}
+                        {data.lat[data.lat.length-1]},{data.long.length-1}
                     </Popover.Content>
                 </Popover>
             </Overlay>     

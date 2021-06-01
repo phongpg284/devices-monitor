@@ -1,8 +1,8 @@
 import { useContext } from "react"
 import { DeviceContext } from "../../App"
-import DeviceList from "../../components/devices"
-import Map from "../../components/map"
-import Counter from "../../components/counter"
+import DeviceList from "../../components/DevicesList"
+import Map from "../../components/Map"
+import Counter from "../../components/CounterHeader"
 import "./home.scss"
 
 const Home = () => {

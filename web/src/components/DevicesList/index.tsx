@@ -4,7 +4,7 @@ import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import './devices.scss'
 import { useContext, useEffect, useState } from "react";
 import { DeviceContext } from "../../App";
-import { dataProps } from "../map";
+import { dataProps } from "../Map";
 import { useMutation } from "@apollo/client";
 import { SEND_ALERT, UPDATE_BORDER_CYLINDER_STATUS } from "./commandSchema";
 import useLongPress from "./useLongPress";
