@@ -10,19 +10,19 @@ import { INSPECT_MAX_BYTES } from "buffer";
 @InputType("environmentUnitInput")
 @ObjectType()
 class EnvironmentUnit{
-    @Field(()=>[Number])
+    @Field(()=>[Number], { nullable: true })
     data?: number[];
-    @Field(()=>Number)
-    threshold: number;
-    @Field(()=>[Date])
+    @Field(()=>Number, { nullable: true })
+    threshold?: number;
+    @Field(()=>[Date], { nullable: true })
     updateTime?: Date[]
 }
 @InputType("rainUnitInput")
 @ObjectType()
 class RainUnit{
-    @Field(()=>[Boolean])
+    @Field(()=>[Boolean], { nullable: true })
     data: boolean[];
-    @Field(()=>[Date])
+    @Field(()=>[Date], { nullable: true })
     updateTime?: Date[]
 }
 export enum CylinderStatus{
@@ -41,44 +41,44 @@ export class BorderDevice  {
     @Field({ nullable: true })
     name: string;
     
-	@Field(()=>EnvironmentUnit)
+	@Field(()=>EnvironmentUnit, { nullable: true })
     temperature: EnvironmentUnit;
     
-	@Field(()=>EnvironmentUnit)
+	@Field(()=>EnvironmentUnit, { nullable: true })
     humidity: EnvironmentUnit;
     
-	@Field()
+	@Field({ nullable: true })
     rain: RainUnit;
 
-	@Field(()=>EnvironmentUnit)
+	@Field(()=>EnvironmentUnit, { nullable: true })
     dust: EnvironmentUnit;
     
-	@Field(()=>EnvironmentUnit)
+	@Field(()=>EnvironmentUnit, { nullable: true })
     coGas: EnvironmentUnit
     
-	@Field(()=>EnvironmentUnit)
+	@Field(()=>EnvironmentUnit, { nullable: true })
     soilHumid: EnvironmentUnit;
 
-    @Field(()=>CylinderStatus)
+    @Field(()=>CylinderStatus, { nullable: true })
     cylinder: CylinderStatus;
 
-    @Field()
+    @Field({ nullable: true })
     alert: boolean
     
-	@Field(()=>[Number])
+	@Field(()=>[Number], { nullable: true })
     lat: number[];
 
-	@Field(()=>[Number])
+	@Field(()=>[Number], { nullable: true })
     long: number[];
 
-    @Field(()=>[Date])
+    @Field(()=>[Date], { nullable: true })
     locationUpdateTime?: Date[];
 } 
 
 
 @InputType()
 class BorderDeviceCreateInput {
-    @Field()
+    @Field({ nullable: true })
     name: string;
 
 	@Field(()=>EnvironmentUnit,{ nullable: true })
@@ -102,7 +102,7 @@ class BorderDeviceCreateInput {
     @Field(()=>CylinderStatus, { nullable: true })
     cylinder: CylinderStatus;
 
-    @Field()
+    @Field({ nullable: true })
     alert: boolean
 
     @Field(()=>[Number],{ nullable: true })
@@ -111,7 +111,7 @@ class BorderDeviceCreateInput {
 	@Field(()=>[Number],{ nullable: true })
     long: number[];
     
-    @Field(()=>[Date])
+    @Field(()=>[Date], { nullable: true })
     locationUpdateTime?: Date[];
 }
 interface LocationDataType{
@@ -157,22 +157,33 @@ export class BorderDevices {
                     lat: [], 
                     long: [], 
                     temperature: {
-                        threshold: 1000
+                        threshold: 1000,
+                        data: [],
+                        updateTime: [],
                     }, 
                     humidity: {
-                        threshold: 1000
+                        threshold: 1000,
+                        data: [],
+                        updateTime: [],
                     },  
                     rain: {
                         data: [],
+                        updateTime: []
                     },
                     dust: {
-                        threshold: 1000
+                        threshold: 1000,
+                        data: [],
+                        updateTime: []
                     }, 
                     coGas: {
-                        threshold: 1000
+                        threshold: 1000,
+                        data: [],
+                        updateTime: [],
                     },  
                     soilHumid: {
-                        threshold: 1000
+                        threshold: 1000,
+                        data: [],
+                        updateTime: [],
                     }, 
                     cylinder: CylinderStatus.STOP,
                     alert: false,
@@ -198,9 +209,9 @@ export class BorderDevices {
                 if (parseFloat(payload)>existDevice.temperature.threshold)
                     temperatureThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/temperature/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/temperature/$threshold/set", 
                     temperatureThreshold, 
-                    {qos: 2});
+                    {qos: 2, retain: true});
                 break;
             case 'humidity':
                 device.updateOne(
@@ -218,9 +229,9 @@ export class BorderDevices {
                 if (parseFloat(payload)>existDevice.humidity.threshold)
                     humidityThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/humidity/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/humidity/$threshold/set", 
                     humidityThreshold, 
-                    {qos: 2});
+                    {qos: 2, retain: true});
                 break;
             case 'dust':
                 device.updateOne(
@@ -238,9 +249,9 @@ export class BorderDevices {
                 if (parseFloat(payload)>existDevice.dust.threshold)
                     dustThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/dust/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/dust/$threshold/set", 
                     dustThreshold, 
-                    {qos: 2});
+                    {qos: 2, retain: true});
                 break;
             case 'rain':
                 let rainStatus = (payload=='true')?true:false;
@@ -272,9 +283,9 @@ export class BorderDevices {
                 if (parseFloat(payload)>existDevice.coGas.threshold)
                     coGasThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/co_gas/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/co_gas/$threshold/set", 
                     coGasThreshold, 
-                    {qos: 2});
+                    {qos: 2, retain: true});
                 break;
             case 'soil_humid':
                 device.updateOne(
@@ -292,9 +303,9 @@ export class BorderDevices {
                 if (parseFloat(payload)>existDevice.soilHumid.threshold)
                     soilHumidThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/soil_humid/threshold", 
+                    MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/environment/soil_humid/$threshold/set", 
                     soilHumidThreshold, 
-                    {qos: 2});
+                    {qos: 2, retain: true});
                 break;
             case 'location':
                 let locationData: LocationDataType;
@@ -362,8 +373,8 @@ export class BorderDevices {
                             }
                             console.log("Alert Disabled")
                         })
-                        let alertTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/alert" 
-                        mqttClient.publish(alertTopic, "false", {qos: 2});
+                        let alertTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/alert/set" 
+                        mqttClient.publish(alertTopic, "false", {qos: 2, retain: true});
                     }, 300000);
                 }
                 break;
@@ -385,8 +396,8 @@ export class BorderDevices {
                 return {}
             }
         // publish mqtt mesage
-        let publishTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/cylinder" 
-        mqttClient.publish(publishTopic, status, {qos: 2});
+        let publishTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/cylinder/set" 
+        mqttClient.publish(publishTopic, status, {qos: 2, retain: true});
         
         const device = this.db.collection("BorderDevices");
         device.updateOne({ _id: id},{$set: {cylinder: status}}, (err, result)=>{
@@ -409,8 +420,8 @@ export class BorderDevices {
             }
 
         // publish mqtt mesage
-        let publishTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/alert" 
-        mqttClient.publish(publishTopic, "true", {qos: 2})
+        let publishTopic = MQTT_BRAND + "/thap_bien_gioi/" + existDevice.name + "/device/alert/set" 
+        mqttClient.publish(publishTopic, "true", {qos: 2, retain: true})
 
         const device = this.db.collection("BorderDevices");
         device.updateOne({ _id: id},{$set: {alert: true}}, (err, result)=>{
@@ -431,7 +442,7 @@ export class BorderDevices {
                 }
                 console.log("Alert Disabled")
             })
-            mqttClient.publish(publishTopic, "false", {qos: 2});
+            mqttClient.publish(publishTopic, "false", {qos: 2, retain: true});
         }, 300000);
         return existDevice;
     }

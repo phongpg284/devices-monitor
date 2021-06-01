@@ -1,7 +1,7 @@
 import "./map.scss";
 import GoogleMap from "google-map-react";
-import { Device } from "../devices/index"
-import DeviceMarker from "./deviceMarker";
+import { Device } from "../DevicesList/index"
+import DeviceMarker from "../Marker/index";
 export interface dataProps extends Device {
   highlight: boolean;
 }
@@ -31,8 +31,8 @@ const Map = (props: MapProps) => {
         {props.data.data && props.data.data.map((device: dataProps) => (
           <DeviceMarker 
             key={device._id}
-            lat={device.lat[0]} 
-            lng={device.long[0]} 
+            lat={device.lat[device.lat.length-1]} 
+            lng={device.long[device.long.length-1]} 
             data={device} 
             highlight={device.highlight} 
             hover={props.data.hoveredId === device._id}

@@ -1,62 +1,15 @@
+import "./index.scss"
+import moment from "moment";
 import { useContext, useEffect, useState } from "react";
 import { Form, FormGroup } from "react-bootstrap"
 import { DeviceContext } from "../../App";
-import { dataProps } from "../../components/map";
+import { dataProps } from "../../components/Map";
 import { DatePicker } from "antd";
-import moment from "moment";
-import ThresholdSlideItem from "./thresholdSlide";
-import "./index.scss"
-import BaseGraph from "./baseGraph";
-const Marks = {
-    "0": "0",
-    "100": {
-        style: {
-            color: '#f50',
-        },
-        label: <strong>100</strong>,
-    },
-    "50": {
-        style: {
-            color: '#d4d106',
-        },
-        label: <strong>50</strong>,
-    },
-}
+import { Properties } from "./custom";
+import Graph from "../../components/Graph";
+import ThresholdSlideItem from "../../components/ThresholdSlide";
 
-const Properties = [
-    {
-        label: "Nhiệt độ (°C)",
-        value: "temperature",
-        marks: Marks,
-    },
-    {
-        label: "Độ ẩm (%)",
-        value: "humidity",
-        marks: Marks,
-    },
-    {
-        label: "Mưa",
-        value: "rain",
-        marks: Marks,
-    },
-    {
-        label: "Độ bụi (mg/m3)",
-        value: "dust",
-        marks: Marks,
-    },
-    {
-        label: "Nồng độ CO (ppm)",
-        value: "coGas",
-        marks: Marks,
-    },
-    {
-        label: "Độ ẩm đất (%)",
-        value: "soilHumid",
-        marks: Marks,
-    },
-]
-
-const StatisticsRoute = () => {
+const StatisticsComponent = () => {
     const { deviceState } = useContext(DeviceContext);
     const { data } = deviceState;
     const [ deviceIdChoose, setDeviceIdChoose ] = useState(0); 
@@ -137,7 +90,7 @@ const StatisticsRoute = () => {
                     </FormGroup>
                 </Form>
                 {data && (
-                    <BaseGraph
+                    <Graph
                         data={data[deviceIdChoose]} 
                         startDate={startDate}
                         endDate={endDate}
@@ -157,4 +110,4 @@ const StatisticsRoute = () => {
     )
 }
 
-export default StatisticsRoute;
+export default StatisticsComponent;

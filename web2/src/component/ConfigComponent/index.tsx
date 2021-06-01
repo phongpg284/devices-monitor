@@ -2,8 +2,8 @@ import { Button } from "antd";
 import { useContext, useState } from "react";
 import { Form } from "react-bootstrap";
 import { DeviceContext } from "../../App";
-import ConfigTable from "../configTable";
-import { SET_FAN, SET_FOOT_CAN, SET_FOOT_TRAY, UPDATE_FEEDING_CYLINDER_STATUS } from "../configTable/setEngineSchema";
+import ConfigTable from "../ConfigTable";
+import { SET_FAN, SET_FOOT_CAN, SET_FOOT_TRAY, UPDATE_FEEDING_CYLINDER_STATUS } from "../ConfigTable/setEngineSchema";
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import { useMutation } from "@apollo/client";
 import useLongPress from "./useLongPress";
@@ -69,7 +69,7 @@ const Properties = [
     }
 ];
 
-const Home = () => {
+const ConfigComponent = () => {
     const { deviceState, setDeviceState } = useContext(DeviceContext);
     const [ updateCylinder ] = useMutation(UPDATE_FEEDING_CYLINDER_STATUS);
 
@@ -163,4 +163,4 @@ const Home = () => {
     )
 }
 
-export default Home;
+export default ConfigComponent;

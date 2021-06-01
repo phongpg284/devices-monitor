@@ -1,6 +1,6 @@
 import { Card } from "react-bootstrap"
-import "./counter.scss"
-const Counter = (props: any) => {
+import "./counterHeader.scss"
+const CounterHeader = (props: any) => {
     const { data } = props;
     const totalDevices = data?.data?.length;
     const alertDevices = data?.data?.filter((device: any) => device?.alert === true).length;
@@ -30,4 +30,4 @@ const Counter = (props: any) => {
     )
 }
 
-export default Counter;
+export default CounterHeader;

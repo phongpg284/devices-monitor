@@ -8,9 +8,9 @@ import BootstrapTable from "react-bootstrap-table-next";
 import { useContext, useEffect, useState } from "react";
 import { DeviceContext } from "../../App";
 import paginationFactory from "react-bootstrap-table2-paginator";
-import { dataProps } from "../../components/map";
+import { dataProps } from "../../components/Map";
 
-const DeviceRoute = () => {
+const DevicesTable = () => {
     const { deviceState } = useContext(DeviceContext);
     const [ data, setData ] = useState([]);
     
@@ -81,11 +81,6 @@ const DeviceRoute = () => {
         text: 'Độ ẩm đất (%)',
         sort: true,
         filter: textFilter(),
-    }, {
-        dataField: 'lastUpdated',
-        text: 'Cập nhật lần cuối',
-        sort: true,
-        filter: textFilter(),
     }];
     return (
         <div className="p-2">
@@ -106,4 +101,4 @@ const DeviceRoute = () => {
     )
 }
 
-export default DeviceRoute;
+export default DevicesTable;

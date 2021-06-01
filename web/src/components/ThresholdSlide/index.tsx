@@ -1,8 +1,7 @@
-import "./index.scss"
 import { Button, Col, InputNumber, Modal, Row, Slider } from "antd";
 import { useEffect, useState } from "react";
-import { Device } from "../../components/devices";
-import { SET_BORDER_THRESHOLD } from "../../components/devices/commandSchema";
+import { Device } from "../DevicesList";
+import { SET_BORDER_THRESHOLD } from "../DevicesList/commandSchema";
 import { useMutation } from "@apollo/client";
 interface ThresholdSlideItemProps {
     data: Device,

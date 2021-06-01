@@ -1,25 +1,32 @@
 import { Bar } from "react-chartjs-2";
 
-interface BaseGraphProps {
+interface GraphProps {
     data: any;
     startDate: Date;
     endDate: Date;
     property: {
         label: string,
         value: string,
-        marks?: any,
+        marks: any
+        thresholdColor: {
+            errorThreshold: string,
+            safeThreshold: string,
+        }
     };
 }
 
-const BaseGraph = (props: BaseGraphProps) => {
+const Graph = (props: GraphProps) => {
     const { data, startDate, endDate, property } = props;
-    let showData: any[] = [], showLabels: any[] = [];
-    
+    let showData: any[] = []
+    let showLabels: any[] = [];
+    let showColors: any[] = [];
+
     if(data && startDate && endDate) {
         data[property.value].updateTime.forEach((time: any, index: number) => {
             if(time <= new Date(endDate).toISOString() && time >= new Date(startDate).toISOString()) {
                 showLabels.push(new Date(time).toLocaleString())
                 showData.push(data[property.value].data[index]);
+                showColors.push(data[property.value].data[index] > data[property.value].threshold ? property.thresholdColor.errorThreshold: property.thresholdColor.safeThreshold);
             }
         });
     }
@@ -30,9 +37,9 @@ const BaseGraph = (props: BaseGraphProps) => {
             {
                 // lineTension: 0.5,
                 label: property.label,
-                backgroundColor: '#00d9ff',
+                backgroundColor: showColors,
                 borderColor: 'rgba(0,0,0,1)',
-                borderWidth: 2,
+                borderWidth: 1,
                 data: showData,
             }
         ]
@@ -77,4 +84,5 @@ const BaseGraph = (props: BaseGraphProps) => {
         </div>
     )
 }
-export default BaseGraph;
+
+export default Graph;
