@@ -12,6 +12,7 @@ interface GraphProps {
             errorThreshold: string,
             safeThreshold: string,
         }
+        graphType: string,
     };
 }
 
@@ -36,9 +37,10 @@ const Graph = (props: GraphProps) => {
         datasets: [
             {
                 // lineTension: 0.5,
+                // type: property.graphType,
                 label: property.label,
                 backgroundColor: showColors,
-                borderColor: 'rgba(0,0,0,1)',
+                borderColor: '#535252',
                 borderWidth: 1,
                 data: showData,
             }
@@ -48,9 +50,9 @@ const Graph = (props: GraphProps) => {
     return (
         <div>
             <Bar
-                style={{margin: "30px"}}
-                height={350}
-                width={500}
+                // style={{margin: "0px"}}
+                height={400}
+                width={550}
                 data={state}
                 options={{
                     plugins: {
@@ -67,6 +69,12 @@ const Graph = (props: GraphProps) => {
                             position:'bottom',
                         },               
                     },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            min: 0,
+                        }
+                    }
                     // scales: {
                     //     y: {
                     //         title: "jfjfjf",
