@@ -1,0 +1,31 @@
+.statistic-item {
+    background-color: #d8e1e8;
+    color: black;
+    margin: 5px;
+    width: 100%;
+    min-width: 150px;
+    max-width: 500px;
+    height: 100px;
+}
+
+.statistic-title {
+    padding-top: 8px;
+    font-size: 17px;
+    margin: 0px;
+}
+
+.statistic-counter {
+    font-size: 45px;
+    padding-top: 0px;
+    padding-bottom: 5px;
+}
+
+#alert-counter {
+    background-color: rgb(253, 99, 99);
+}
+#working-counter {
+    background-color: rgb(104, 240, 104);
+}
+#total-counter {
+    background-color: rgb(61, 200, 255);
+}

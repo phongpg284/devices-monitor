@@ -1,0 +1,18 @@
+.middle-content {
+  height: 94vh;
+  width: 100%;
+  min-width: 700px;
+  max-width: 1500px;
+  flex-grow: 1;
+  display: block
+}
+
+.right-content {
+  min-width: 500px;
+  max-width: 550px;
+  width: 100%;
+}
+
+.main-contain {
+  background-color: rgba(255, 255, 255, 0.247);
+}
