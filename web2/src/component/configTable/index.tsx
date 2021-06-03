@@ -1,8 +1,8 @@
 import { DocumentNode } from "graphql";
-import { Device } from "../devices";
+import { Device } from "../Devices";
 import ConfigSlideItem from "../ConfigSlide";
 
-export interface Property {
+export interface EngineProperty {
     label: string,
     value: string,
     marks?: any,
@@ -11,7 +11,7 @@ export interface Property {
 
 interface ConfigTableProps {
     data: Device;
-    properties: Property[];
+    properties: EngineProperty[];
 }
 
 const ConfigTable = (props: ConfigTableProps) => {

@@ -1,12 +1,12 @@
 import { Button, Col, InputNumber, Row, Slider, Modal } from "antd";
 import { useEffect, useState } from "react";
-import { Device } from "../devices";
-import { Property } from "../ConfigTable/index";
+import { Device } from "../Devices";
+import { EngineProperty } from "../ConfigTable/index";
 import { useMutation } from "@apollo/client";
 
 interface SlideItemProps {
     data: Device,
-    property: Property,
+    property: EngineProperty,
 }
 
 const ConfigSlideItem = (props: SlideItemProps) => {
