@@ -250,7 +250,7 @@ const DeviceList = () => {
     
     return (
         <div className="device-list">
-            <Form className="mt-2 m-1">
+            <Form className="pt-2 m-1">
                 <FormControl 
                     type="input"
                     placeholder="Filter"

@@ -15,7 +15,7 @@ const Header: React.FC = () => {
   return (
     <header className="border-bottom">
       <Navbar bg="light" expand="lg" className="p-0 px-2" variant="light">
-        <Navbar.Brand href="#home" className="p-0">
+        <Navbar.Brand href="/" className="p-0">
           <Image className="header__logo" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
