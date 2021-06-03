@@ -1,15 +1,24 @@
 import { Button, Col, InputNumber, Modal, Row, Slider } from "antd";
 import { useEffect, useState } from "react";
-import { Device } from "../devices";
+import { Device } from "../Devices";
 import { useMutation } from "@apollo/client";
 import { SET_FEEDING_THRESHOLD } from "../Statistics/setThresholdSchema";
+
+export interface Property {
+    label: string,
+    value: string,
+    marks?: any,
+    maxValue: number,
+    minValue: number,
+    safeThresholeType: string,
+    thresholdColor: {
+        errorThreshold: string,
+        safeThreshold: string,
+    }
+}
 interface ThresholdSlideItemProps {
     data: Device,
-    property: {
-        label: string,
-        value: string,
-        marks?: any,
-    },
+    property: Property,
 }
 
 const ThresholdSlideItem = (props: ThresholdSlideItemProps) => {
@@ -65,8 +74,8 @@ const ThresholdSlideItem = (props: ThresholdSlideItemProps) => {
                 <Col span={8}>
                     <div style={{display:'inline-block', height:'45vh', marginTop:"4vh"}}>
                     <Slider
-                        min={0}
-                        max={100}
+                        min={property.minValue}
+                        max={property.maxValue}
                         onChange={handleOnChange}
                         value={typeof inputValue === 'number' ? inputValue : 0}
                         marks={property.marks}
