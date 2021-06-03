@@ -89,7 +89,7 @@ const StatisticsComponent = () => {
                         </Form.Text>
                     </FormGroup>
                 </Form>
-                {data && (
+                {data && propertyChoose.value !== "rain" && (
                     <Graph
                         data={data[deviceIdChoose]} 
                         startDate={startDate}
@@ -97,9 +97,17 @@ const StatisticsComponent = () => {
                         property={propertyChoose}
                     />
                 )}
+                {data && propertyChoose.value === "rain" && (
+                    <Graph
+                    data={data[deviceIdChoose]} 
+                    startDate={startDate}
+                    endDate={endDate}
+                    property={propertyChoose}
+                />
+                )}
             </div>
             <div className="setThresholdContainer">
-                {data && data[deviceIdChoose] && (
+                {data && data[deviceIdChoose] && propertyChoose.value !== "rain" && (
                     <ThresholdSlideItem
                         data={data[deviceIdChoose]}
                         property={propertyChoose}

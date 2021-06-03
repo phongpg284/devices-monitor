@@ -25,36 +25,42 @@ export const Properties = [
         value: "temperature",
         marks: Marks,
         thresholdColor: ThresholdColor,
+        graphType: "bar"
     },
     {
         label: "Độ ẩm (%)",
         value: "humidity",
         marks: Marks,
         thresholdColor: ThresholdColor,
+        graphType: "bar",
     },
     {
         label: "Mưa",
         value: "rain",
         marks: Marks,
         thresholdColor: ThresholdColor,
+        graphType: "line",
     },
     {
         label: "Độ bụi (mg/m3)",
         value: "dust",
         marks: Marks,
         thresholdColor: ThresholdColor,
+        graphType: "bar",
     },
     {
         label: "Nồng độ CO (ppm)",
         value: "coGas",
         marks: Marks,
         thresholdColor: ThresholdColor,
+        graphType: "bar",
     },
     {
         label: "Độ ẩm đất (%)",
         value: "soilHumid",
         marks: Marks,
         thresholdColor: ThresholdColor,
+        graphType: "bar",
     },
 ]
 

@@ -2,7 +2,7 @@ import "./App.css";
 import { createContext, useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { GET_FEEDING_DEVICES } from "./component/devices/schema";
+import { GET_FEEDING_DEVICES } from "./component/Devices/schema";
 import Header from "./component/Header";
 import ConfigComponent from "./component/ConfigComponent";
 import Statistics from "./component/Statistics";

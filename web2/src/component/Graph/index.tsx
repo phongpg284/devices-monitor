@@ -1,18 +1,11 @@
 import { Bar } from "react-chartjs-2";
+import { Property } from "../ThresholdSlide";
 
 interface GraphProps {
     data: any;
     startDate: Date;
     endDate: Date;
-    property: {
-        label: string,
-        value: string,
-        marks?: any,
-        thresholdColor: {
-            errorThreshold: string,
-            safeThreshold: string,
-        }
-    };
+    property: Property;
 }
 
 const Graph = (props: GraphProps) => {
@@ -26,7 +19,10 @@ const Graph = (props: GraphProps) => {
             if(time <= new Date(endDate).toISOString() && time >= new Date(startDate).toISOString()) {
                 showLabels.push(new Date(time).toLocaleString())
                 showData.push(data[property.value].data[index]);
-                showColors.push(data[property.value].data[index] > data[property.value].threshold ? property.thresholdColor.errorThreshold : property.thresholdColor.safeThreshold);
+                if(property.safeThresholeType==='lower')
+                showColors.push(data[property.value].data[index] < data[property.value].threshold ? property.thresholdColor.safeThreshold : property.thresholdColor.errorThreshold);
+                if(property.safeThresholeType==='higher')
+                showColors.push(data[property.value].data[index] > data[property.value].threshold ? property.thresholdColor.safeThreshold : property.thresholdColor.errorThreshold);
             }
         });
     }
