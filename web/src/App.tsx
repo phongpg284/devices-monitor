@@ -3,11 +3,11 @@ import { createContext, useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
 import { GET_BORDER_DEVICES } from "./components/DevicesList/schema";
-import Header from "./components/Header";
 import Home from "./route-components/Home";
 import { Device } from "./components/DevicesList/index";
 import DevicesTable from "./route-components/DevicesTable";
 import StatisticsComponent from "./route-components/Statistics";
+import Header from "./components/Header";
 
 export const DeviceContext = createContext({
   deviceState: {
@@ -44,7 +44,7 @@ function App() {
         <div className="vh-100 mvw-100 m-0 flex-column flex no-wrap">
           <main className="flex-grow">
             <BrowserRouter>
-              <Header />
+              <Header/>
               <Switch>
                 <Route path="/devices">
                   <DevicesTable/>

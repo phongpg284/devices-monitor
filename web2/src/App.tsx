@@ -3,9 +3,9 @@ import { createContext, useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_FEEDING_DEVICES } from "./component/Devices/schema";
-import Header from "./component/Header";
 import ConfigComponent from "./component/ConfigComponent";
 import Statistics from "./component/Statistics";
+import Header from "./component/Header";
 
 export const DeviceContext = createContext({
   deviceState: {
@@ -33,7 +33,7 @@ function App() {
         <div className="vh-100 mvw-100 m-0 flex-column flex no-wrap">
           <main className="flex-grow">
             <BrowserRouter>
-              <Header />
+              <Header/>
               <Switch>
                 <Route path="/devices">
                   <Statistics />
