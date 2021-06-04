@@ -3,9 +3,9 @@ import { createContext, useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_FEEDING_DEVICES } from "./component/Devices/schema";
-import ConfigComponent from "./component/ConfigComponent";
-import Statistics from "./component/Statistics";
 import Header from "./component/Header";
+import Statistics from "./component/Statistics";
+import ConfigComponent from "./component/ConfigComponent";
 
 export const DeviceContext = createContext({
   deviceState: {
