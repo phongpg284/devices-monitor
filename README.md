@@ -18,7 +18,7 @@
     - Server: 
         - NODE_ENV: development
         - PORT: cổng chạy server, giá trị mặc định `3001`
-        - DB_URI: đường dẫn đến mongoDB, giá trị mặc định `mongodb://localhost:27017/thap-nang-luong`
+        - DB_URI: đường dẫn đến MongoDB, giá trị mặc định `mongodb://localhost:27017/thap-nang-luong`
     - Web:  
         - NODE_ENV: development
         - PORT: cổng chạy web client tháp biên giới, giá trị mặc định `3000`
@@ -29,7 +29,7 @@
         - REACT_APP_GRAPHQL_URI: đường dẫn đến server Graphql, giá trị mặc định `http://localhost:3001/graphql`
 
 ## Chạy dự án:
-- Sau khi chạy `yarn` cài hết thư viện ở 3 thư mục 
+- Sau khi chạy `yarn` cài đặt hết thư viện ở 3 thư mục 
 - Tại thư mục `/server` chạy `yarn dev` để chạy server
 - Tại thư mục `/web` chạy `yarn dev` để chạy web tháp biên giới
 - Tại thư mục `/web2` chạy `yarn dev` để chạy web tháp nuôi cá  
