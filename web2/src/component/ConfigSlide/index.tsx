@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Device } from "../Devices";
 import { EngineProperty } from "../ConfigTable/index";
 import { useMutation } from "@apollo/client";
+import { useMediaQuery } from "react-responsive";
 
 interface SlideItemProps {
     data: Device,
@@ -16,6 +17,8 @@ const ConfigSlideItem = (props: SlideItemProps) => {
     const [ isDisableButton, setIsDisableButton ] = useState(true);
     const [ updateDevice, { data: updateData }] = useMutation(property.apiKey)
     
+    const isTabletOrMobile = useMediaQuery({query: "(max-width: 1224px)"});
+
     useEffect(() => {
         setInputValue((data as any)[property.value])
     },[data])
@@ -54,49 +57,89 @@ const ConfigSlideItem = (props: SlideItemProps) => {
     }
 
     return (
-        <div className="p-3 m-2">
-            <h4 className="d-flex justify-content-flex-start">{property.label}</h4>
-            <Row>
-                <Col span={7}>
-                    <Slider
-                        min={-100}
-                        max={100}
-                        onChange={handleOnChange}
-                        value={typeof inputValue === 'number' ? inputValue : 0}
-                        marks={property.marks}
-                        defaultValue={(data as any)[property.value]}
-                        tipFormatter={formatter}
-                    />
-                </Col>
-                <Col span={3}>
-                    <InputNumber
-                        min={-100}
-                        max={100}
-                        style={{ margin: '0 16px' }}
-                        formatter={value => `${value}`}
-                        value={inputValue}
-                        onChange={handleOnChange}
-                    />
-                </Col>
-                <Col span={1}>
-                    <Button
-                        type="primary"
-                        onClick={showConfirm}
-                        disabled={isDisableButton}
-                    >
-                        Confirm
-                    </Button>
-                </Col>
-                <Col span={3}>
-                    <Button
-                        type="primary"
-                        danger
-                        onClick={handleClickReset}
-                    >
-                        Reset
-                    </Button>
-                </Col>
-            </Row>
+        <div>
+            {!isTabletOrMobile && (
+                <div className="p-3 m-2">
+                    <h4 className="d-flex justify-self-flex-start">{property.label}</h4>
+                        <div className="d-flex justify-content-flex-start align-items-center">
+                            <div style={{width: "40vw"}}>
+                            <Slider
+                                min={-100}
+                                max={100}
+                                onChange={handleOnChange}
+                                value={typeof inputValue === 'number' ? inputValue : 0}
+                                marks={property.marks}
+                                defaultValue={(data as any)[property.value]}
+                                tipFormatter={formatter}
+                                />
+                            </div>
+                            <InputNumber
+                                min={-100}
+                                max={100}
+                                style={{ margin: '0 40px' }}
+                                formatter={value => `${value}`}
+                                value={inputValue}
+                                onChange={handleOnChange}
+                            />
+                            <Button
+                                type="primary"
+                                onClick={showConfirm}
+                                style={{marginRight:"2px"}}
+                                disabled={isDisableButton}
+                            >
+                                Confirm
+                            </Button>
+                            <Button
+                                type="primary"
+                                danger
+                                onClick={handleClickReset}
+                            >
+                                Reset
+                            </Button>
+                        </div>
+                </div>
+            )}
+            {isTabletOrMobile && (
+                        <div className="py-3">
+                        <h4 className="d-flex justify-self-flex-start">{property.label}</h4>
+                                <div style={{width: "90vw", marginTop:"20px"}}>
+                                <Slider
+                                    min={-100}
+                                    max={100}
+                                    onChange={handleOnChange}
+                                    value={typeof inputValue === 'number' ? inputValue : 0}
+                                    marks={property.marks}
+                                    defaultValue={(data as any)[property.value]}
+                                    tipFormatter={formatter}
+                                    />
+                                </div>
+                            <div style={{marginTop: "50px"}}>
+                                <InputNumber
+                                    min={-100}
+                                    max={100}
+                                    style={{ marginRight: '40px' }}
+                                    formatter={value => `${value}`}
+                                    value={inputValue}
+                                    onChange={handleOnChange}
+                                    />
+                                <Button
+                                    type="primary"
+                                    style={{marginRight: "2px"}}
+                                    onClick={showConfirm}
+                                    disabled={isDisableButton}
+                                    >
+                                    Confirm
+                                </Button>
+                                <Button
+                                    type="primary"
+                                    danger
+                                    onClick={handleClickReset}
+                                    >
+                                    Reset
+                                </Button>
+                            </div>
+                    </div>
+            )}
         </div>
     )
 }

@@ -159,23 +159,22 @@ const DeviceItem:React.FC<DeviceItemProps> = (props: DeviceItemProps) => {
                 <Card className="device-item justify-content-flex-start" id={data._id} style={{backgroundColor: hover? "#979ea3": ""}}>
                     <Card.Text as="div" className="d-flex p-2 justify-content-space-between align-items-center" id={data._id}>
                         <i 
-                            className="bi-wifi px-3 align-self-center d-flex"
+                            className="bi-wifi px-3 align-self-center device-icon"
                             style={{fontSize: "2.8rem"}}
                         />
                         <div className="my-2">
                             <h1 
-                                style={{fontSize: "2.2rem"}}
-                                className="mx-3"
+                                className="mx-3 device-name"
                             >
                                 {data.name}
                             </h1>
-                            {data.lat && data.long &&<h4 
-                                style={{fontSize: "1.1rem"}}
+                            {data.lat && data.long &&<h4
+                                className="device-location" 
                             >
                                 Vị trí: {data.lat[data.lat.length-1]}, {data.long[data.long.length-1]}
                             </h4> }
-                            {data.locationUpdateTime && <i 
-                                style={{fontSize: "0.8rem", paddingTop:"4px"}}
+                            {data.locationUpdateTime && <i
+                                className="device-location-update"
                             >
                                 Cập nhật vị trí lần cuối: {new Date(data.locationUpdateTime[data.locationUpdateTime.length-1]).toLocaleString()}
                             </i>}

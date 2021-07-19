@@ -7,7 +7,7 @@ const CounterHeader = (props: any) => {
     const workingDevices = (totalDevices && alertDevices)? totalDevices - alertDevices : 0;
 
     return (
-        <div className="d-flex flex-row justify-content-center statistic-header">
+        <div className="statistic-header">
             <Card className="statistic-item px-2" id="total-counter">
                 <Card.Title className="statistic-title">
                     Total Devices

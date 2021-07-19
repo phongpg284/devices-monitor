@@ -1,6 +1,6 @@
+import "./graph.scss"
 import { Bar } from "react-chartjs-2";
 import { Property } from "../ThresholdSlide";
-
 interface GraphProps {
     data: any;
     startDate: Date;
@@ -34,7 +34,7 @@ const Graph = (props: GraphProps) => {
                 // lineTension: 0.5,
                 label: property.label,
                 backgroundColor: showColors,
-                borderColor: 'rgba(0,0,0,1)',
+                borderColor: '#535252',
                 borderWidth: 1,
                 data: showData,
             }
@@ -42,11 +42,10 @@ const Graph = (props: GraphProps) => {
     }
     
     return (
-        <div>
+        <div className="graph">
             <Bar
-                style={{margin: "30px"}}
-                height={350}
-                width={500}
+                height={300}
+                width={350}
                 data={state}
                 options={{
                     plugins: {
@@ -63,6 +62,9 @@ const Graph = (props: GraphProps) => {
                             position:'bottom',
                         },               
                     },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    
                     // scales: {
                     //     y: {
                     //         title: "jfjfjf",

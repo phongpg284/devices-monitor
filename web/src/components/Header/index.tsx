@@ -1,4 +1,4 @@
-import "./header.css";
+import "./header.scss";
 import React from "react";
 import {
   Button,
@@ -22,18 +22,18 @@ const Header: React.FC = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto d-flex align-items-center">
             <NavLink to="/" className="px-3" style={{fontSize: "1.2rem"}}>Home</NavLink>
-            <NavLink to="/devices" className="px-3" style={{fontSize: "1.2rem"}}>Thiết bị</NavLink>
+            {/* <NavLink to="/devices" className="px-3" style={{fontSize: "1.2rem"}}>Thiết bị</NavLink> */}
             <NavLink to="/statistics" className="px-3" style={{fontSize: "1.2rem"}}>Dữ liệu</NavLink>
             <NavLink to="/" className="px-3 mr-3" style={{fontSize: "1.2rem"}}>About</NavLink>
           </Nav>
-          <Form inline className="mr-5">
+          <Form inline className="mr-5 search-input">
             <FormControl
               type="search"
               placeholder="Search"
               className="mr-2"
               aria-label="Search"
             />
-            <Button variant="outline-success">Search</Button>
+            <Button variant="outline-success search-button">Search</Button>
           </Form>
         </Navbar.Collapse>
       </Navbar>

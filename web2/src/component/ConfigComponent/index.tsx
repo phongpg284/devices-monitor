@@ -126,7 +126,7 @@ const ConfigComponent = () => {
 
 
     return (
-        <div className="px-5 py-4">
+        <div className="px-3 py-4">
             <h1>Điều chỉnh thông số động cơ thiết bị</h1> 
             <Form className="d-flex ">
                 <Form.Group className="py-2 px-4">

@@ -1,0 +1,7 @@
+.graph {
+    height: 90vh;
+    @media screen and (max-width: 470px) {
+        height: 70vh;
+        width: 95vw;
+    }
+}
