@@ -1,3 +1,4 @@
+import "./slider.scss"
 import { Button, Col, InputNumber, Modal, Row, Slider } from "antd";
 import { useEffect, useState } from "react";
 import { Device } from "../DevicesList";
