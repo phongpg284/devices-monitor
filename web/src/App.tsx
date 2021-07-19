@@ -46,9 +46,9 @@ function App() {
             <BrowserRouter>
               <Header/>
               <Switch>
-                <Route path="/devices">
+                {/* <Route path="/devices">
                   <DevicesTable/>
-                </Route>
+                </Route> */}
                 <Route path="/statistics">
                   <StatisticsComponent/>
                 </Route>

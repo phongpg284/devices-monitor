@@ -1,10 +1,25 @@
 .graphContainer {
-    max-width: 70%;
-    min-width: 50%;
+    flex-grow: 1;
+    max-width: 1000px;
+    min-width: 400px;
 }
 .setThresholdContainer {
     margin-top: 7vh;
-    max-width: 30%;
-    min-width: 20%;
-    // background-color: rgb(240, 236, 236);
+    max-width: 400px;
+    min-width: 200px;
+}
+
+.selection-view {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    @media screen and (max-width: 1000px) {
+        display: block
+    }
+}
+
+.selection-form {
+    @media screen and(max-width: 1000px) {
+        width: 90vw;
+    }
 }

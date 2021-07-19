@@ -45,10 +45,10 @@ const Statistics = () => {
     }
 
     return (
-        <div className="d-flex flex-row justify-content-center">
+        <div className="d-flex flex-row justify-content-center flex-wrap">
             <div className="p-3 graphContainer">
-                <Form className="d-flex flex-row justify-content-center">
-                    <FormGroup className="px-5">
+                <Form className="selection-view">
+                    <FormGroup className="selection-form">
                         <Form.Label>Chọn thiết bị</Form.Label>
                         <Form.Control
                             as="select"
@@ -62,7 +62,7 @@ const Statistics = () => {
                             ))}
                         </Form.Control>
                     </FormGroup>
-                    <FormGroup className="px-5">
+                    <FormGroup className="selection-form">
                         <Form.Label>Chọn thông số</Form.Label>
                         <Form.Control
                             as="select"
@@ -76,9 +76,9 @@ const Statistics = () => {
                             ))}
                         </Form.Control>
                     </FormGroup>
-                    <FormGroup className="px-5">
+                    <FormGroup className="selection-form">
                         <Form.Label>Chọn khoảng thời gian</Form.Label>
-                        <Form.Text>
+                        <Form.Text className="justify-self-flex-start d-flex">
                             <DatePicker.RangePicker 
                                 showTime
                                 disabledDate={disabledDate}

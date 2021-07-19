@@ -35,8 +35,8 @@ function App() {
             <BrowserRouter>
               <Header/>
               <Switch>
-                <Route path="/devices">
-                  <Statistics />
+                <Route path="/device">
+                  <ConfigComponent />
                 </Route>
                 <Route path="/statistics">
                   <Statistics />
