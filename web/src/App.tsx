@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { createContext, useEffect, useState } from "react";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
 import { GET_BORDER_DEVICES } from "./components/DevicesList/schema";
 import Header from "./components/Header";
@@ -43,7 +43,7 @@ function App() {
       <div className="App">
         <div className="vh-100 mvw-100 m-0 flex-column flex no-wrap">
           <main className="flex-grow">
-            <HashRouter>
+            <BrowserRouter>
               <Header />
               <Switch>
                 <Route path="/devices">
@@ -56,7 +56,7 @@ function App() {
                   <Home />
                 </Route>
               </Switch>
-            </HashRouter>
+            </BrowserRouter>
           </main>
         </div>
       </div>
