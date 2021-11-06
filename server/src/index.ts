@@ -17,9 +17,6 @@ import {MQTT_BRAND, MQTT_BROKER} from "./config"
 import mqtt from 'mqtt'
 
 const app = express();
-mqttClient.on('connect', function () {
-	logger.info("SUCCESS: Connected to Mqtt!");
-  })
 const bootstrap = async (mongoClient: MongoClient) => {
 	try {
 		Container.set(DATABASE_INSTANCE_KEY, mongoClient.db("admin"));
@@ -28,7 +25,9 @@ const bootstrap = async (mongoClient: MongoClient) => {
 		throw new Error(error);
 	}
 	const schema = await getGraphqlSchema();
-
+	mqttClient.on('connect', function () {
+		logger.info("SUCCESS: Connected to Mqtt!");
+	  })
 	const apolloServer = getApolloServer(schema);
 	apolloServer.applyMiddleware({ app });
 
@@ -58,3 +57,6 @@ MongoClient.connect(
 		bootstrap(mongoClient);
 	}
 );
+
+
+
