@@ -97,6 +97,6 @@ export const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 export const DATABASE_INSTANCE_KEY = 'db';
 
 export const {
-	MQTT_BROKER = "https://mosquitto.org/",
+	MQTT_BROKER = "https://test.mosquitto.org/",
 	MQTT_BRAND = "mandevices",
   } = process.env;
