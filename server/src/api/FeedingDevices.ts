@@ -358,7 +358,7 @@ export class FeedingDevices{
                 return {}
             }
         // publish mqtt mesage
-        let publishTopic = MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/device/fan/sset" 
+        let publishTopic = MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/device/fan/set" 
         mqttClient.publish(publishTopic, value.toString(), {qos: 2, retain: true});
 
         const device = this.db.collection("FeedingDevices");
