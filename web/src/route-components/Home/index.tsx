@@ -5,6 +5,8 @@ import Map from "../../components/Map"
 import Counter from "../../components/CounterHeader"
 import "./home.scss"
 
+const mapKey = process.env.REACT_APP_MAP_API_KEY;
+
 const Home = () => {
     const { deviceState } = useContext(DeviceContext);
     return (
@@ -17,7 +19,7 @@ const Home = () => {
               <Map
                 defaultCenter={{ lat: 21.04, lng: 105.83 }}
                 defaultZoom={15}
-                apiKey="AIzaSyDumeWrTMi-7xbY7uRRupj3zMsTCaro8WQ"
+                apiKey={mapKey!}
                 data={deviceState}
               />
             </div>

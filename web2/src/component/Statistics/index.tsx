@@ -25,8 +25,8 @@ const Statistics = () => {
 
     useEffect(() => {
         if(data && data[0] && !startDate && !endDate) {
-            setStartDate((data[deviceIdChoose][propertyChoose.value] as any).updateTime[0].toLocaleString());
-            setEndDate((data[deviceIdChoose][propertyChoose.value] as any).updateTime[(data[deviceIdChoose][propertyChoose.value]as any).updateTime.length-1].toLocaleString())
+            setStartDate((data[deviceIdChoose][propertyChoose.value] as any).updateTime[0]?.toLocaleString());
+            setEndDate((data[deviceIdChoose][propertyChoose.value] as any).updateTime[(data[deviceIdChoose][propertyChoose.value]as any).updateTime.length-1]?.toLocaleString())
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[data])
