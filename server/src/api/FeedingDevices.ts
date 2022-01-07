@@ -142,7 +142,6 @@ export class FeedingDevices{
                     fan: 0
                 });
         console.log("Current status:")
-        console.log(existDevice);
         const device = this.db.collection("FeedingDevices");
         switch (topic){
             case 'temperature':

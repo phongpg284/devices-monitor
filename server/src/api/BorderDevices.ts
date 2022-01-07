@@ -189,7 +189,6 @@ export class BorderDevices {
                     alert: false,
                 });
         console.log("Current status:")
-        console.log(existDevice);
         const device = this.db.collection("BorderDevices");
         switch (topic){
             case 'temperature':
