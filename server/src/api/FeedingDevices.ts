@@ -91,7 +91,6 @@ export class FeedingDevices{
     @Query(() => FeedingDevice)
     async getFeedingDevice(@Arg("id") id: string) {
         const result = await this.db.collection("FeedingDevices").findOne({ _id: id});
-        console.log(result);
         return result;
     }
     @Query(() => [FeedingDevice])
@@ -258,7 +257,6 @@ export class FeedingDevices{
                 console.error(topic + ": Topic khong khop!");
         }
         console.log("Updated:")
-        console.log(existDevice);
         return existDevice;
     }
     @Mutation(()=>FeedingDevice)

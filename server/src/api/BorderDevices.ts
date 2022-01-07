@@ -139,7 +139,6 @@ export class BorderDevices {
     @Query(() => BorderDevice)
     async getBorderDevice(@Arg("id") id: string) {
         const result = await this.db.collection("BorderDevices").findOne({ _id: id});
-        console.log(result);
         return result;
     }
     
@@ -383,7 +382,6 @@ export class BorderDevices {
                 console.error(topic + ": Topic khong khop!");
         }
         console.log("Updated:")
-        console.log(existDevice);
         return existDevice;
     }
 
