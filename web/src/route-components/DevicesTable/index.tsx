@@ -68,12 +68,12 @@ const DevicesTable = () => {
         filter: textFilter(),
     }, {
         dataField: 'dust',
-        text: 'Độ bụi (mg/m3)',
+        text: 'Độ bụi (AQI)',
         sort: true,
         filter: textFilter(),
     }, {
         dataField: 'coGas',
-        text: 'Nồng độ CO (ppm)',
+        text: 'Nồng độ CO (AQI)',
         sort: true,
         filter: textFilter(),
     }, {
