@@ -91,13 +91,13 @@ mqttClient.on("end", () => {
   logger.info("MQTT client end");
 });
   
-mqttClient.on("packetsend", () => {
-  logger.info("MQTT client send packet");
-});
+// mqttClient.on("packetsend", () => {
+//   logger.info("MQTT client send packet");
+// });
   
-mqttClient.on("packetreceive", () => {
-  logger.info("MQTT client receive packet");
-});
+// mqttClient.on("packetreceive", () => {
+//   logger.info("MQTT client receive packet");
+// });
 
 mqttClient.on("message", async(topic, payload)=>{
   const payloadData = String(payload);
