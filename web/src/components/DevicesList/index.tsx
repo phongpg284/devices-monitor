@@ -221,9 +221,9 @@ const DeviceItem:React.FC<DeviceItemProps> = (props: DeviceItemProps) => {
                             <i>(Cập nhật lần cuối: {new Date(data.rain.updateTime[data.rain.updateTime.length-1]).toLocaleString()})</i> 
                         </ul>    
                         <ul className="pr-4">
-                            <li>Độ bụi: {data.dust.data[data.dust.data.length-1]} mg/m3</li>
+                            <li>Độ bụi: {data.dust.data[data.dust.data.length-1]} AQI</li>
                             <i>(Cập nhật lần cuối: {new Date(data.dust.updateTime[data.dust.updateTime.length-1]).toLocaleString()})</i> 
-                            <li>Nồng độ CO: {data.coGas.data[data.coGas.data.length-1]} ppm</li>
+                            <li>Nồng độ CO: {data.coGas.data[data.coGas.data.length-1]} AQI</li>
                             <i>(Cập nhật lần cuối: {new Date(data.coGas.updateTime[data.coGas.updateTime.length-1]).toLocaleString()})</i> 
                             <li>Độ ẩm đất: {data.soilHumid.data[data.soilHumid.data.length-1]} %</li>
                             <i>(Cập nhật lần cuối: {new Date(data.soilHumid.updateTime[data.soilHumid.updateTime.length-1]).toLocaleString()})</i> 
