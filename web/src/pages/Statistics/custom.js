@@ -42,14 +42,14 @@ export const Properties = [
         graphType: "line",
     },
     {
-        label: "Độ bụi (mg/m3)",
+        label: "Độ bụi (AQI)",
         value: "dust",
         marks: Marks,
         thresholdColor: ThresholdColor,
         graphType: "bar",
     },
     {
-        label: "Nồng độ CO (ppm)",
+        label: "Nồng độ CO (AQI)",
         value: "coGas",
         marks: Marks,
         thresholdColor: ThresholdColor,
