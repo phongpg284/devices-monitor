@@ -252,7 +252,7 @@ export class BorderDevices {
                     {qos: 2, retain: true});
                 break;
             case 'rain':
-                let rainStatus = (payload=='true')?true:false;
+                let rainStatus = (payload==='1')?true:false;
                 device.updateOne(
                     {name: BorderDeviceName}, 
                     {$push: {"rain.data": rainStatus, "rain.updateTime" : new Date()}}, 
