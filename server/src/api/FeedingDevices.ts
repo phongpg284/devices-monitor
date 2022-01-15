@@ -159,7 +159,7 @@ export class FeedingDevices{
                 if (parseFloat(payload)>existDevice.temperature.threshold)
                     temperatureThreshold = "false";
                 mqttClient.publish(
-                    MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/environment/pH/$threshold/set", 
+                    MQTT_BRAND + "/thap_cho_ca/" + existDevice.name + "/environment/temperature/$threshold/set", 
                         temperatureThreshold, 
                         {qos: 2, retain: true});
                 break;

@@ -37,7 +37,7 @@ const ThresholdColor = {
 
 export const Properties = [
     {
-        label: "Nồng độ O2 trong nước (mg/m3)",
+        label: "Nồng độ O2 trong nước (&mu;)",
         value: "o2Gas",
         marks: O2Marks,
         maxValue: 10000,
