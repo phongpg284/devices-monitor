@@ -93,7 +93,7 @@ const ThresholdSlideItem = (props: ThresholdSlideItemProps) => {
                         <Col span={8} style={{ margin: '0 16px' }}>
                             <InputNumber
                                 min={0}
-                                max={100}
+                                max={10000}
                                 className="my-5"
                                 // formatter={value => `${value}`}
                                 value={inputValue}
@@ -135,7 +135,7 @@ const ThresholdSlideItem = (props: ThresholdSlideItemProps) => {
                     </div>
                     <InputNumber
                         min={0}
-                        max={100}
+                        max={10000}
                         className="my-4"
                         style={{marginRight: "50px"}}
                         // formatter={value => `${value}`}

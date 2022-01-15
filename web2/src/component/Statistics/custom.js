@@ -16,17 +16,17 @@ const Marks = {
 
 const O2Marks = {
     "0": "0",
-    "100": {
+    "10000": {
         style: {
             color: '#f50',
         },
-        label: <strong>100</strong>,
+        label: <strong>10000</strong>,
     },
-    "50": {
+    "5000": {
         style: {
             color: '#d4d106',
         },
-        label: <strong>50</strong>,
+        label: <strong>5000</strong>,
     },
 }
 
