@@ -17,7 +17,7 @@ const Home = () => {
           <div className="pt-1 middle-content d-flex flex-column justify-content-flex-start">
             <Counter data={deviceState}/>
             <Map
-              defaultCenter={{ lat: 21.04, lng: 105.83 }}
+              defaultCenter={{ lat: 21.14088, lng: 105.4953 }}
               defaultZoom={15}
               apiKey={mapApiKey!}
               data={deviceState}
